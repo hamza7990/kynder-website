@@ -1,0 +1,76 @@
+/**
+ * Design tokens — the single source of truth for KYNDER's visual language.
+ *
+ * Every color, radius, spacing and shadow used across the app is declared here
+ * as a CSS custom property and consumed via Tailwind's theme mapping
+ * (see `tailwind.config.ts`). Components must NEVER hardcode hex values.
+ *
+ * Placeholder values below are intentionally neutral; replace with the final
+ * brand palette when design is ready.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Brand ---- */
+  --color-brand: #1f2933;
+  --color-brand-fg: #ffffff;
+  --color-brand-muted: #52606d;
+
+  --color-accent: #c98a3c;
+  --color-accent-fg: #1f2933;
+
+  /* ---- Surfaces & text ---- */
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f7fa;
+  --color-foreground: #1f2933;
+  --color-muted: #616e7c;
+  --color-border: #e4e7eb;
+  --color-ring: #c98a3c;
+
+  /* ---- Feedback ---- */
+  --color-success: #2f855a;
+  --color-warning: #c05621;
+  --color-danger: #c53030;
+
+  /* ---- Typography ---- */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-sans);
+
+  /* ---- Radii ---- */
+  --radius-sm: 0.25rem;
+  --radius: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* ---- Spacing ---- */
+  --space-gutter: 1.5rem;
+  --space-section: 6rem;
+
+  /* ---- Layout ---- */
+  --width-content: 72rem;
+
+  /* ---- Elevation ---- */
+  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-elevated: 0 10px 30px rgb(0 0 0 / 0.12);
+
+  /* ---- Motion ---- */
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --color-background: #12181f;
+    --color-surface: #1a222c;
+    --color-surface-muted: #222c37;
+    --color-foreground: #e4e7eb;
+    --color-muted: #9aa5b1;
+    --color-border: #323f4b;
+    --color-brand: #e4e7eb;
+    --color-brand-fg: #12181f;
+    --color-brand-muted: #9aa5b1;
+  }
+}
