@@ -12,6 +12,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    // Forked child processes exit cleanly (avoids the jsdom teardown hang).
+    pool: 'forks',
     setupFiles: ['./vitest.setup.ts'],
     // Playwright specs live in tests/e2e and are run by Playwright, not Vitest.
     include: ['src/**/*.{test,spec}.{ts,tsx}'],

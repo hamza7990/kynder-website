@@ -13,8 +13,8 @@ describe('app shell', () => {
       </RootLayout>,
     );
 
-    expect(markup).toContain('<html lang="en">');
-    expect(markup).toContain('<body>');
+    expect(markup).toContain('lang="en"');
+    expect(markup).toContain('<body');
     expect(markup).toContain('child content');
   });
 

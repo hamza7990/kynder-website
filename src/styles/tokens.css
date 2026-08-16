@@ -1,76 +1,146 @@
 /**
- * Design tokens — the single source of truth for KYNDER's visual language.
+ * KYNDER DESIGN TOKENS — the single source of truth.
  *
- * Every color, radius, spacing and shadow used across the app is declared here
- * as a CSS custom property and consumed via Tailwind's theme mapping
- * (see `tailwind.config.ts`). Components must NEVER hardcode hex values.
+ * Every colour, size, radius, shadow and motion value used anywhere in the app
+ * is declared here as a CSS custom property and consumed via the Tailwind theme
+ * (see `tailwind.config.ts`). Components reference tokens ONLY — never raw hex.
  *
- * Placeholder values below are intentionally neutral; replace with the final
- * brand palette when design is ready.
+ * PALETTE RULE: the seven brand colours below are the ONLY hex values in the
+ * codebase. All other colour values are opacity-derived from them via
+ * color-mix(..., transparent). No pure white, no pure black, no grey, no glows.
+ *
+ * ACCESSIBILITY NOTE ON ACCENTS: --terracotta and --gold do not reach 4.5:1
+ * against --cream / --cream-card, so they are used for FILLS, BORDERS, ICONS,
+ * FOCUS RINGS and for TEXT ON DARK surfaces only. On light surfaces, text uses
+ * --ink / --navy-deep / --navy. This keeps every text/background pair AA.
  */
 
 :root {
-  color-scheme: light;
+  /* ============================================================= *
+   * COLOUR — brand palette (the only hex in the codebase)
+   * ============================================================= */
+  --navy-deep: #1b2038; /* primary brand, headlines, footer bg */
+  --navy: #2c3356; /* buttons, active nav, dark sections */
+  --terracotta: #c87d5d; /* primary accent, CTAs, links (on dark) */
+  --gold: #b08d57; /* secondary accent, used sparingly */
+  --cream: #faf6f0; /* page background */
+  --cream-card: #eee7d9; /* cards, inputs, dividers */
+  --ink: #26241f; /* body text — never pure black */
 
-  /* ---- Brand ---- */
-  --color-brand: #1f2933;
-  --color-brand-fg: #ffffff;
-  --color-brand-muted: #52606d;
+  /* Opacity-derived variants (the ONLY permitted derivations). */
+  --ink-90: color-mix(in srgb, var(--ink) 90%, transparent);
+  --ink-80: color-mix(in srgb, var(--ink) 80%, transparent);
+  --ink-70: color-mix(in srgb, var(--ink) 70%, transparent);
+  --ink-60: color-mix(in srgb, var(--ink) 60%, transparent);
+  --ink-40: color-mix(in srgb, var(--ink) 40%, transparent);
+  --ink-20: color-mix(in srgb, var(--ink) 20%, transparent);
+  --ink-10: color-mix(in srgb, var(--ink) 10%, transparent);
 
-  --color-accent: #c98a3c;
-  --color-accent-fg: #1f2933;
+  --cream-80: color-mix(in srgb, var(--cream) 80%, transparent);
+  --cream-70: color-mix(in srgb, var(--cream) 70%, transparent);
+  --cream-40: color-mix(in srgb, var(--cream) 40%, transparent);
 
-  /* ---- Surfaces & text ---- */
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f5f7fa;
-  --color-foreground: #1f2933;
-  --color-muted: #616e7c;
-  --color-border: #e4e7eb;
-  --color-ring: #c98a3c;
+  --navy-deep-80: color-mix(in srgb, var(--navy-deep) 80%, transparent);
+  --navy-deep-60: color-mix(in srgb, var(--navy-deep) 60%, transparent);
 
-  /* ---- Feedback ---- */
-  --color-success: #2f855a;
-  --color-warning: #c05621;
-  --color-danger: #c53030;
+  --terracotta-90: color-mix(in srgb, var(--terracotta) 90%, transparent);
+  --terracotta-40: color-mix(in srgb, var(--terracotta) 40%, transparent);
+  --terracotta-16: color-mix(in srgb, var(--terracotta) 16%, transparent);
+  --gold-40: color-mix(in srgb, var(--gold) 40%, transparent);
+  --gold-16: color-mix(in srgb, var(--gold) 16%, transparent);
 
-  /* ---- Typography ---- */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-display: var(--font-sans);
+  /* Interaction shades for accent fills (mix toward --ink; not new hues). */
+  --terracotta-hover: color-mix(in srgb, var(--terracotta) 88%, var(--ink));
+  --terracotta-active: color-mix(in srgb, var(--terracotta) 78%, var(--ink));
+  --navy-hover: color-mix(in srgb, var(--navy) 90%, var(--cream));
+  --navy-active: color-mix(in srgb, var(--navy) 82%, var(--cream));
 
-  /* ---- Radii ---- */
-  --radius-sm: 0.25rem;
-  --radius: 0.5rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  /* ============================================================= *
+   * TYPOGRAPHY
+   * ============================================================= */
+  /* --font-lora / --font-inter are injected on <html> by next/font. */
+  --font-display: var(--font-lora, 'Lora'), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-inter, 'Inter'), system-ui, -apple-system, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
 
-  /* ---- Spacing ---- */
-  --space-gutter: 1.5rem;
-  --space-section: 6rem;
+  /* Modular scale ~1.25 — 64 / 48 / 36 / 28 / 22 / 18 / 16 / 14 (px → rem). */
+  --fs-display-1: 4rem; /* 64 */
+  --fs-display-2: 3rem; /* 48 */
+  --fs-h2: 2.25rem; /* 36 */
+  --fs-h3: 1.75rem; /* 28 */
+  --fs-h4: 1.375rem; /* 22 */
+  --fs-lead: 1.125rem; /* 18 */
+  --fs-body: 1rem; /* 16 — minimum body size */
+  --fs-small: 0.875rem; /* 14 */
 
-  /* ---- Layout ---- */
-  --width-content: 72rem;
+  --lh-tight: 1.05;
+  --lh-snug: 1.2;
+  --lh-heading: 1.25;
+  --lh-body: 1.6;
 
-  /* ---- Elevation ---- */
-  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04);
-  --shadow-elevated: 0 10px 30px rgb(0 0 0 / 0.12);
+  --tracking-display: -0.02em; /* slight negative for display */
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0em;
+  --tracking-eyebrow: 0.14em; /* uppercase eyebrows */
 
-  /* ---- Motion ---- */
-  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
-}
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
+  /* ============================================================= *
+   * SPACING — 4px base scale
+   * ============================================================= */
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.25rem; /* 20 */
+  --space-6: 1.5rem; /* 24 */
+  --space-8: 2rem; /* 32 */
+  --space-10: 2.5rem; /* 40 */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-20: 5rem; /* 80 */
 
-    --color-background: #12181f;
-    --color-surface: #1a222c;
-    --color-surface-muted: #222c37;
-    --color-foreground: #e4e7eb;
-    --color-muted: #9aa5b1;
-    --color-border: #323f4b;
-    --color-brand: #e4e7eb;
-    --color-brand-fg: #12181f;
-    --color-brand-muted: #9aa5b1;
-  }
+  /* Section padding — vary by section, never one uniform value. */
+  --section-sm: 6rem; /* 96 */
+  --section-md: 7.5rem; /* 120 */
+  --section-lg: 10rem; /* 160 */
+
+  /* ============================================================= *
+   * LAYOUT
+   * ============================================================= */
+  --container-max: 1120px;
+  --gutter: 1.5rem; /* 24 — mobile */
+  --gutter-lg: 2rem; /* 32 — desktop */
+
+  /* ============================================================= *
+   * RADIUS — 8 / 14 / 20 / 999
+   * ============================================================= */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* ============================================================= *
+   * SHADOWS — exactly three, all very soft. No glows.
+   * Tinted with --navy-deep (never black).
+   * ============================================================= */
+  --shadow-1: 0 1px 2px color-mix(in srgb, var(--navy-deep) 6%, transparent),
+    0 1px 1px color-mix(in srgb, var(--navy-deep) 4%, transparent);
+  --shadow-2: 0 6px 16px color-mix(in srgb, var(--navy-deep) 8%, transparent),
+    0 2px 6px color-mix(in srgb, var(--navy-deep) 5%, transparent);
+  --shadow-3: 0 18px 48px color-mix(in srgb, var(--navy-deep) 12%, transparent),
+    0 6px 16px color-mix(in srgb, var(--navy-deep) 6%, transparent);
+
+  /* ============================================================= *
+   * MOTION
+   * ============================================================= */
+  --dur-fast: 160ms;
+  --dur-base: 260ms;
+  --dur-slow: 480ms;
+  --dur-ambient: 14s;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
