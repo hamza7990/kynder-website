@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import RootLayout from './layout';
 import HomePage from './page';
@@ -18,8 +18,18 @@ describe('app shell', () => {
     expect(markup).toContain('child content');
   });
 
-  it('home page renders a main landmark', () => {
-    render(<HomePage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+  it('root layout provides the single <main id="main"> landmark around its children', () => {
+    const markup = renderToStaticMarkup(
+      <RootLayout>
+        <p>child content</p>
+      </RootLayout>,
+    );
+    expect(markup).toContain('<main id="main"');
+    expect(markup).toContain('child content');
+  });
+
+  it('home page renders no landmark of its own (the layout owns <main>)', () => {
+    const { container } = render(<HomePage />);
+    expect(container).toBeEmptyDOMElement();
   });
 });

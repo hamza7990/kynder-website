@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Lora } from 'next/font/google';
 import '@/styles/globals.css';
+import { SkipLink } from '@/components/layout/skip-link';
+import { Header } from '@/components/layout/header';
+import { Footer } from '@/components/layout/footer';
 
 // Self-hosted via next/font — fonts are downloaded at build time and served
 // from our own origin. No render-blocking external font CSS.
@@ -35,7 +38,15 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${lora.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        <SkipLink />
+        <Header />
+        {/* tabIndex=-1 makes <main> the programmatic focus target for the skip link. */}
+        <main id="main" tabIndex={-1} className="focus:outline-none">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }

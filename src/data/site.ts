@@ -8,6 +8,7 @@
 export interface SiteConfig {
   name: string;
   tagline: string;
+  copyright: string;
   contactEmail: string;
   social: {
     linkedin: string;
@@ -21,6 +22,7 @@ export interface SiteConfig {
 export const site: SiteConfig = {
   name: process.env.NEXT_PUBLIC_SITE_NAME ?? 'KYNDER',
   tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE ?? '[PENDING: tagline]',
+  copyright: process.env.NEXT_PUBLIC_SITE_COPYRIGHT ?? '[PENDING: copyright]',
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '[PENDING: contact email]',
   social: {
     linkedin: process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? '[PENDING: linkedin url]',

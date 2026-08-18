@@ -1,5 +1,6 @@
-// Placeholder home route — content and UI are intentionally not implemented yet.
-// This exists only so the static export produces a valid entry document.
+// Placeholder home route — content and UI are intentionally not implemented yet
+// (Phase 6). The <main> landmark now lives in app/layout.tsx, so this renders
+// nothing into it for now; the global header and footer come from the layout.
 export default function HomePage() {
-  return <main />;
+  return null;
 }

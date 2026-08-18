@@ -63,7 +63,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 export default function StyleguidePage() {
   return (
-    <main className="min-h-screen bg-cream py-section-sm text-ink">
+    <div className="min-h-screen bg-cream py-section-sm text-ink">
       <Container>
         <header className="flex flex-col gap-4 pb-section-sm">
           <Badge variant="gold">Internal</Badge>
@@ -248,6 +248,6 @@ export default function StyleguidePage() {
           </Row>
         </Block>
       </Container>
-    </main>
+    </div>
   );
 }
