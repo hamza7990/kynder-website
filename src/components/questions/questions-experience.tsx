@@ -7,6 +7,9 @@ import { PillarFilter, type PillarFilterValue } from './pillar-filter';
 import { QuestionItem } from './question-item';
 
 const HASH_RE = /^#q-(\d{2})$/;
+// Matches scroll-mt-28 on each question, so a deep-linked question lands clear
+// of the fixed header rather than tucked beneath it.
+const HEADER_OFFSET = 112;
 
 /**
  * The interactive Leadership Questions experience: a single-open accordion with a
@@ -21,12 +24,16 @@ export function QuestionsExperience() {
   const visible = filter === 'ALL' ? questions : questions.filter((q) => q.pillar === filter);
 
   const scrollToQuestion = useCallback((no: string) => {
-    requestAnimationFrame(() => {
-      document.getElementById(`q-${no}`)?.scrollIntoView({
-        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-        block: 'start',
-      });
-    });
+    // Delay past hydration + the framework's scroll restoration, then scroll
+    // explicitly to the trigger's absolute top minus the header offset. (rAF runs
+    // too early and gets reset to top; scrollIntoView no-ops for near-fold items.)
+    window.setTimeout(() => {
+      const el = document.getElementById(`q-${no}`);
+      if (!el) return;
+      // offsetTop is layout-absolute and scroll-independent — no in-flight-scroll race.
+      const top = el.offsetTop - HEADER_OFFSET;
+      window.scrollTo({ top: Math.max(0, top), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    }, 200);
   }, []);
 
   // Deep link: open + scroll to #q-NN on mount and whenever the hash changes.

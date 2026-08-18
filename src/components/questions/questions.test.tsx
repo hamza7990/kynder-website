@@ -6,7 +6,8 @@ import QuestionsPage from '@/app/questions/page';
 import { closingCta, closingLine, questions, stepsLabel } from '@/data/questions';
 
 beforeAll(() => {
-  // jsdom doesn't implement scrollIntoView; the deep-link path calls it.
+  // jsdom implements neither; the deep-link path calls window.scrollTo.
+  window.scrollTo = () => {};
   Element.prototype.scrollIntoView = () => {};
 });
 
