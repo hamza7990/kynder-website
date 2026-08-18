@@ -117,6 +117,25 @@ export const topics: Topic[] = [
   },
 ];
 
+/** Brief Part 5 page name — the /topics h1. Verbatim; matches home.ts. */
+export const heading = "Coaching Topics";
+
+/** Brief Part 5 opening line, in the client's words. Verbatim; matches home.ts. */
+export const intro = "Visitors choose a topic, not a face — we match them to the right coach.";
+
+/**
+ * Presentation-only cluster order + labels shown above each group. The brief does
+ * not name these groups (see the note at the top of this file), so each label is a
+ * PENDING placeholder rendered literally until the client approves group names.
+ * Grouping itself uses each topic's `cluster` field; these labels are display-only.
+ */
+export const clusters: { id: Cluster; label: string }[] = [
+  { id: "conversations", label: "[PENDING: cluster label for the conversations group]" },
+  { id: "team-trust", label: "[PENDING: cluster label for the team-and-trust group]" },
+  { id: "self", label: "[PENDING: cluster label for the self group]" },
+  { id: "growth", label: "[PENDING: cluster label for the growth group]" },
+];
+
 /** Intro line for the page — visitors bring a topic, we match them to the right coach. */
 export const poolLine = "a growing pool of accredited coaches";
 
