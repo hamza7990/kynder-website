@@ -8,7 +8,7 @@ const textareaBase = [
   'focus-ring min-h-[7.5rem] w-full rounded-md px-4 py-3',
   'bg-cream-card font-sans text-body text-ink',
   'border border-ink-20 placeholder:text-ink-70',
-  'transition-[border-color,box-shadow] duration-fast ease-out',
+  'transition-[color,background-color,border-color] duration-fast ease-out',
   'hover:border-ink-40 focus-visible:border-terracotta',
   'disabled:cursor-not-allowed disabled:opacity-50',
 ];

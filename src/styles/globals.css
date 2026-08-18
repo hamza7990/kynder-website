@@ -62,9 +62,36 @@
   }
 }
 
+@layer utilities {
+  /* Ambient decorative motion — a very slow transform-only loop for ripple
+     elements. Animates transform exclusively (no layout, no paint churn). */
+  @keyframes kynder-ambient {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(0, -8px, 0) scale(1.04);
+    }
+  }
+  .animate-ambient {
+    animation: kynder-ambient var(--dur-ambient) var(--ease-in-out) infinite;
+    will-change: transform;
+  }
+}
+
 @layer base {
   /* Respect users who prefer reduced motion — cancel all transitions,
      animations and smooth scrolling. */
+  @media (prefers-reduced-motion: reduce) {
+    /* Ambient loops are paused entirely (not just slowed). */
+    .animate-ambient {
+      animation: none !important;
+    }
+  }
+}
+
+@layer base {
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
