@@ -4,5 +4,15 @@
   "trailingComma": "all",
   "printWidth": 100,
   "tabWidth": 2,
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "overrides": [
+    {
+      "comment": "Defence in depth for verbatim copy: pin the authored double-quote delimiters so a format pass never flips quotes in src/data. Prettier never rewrites the characters INSIDE string content (dashes, apostrophes) regardless; punctuation.test.ts is the real guard for that.",
+      "files": "src/data/**/*.ts",
+      "options": {
+        "singleQuote": false,
+        "quoteProps": "preserve"
+      }
+    }
+  ]
 }

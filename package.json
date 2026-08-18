@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "cross-env NODE_ENV=production node scripts/validate-content.ts",
     "build": "next build",
     "start": "serve out -l 3000",
     "lint": "next lint",
@@ -39,6 +40,7 @@
     "@vitejs/plugin-react": "^4.3.0",
     "@vitest/coverage-v8": "^2.1.0",
     "autoprefixer": "^10.4.0",
+    "cross-env": "^10.1.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.1.0",
     "eslint-config-prettier": "^9.1.0",
