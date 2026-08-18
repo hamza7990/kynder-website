@@ -54,9 +54,14 @@
   --gold-40: color-mix(in srgb, var(--gold) 40%, transparent);
   --gold-16: color-mix(in srgb, var(--gold) 16%, transparent);
 
-  /* Interaction shades for accent fills (mix toward --ink; not new hues). */
-  --terracotta-hover: color-mix(in srgb, var(--terracotta) 88%, var(--ink));
-  --terracotta-active: color-mix(in srgb, var(--terracotta) 78%, var(--ink));
+  /* Interaction shades for accent fills. The primary button carries dark
+     --navy-deep text on the terracotta fill, so these LIGHTEN toward --cream
+     rather than darkening toward --ink: base terracotta/navy-deep is ~5.0:1, but
+     darkening the fill drops it below the 4.5:1 AA floor (~4.2:1). Lightening
+     lifts hover/active to ~5.6:1 / ~6.0:1 and matches how --navy-hover already
+     mixes toward --cream. Not new hues — the same terracotta, brightened. */
+  --terracotta-hover: color-mix(in srgb, var(--terracotta) 88%, var(--cream));
+  --terracotta-active: color-mix(in srgb, var(--terracotta) 80%, var(--cream));
   --navy-hover: color-mix(in srgb, var(--navy) 90%, var(--cream));
   --navy-active: color-mix(in srgb, var(--navy) 82%, var(--cream));
 

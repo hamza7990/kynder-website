@@ -38,7 +38,10 @@ export function Header() {
 
           <div className="hidden items-center gap-8 md:flex">
             <Nav />
-            <Link href={bookingCta.href} className={buttonVariants({ variant: 'primary', size: 'sm' })}>
+            <Link
+              href={bookingCta.href}
+              className={cn(buttonVariants({ variant: 'primary', size: 'sm' }), 'min-h-11')}
+            >
               {bookingCta.label}
             </Link>
           </div>

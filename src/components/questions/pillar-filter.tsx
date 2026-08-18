@@ -31,7 +31,8 @@ export function PillarFilter({ pillars, active, onChange }: PillarFilterProps) {
             aria-pressed={isActive}
             onClick={() => onChange(opt.value)}
             className={cn(
-              'focus-ring rounded-full border px-4 py-2 font-sans text-small font-semibold uppercase tracking-eyebrow',
+              // min-h-11 keeps the chip a >=44px touch target on mobile/tablet.
+              'focus-ring inline-flex min-h-11 items-center rounded-full border px-4 py-2 font-sans text-small font-semibold uppercase tracking-eyebrow',
               'transition-colors duration-fast ease-out',
               isActive
                 ? 'border-navy-deep bg-navy-deep text-cream'
