@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants } from '@/components/ui';
 import { Container } from '@/components/ui';
 import { Reveal } from '@/lib/motion';
@@ -43,12 +44,13 @@ export function HeroSection() {
           </h1>
           <p className="max-w-[54ch] text-lead text-ink-80">{hero.lead}</p>
           <div className="mt-2 flex w-full flex-col gap-3 xs:w-auto xs:flex-row">
-            <Link
+            <TrackLink
+              event="booking_cta_click"
               href={hero.primaryCta.href}
               className={buttonVariants({ variant: 'primary', size: 'md' })}
             >
               {hero.primaryCta.label}
-            </Link>
+            </TrackLink>
             <Link
               href={hero.secondaryCta.href}
               className={buttonVariants({ variant: 'ghost', size: 'md' })}

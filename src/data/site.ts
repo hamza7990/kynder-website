@@ -7,6 +7,8 @@
  */
 export interface SiteConfig {
   name: string;
+  /** Absolute origin, used for canonical URLs, sitemap and Open Graph. */
+  url: string;
   tagline: string;
   copyright: string;
   contactEmail: string;
@@ -22,6 +24,10 @@ export interface SiteConfig {
 
 export const site: SiteConfig = {
   name: process.env.NEXT_PUBLIC_SITE_NAME ?? 'KYNDER',
+  // Canonical origin. MUST be set to the real domain before launch — the
+  // example.com fallback keeps metadataBase a valid URL but ships wrong
+  // canonical/OG links, so it is tracked as a launch-blocking PENDING.
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com').replace(/\/$/, ''),
   tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE ?? '[PENDING: tagline]',
   copyright: process.env.NEXT_PUBLIC_SITE_COPYRIGHT ?? '[PENDING: copyright]',
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '[PENDING: contact email]',

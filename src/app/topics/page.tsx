@@ -4,12 +4,15 @@ import { Reveal, staggerDelay } from '@/lib/motion';
 import { clusters, heading, intro, moreLine, topics, trustMarkers } from '@/data/topics';
 import { CoachPool } from '@/components/topics/coach-pool';
 import { TopicCard } from '@/components/topics/topic-card';
+import { ServiceJsonLd } from '@/components/seo/service-json-ld';
+import { buildPageMetadata, pageSeo } from '@/data/seo';
 
-export const metadata: Metadata = { title: heading };
+export const metadata: Metadata = buildPageMetadata(pageSeo.topics, heading);
 
 export default function TopicsPage() {
   return (
     <section className="py-section-lg">
+      <ServiceJsonLd />
       <Container>
         <div className="flex flex-col items-center gap-6 text-center">
           <h1 className="max-w-[18ch] text-balance font-display text-h2 tracking-display text-navy-deep md:text-display-2">

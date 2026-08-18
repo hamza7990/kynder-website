@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants, Container, SectionHeader } from '@/components/ui';
 import { Reveal } from '@/lib/motion';
 import { ctaBand } from '@/data/home';
@@ -20,12 +20,13 @@ export function CtaBand() {
             title={ctaBand.heading}
             lead={ctaBand.body}
           />
-          <Link
+          <TrackLink
+            event="booking_cta_click"
             href={ctaBand.cta.href}
             className={buttonVariants({ variant: 'primary', size: 'md' })}
           >
             {ctaBand.cta.label}
-          </Link>
+          </TrackLink>
         </Reveal>
       </Container>
     </Section>

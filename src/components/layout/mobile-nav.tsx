@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react';
 import Link from 'next/link';
+import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { bookingCta, nav } from '@/data/nav';
@@ -154,13 +155,14 @@ export function MobileNav({ className }: { className?: string }) {
           </nav>
 
           {/* Booking CTA — last and most prominent. */}
-          <Link
+          <TrackLink
+            event="booking_cta_click"
             href={bookingCta.href}
             onClick={() => setOpen(false)}
             className={cn(buttonVariants({ variant: 'primary', size: 'md' }), 'mt-auto w-full')}
           >
             {bookingCta.label}
-          </Link>
+          </TrackLink>
         </div>
       </div>
     </div>

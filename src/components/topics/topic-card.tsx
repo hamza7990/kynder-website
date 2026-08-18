@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { TrackLink } from '@/components/analytics/track-link';
 import { cn } from '@/lib/cn';
 import type { Topic } from '@/data/topics';
 
@@ -9,7 +9,9 @@ import type { Topic } from '@/data/topics';
  */
 export function TopicCard({ topic }: { topic: Topic }) {
   return (
-    <Link
+    <TrackLink
+      event="topic_selected"
+      eventProps={{ topic: topic.slug }}
       href={`/book?topic=${topic.slug}`}
       aria-label={topic.title}
       className={cn(
@@ -22,6 +24,6 @@ export function TopicCard({ topic }: { topic: Topic }) {
         {topic.title}
       </h3>
       <p className="text-body text-ink-70">{topic.blurb}</p>
-    </Link>
+    </TrackLink>
   );
 }

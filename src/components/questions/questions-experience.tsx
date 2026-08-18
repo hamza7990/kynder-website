@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '@/lib/motion';
+import { track } from '@/lib/analytics';
 import { pillars, questions } from '@/data/questions';
 import { PillarFilter, type PillarFilterValue } from './pillar-filter';
 import { QuestionItem } from './question-item';
@@ -59,11 +60,11 @@ export function QuestionsExperience() {
   };
 
   const toggle = (no: string) => {
-    setOpenNo((prev) => {
-      const next = prev === no ? null : no;
-      setHash(next ? `q-${no}` : null);
-      return next;
-    });
+    const willOpen = openNo !== no;
+    setOpenNo(willOpen ? no : null);
+    setHash(willOpen ? `q-${no}` : null);
+    // Fire only on open (not on close), with the question number.
+    if (willOpen) track('question_opened', { question: Number(no) });
   };
 
   const changeFilter = (next: PillarFilterValue) => {

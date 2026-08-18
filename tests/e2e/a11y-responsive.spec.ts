@@ -57,7 +57,7 @@ test.describe('Block 1 — touch targets (>=44px)', () => {
     const dialog = page.getByRole('dialog', { name: 'Menu' });
     for (const link of await dialog.getByRole('link').all()) {
       const box = await link.boundingBox();
-      expect(box!.height, await link.textContent()).toBeGreaterThanOrEqual(44);
+      expect(box!.height, (await link.textContent()) ?? '').toBeGreaterThanOrEqual(44);
     }
   });
 
@@ -67,7 +67,7 @@ test.describe('Block 1 — touch targets (>=44px)', () => {
     const group = page.getByRole('group', { name: 'Filter questions by pillar' });
     for (const chip of await group.getByRole('button').all()) {
       const box = await chip.boundingBox();
-      expect(box!.height, await chip.textContent()).toBeGreaterThanOrEqual(44);
+      expect(box!.height, (await chip.textContent()) ?? '').toBeGreaterThanOrEqual(44);
     }
   });
 });

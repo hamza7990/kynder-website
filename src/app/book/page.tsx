@@ -3,8 +3,9 @@ import { Suspense } from 'react';
 import { Container } from '@/components/ui';
 import { book } from '@/data/book';
 import { BookContent } from '@/components/book/book-content';
+import { buildPageMetadata, pageSeo } from '@/data/seo';
 
-export const metadata: Metadata = { title: book.heading };
+export const metadata: Metadata = buildPageMetadata(pageSeo.book, book.heading);
 
 export default function BookPage() {
   return (

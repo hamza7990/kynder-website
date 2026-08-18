@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { useScrolled } from '@/lib/motion';
@@ -38,12 +39,13 @@ export function Header() {
 
           <div className="hidden items-center gap-8 md:flex">
             <Nav />
-            <Link
+            <TrackLink
+              event="booking_cta_click"
               href={bookingCta.href}
               className={cn(buttonVariants({ variant: 'primary', size: 'sm' }), 'min-h-11')}
             >
               {bookingCta.label}
-            </Link>
+            </TrackLink>
           </div>
 
           <MobileNav className="md:hidden" />

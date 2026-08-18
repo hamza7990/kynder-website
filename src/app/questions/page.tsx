@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants, Container } from '@/components/ui';
 import { closingCta, closingLine, heading } from '@/data/questions';
 import { QuestionsExperience } from '@/components/questions/questions-experience';
+import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { FaqJsonLd } from '@/components/seo/faq-json-ld';
 
-export const metadata: Metadata = {
-  title: heading,
-};
+export const metadata: Metadata = buildPageMetadata(pageSeo.questions, heading);
 
 export default function QuestionsPage() {
   return (
     <section className="py-section-lg">
+      <FaqJsonLd />
       <Container>
         <h1 className="max-w-[18ch] text-balance font-display text-h2 tracking-display text-navy-deep md:text-display-2">
           {heading}
@@ -22,9 +23,13 @@ export default function QuestionsPage() {
 
         <div className="mt-16 flex flex-col items-start gap-6 border-t border-ink-10 pt-12">
           <p className="max-w-[60ch] text-lead text-ink-80">{closingLine}</p>
-          <Link href="/book" className={buttonVariants({ variant: 'primary', size: 'md' })}>
+          <TrackLink
+            event="booking_cta_click"
+            href="/book"
+            className={buttonVariants({ variant: 'primary', size: 'md' })}
+          >
             {closingCta}
-          </Link>
+          </TrackLink>
         </div>
       </Container>
     </section>

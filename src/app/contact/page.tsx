@@ -3,8 +3,9 @@ import { Container } from '@/components/ui';
 import { contact } from '@/data/contact';
 import { site } from '@/data/site';
 import { ContactForm } from '@/components/contact/contact-form';
+import { buildPageMetadata, pageSeo } from '@/data/seo';
 
-export const metadata: Metadata = { title: contact.heading };
+export const metadata: Metadata = buildPageMetadata(pageSeo.contact, contact.heading);
 
 const isPending = (value: string) => value.startsWith('[PENDING');
 

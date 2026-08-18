@@ -1,15 +1,18 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants, Container } from '@/components/ui';
 import { Reveal } from '@/lib/motion';
 import { about } from '@/data/about';
 import { proofPoints } from '@/data/home';
+import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { PersonJsonLd } from '@/components/seo/person-json-ld';
 
-export const metadata: Metadata = { title: about.heading };
+export const metadata: Metadata = buildPageMetadata(pageSeo.about, about.heading);
 
 export default function AboutPage() {
   return (
     <section className="py-section-lg">
+      <PersonJsonLd />
       <Container>
         <div className="grid gap-12 md:grid-cols-2 md:items-start">
           {/* Portrait placeholder frame — fixed 4:5 so no layout shift occurs when
@@ -54,9 +57,13 @@ export default function AboutPage() {
                 ))}
               </dl>
 
-              <Link href="/book" className={buttonVariants({ variant: 'primary', size: 'md' })}>
+              <TrackLink
+                event="booking_cta_click"
+                href="/book"
+                className={buttonVariants({ variant: 'primary', size: 'md' })}
+              >
                 {about.ctaLabel}
-              </Link>
+              </TrackLink>
             </div>
           </Reveal>
         </div>

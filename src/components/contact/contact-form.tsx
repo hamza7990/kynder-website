@@ -5,6 +5,7 @@ import { Button, Field, Input, Textarea } from '@/components/ui';
 import { contact } from '@/data/contact';
 import { site } from '@/data/site';
 import { isBlank, isValidEmail } from '@/lib/validation';
+import { track } from '@/lib/analytics';
 
 type FieldName = 'name' | 'email' | 'message';
 type Errors = Partial<Record<FieldName, string>>;
@@ -58,6 +59,8 @@ export function ContactForm() {
         body: JSON.stringify(values),
       });
       setStatus(res.ok ? 'success' : 'error');
+      // Count only a real, accepted submission — never the not-connected path.
+      if (res.ok) track('contact_submitted');
     } catch {
       setStatus('error');
     }
