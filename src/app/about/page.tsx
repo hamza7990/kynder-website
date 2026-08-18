@@ -14,7 +14,7 @@ export default function AboutPage() {
         <div className="grid gap-12 md:grid-cols-2 md:items-start">
           {/* Portrait placeholder frame — fixed 4:5 so no layout shift occurs when
               the real photograph replaces it. Label is the literal PENDING string. */}
-          <Reveal>
+          <Reveal immediate>
             <div className="mx-auto w-full max-w-[24rem]">
               <div className="flex aspect-[4/5] items-center justify-center rounded-lg border border-ink-20 bg-cream-card p-8 text-center">
                 <span className="text-small text-ink-70">{about.portrait}</span>
@@ -22,7 +22,7 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          <Reveal delay={70}>
+          <Reveal immediate delay={70}>
             <div className="flex flex-col gap-8">
               <div className="flex flex-col gap-4">
                 <h1 className="font-display text-h2 tracking-display text-navy-deep md:text-display-2">

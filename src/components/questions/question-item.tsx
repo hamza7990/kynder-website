@@ -24,7 +24,9 @@ export function QuestionItem({ question, open, onToggle, onTriggerKeyDown }: Que
 
   return (
     <div id={`q-${no}`} data-state={open ? 'open' : 'closed'} className="scroll-mt-28 border-b border-ink-10">
-      <h3 className="m-0">
+      {/* h2: sits directly under the page h1 — no skipped level. Visual size is
+          set by the utility classes, independent of the heading rank. */}
+      <h2 className="m-0">
         <button
           type="button"
           id={triggerId}
@@ -52,7 +54,7 @@ export function QuestionItem({ question, open, onToggle, onTriggerKeyDown }: Que
             <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
-      </h3>
+      </h2>
 
       <div
         id={panelId}

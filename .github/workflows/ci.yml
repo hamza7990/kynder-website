@@ -39,8 +39,11 @@ jobs:
       - name: Unit & component tests
         run: npm test
 
+      # Preview/CI build: ALLOW_PENDING lets the pipeline run while brief copy is
+      # still [PENDING]. The PRODUCTION build (see docs/HANDOVER.md) runs WITHOUT
+      # this flag, so unresolved placeholders block a real deploy.
       - name: Build (static export)
-        run: npm run build
+        run: ALLOW_PENDING=true npm run build
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
@@ -50,6 +53,11 @@ jobs:
 
       - name: Accessibility tests
         run: npm run test:a11y
+
+      # Lighthouse budgets (lighthouserc.cjs) — asserts category scores and Core
+      # Web Vitals against ./out; a regression past the budgets fails the PR.
+      - name: Lighthouse CI
+        run: npm run lh
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}

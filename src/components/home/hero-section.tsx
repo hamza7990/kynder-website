@@ -31,7 +31,10 @@ export function HeroSection() {
     <Section space="lg" className="overflow-hidden">
       <Ripples />
       <Container className="relative">
-        <Reveal className="mx-auto flex max-w-[46rem] flex-col items-center gap-6 text-center">
+        <Reveal
+          immediate
+          className="mx-auto flex max-w-[46rem] flex-col items-center gap-6 text-center"
+        >
           <span className="font-sans text-small font-semibold uppercase tracking-eyebrow text-navy">
             {hero.eyebrow}
           </span>
