@@ -1,0 +1,55 @@
+# Netlify configuration for the KYNDER static export.
+# Docs for editors: docs/HANDOVER.md · Architecture: docs/ARCHITECTURE.md
+
+[build]
+  command = "npm run build"   # runs prebuild content validation, then next build
+  publish = "out"             # next.config.mjs output: 'export'
+
+[build.environment]
+  NODE_VERSION = "22"         # pinned; matches .github/workflows/ci.yml
+  NPM_FLAGS = "--no-audit --no-fund"
+
+# Production (default context) builds WITHOUT ALLOW_PENDING, so the
+# content-validation gate blocks a deploy while any brief copy is still
+# "[PENDING: …]". This is intentional — see docs/HANDOVER.md.
+
+# Deploy Previews (opened automatically on every PR) and branch deploys may build
+# with unresolved placeholders so the pipeline keeps running during authoring.
+[context.deploy-preview.environment]
+  ALLOW_PENDING = "true"
+
+[context.branch-deploy.environment]
+  ALLOW_PENDING = "true"
+
+# ── Security headers (applied to every response) ─────────────────────────────
+# CSP is currently scoped to first-party + Plausible. When the scheduler, form or
+# newsletter integrations are connected, add their origins:
+#   • scheduler embed  → frame-src   (replace 'none')
+#   • form / newsletter POST targets → connect-src
+# 'unsafe-inline' is required by Next's inline bootstrap/RSC scripts and React
+# inline style attributes in a static export (no nonces available); documented.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://plausible.io; connect-src 'self' https://plausible.io; frame-src 'none'; manifest-src 'self'"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    X-Frame-Options = "DENY"
+    # HTML: always revalidate so content updates go live immediately.
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ── Cache headers ────────────────────────────────────────────────────────────
+# Hashed build assets are immutable and safe to cache for a year (overrides the
+# revalidate default above for this path).
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Generated OG image + favicon: cache for a day.
+[[headers]]
+  for = "/opengraph-image"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
