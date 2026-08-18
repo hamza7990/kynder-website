@@ -19,7 +19,7 @@ function Headline() {
   return (
     <>
       {headline.slice(0, at)}
-      <em className="font-display italic text-terracotta-ink">{headlineEmphasis}</em>
+      <em className="font-display italic text-terracotta-text">{headlineEmphasis}</em>
       {headline.slice(at + headlineEmphasis.length)}
     </>
   );

@@ -35,7 +35,7 @@ const config: Config = {
           hover: 'var(--terracotta-hover)',
           active: 'var(--terracotta-active)',
           soft: 'var(--terracotta-16)',
-          ink: 'var(--terracotta-ink)',
+          text: 'var(--terracotta-text)',
         },
         gold: {
           DEFAULT: 'var(--gold)',

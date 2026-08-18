@@ -25,6 +25,9 @@ export type Question = {
   steps: [string, string, string, string, string];
 };
 
+/** Brief Part 4 page name — the /questions page h1. Verbatim; matches home.ts. */
+export const heading = "The 10 Leadership Questions";
+
 export const questions: Question[] = [
   {
     no: "01",
