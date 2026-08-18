@@ -28,8 +28,9 @@ describe('app shell', () => {
     expect(markup).toContain('child content');
   });
 
-  it('home page renders no landmark of its own (the layout owns <main>)', () => {
+  it('home page renders content but no <main> of its own (the layout owns <main>)', () => {
     const { container } = render(<HomePage />);
-    expect(container).toBeEmptyDOMElement();
+    expect(container).not.toBeEmptyDOMElement();
+    expect(container.querySelector('main')).toBeNull();
   });
 });

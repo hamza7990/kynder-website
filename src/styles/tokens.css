@@ -43,6 +43,10 @@
   --navy-deep-80: color-mix(in srgb, var(--navy-deep) 80%, transparent);
   --navy-deep-60: color-mix(in srgb, var(--navy-deep) 60%, transparent);
 
+  /* Terracotta deepened toward ink so it reaches AA (>=3:1 large text, ~4.1:1)
+     as TEXT on light surfaces — the only terracotta permitted for light-surface
+     text (plain --terracotta is 2.98:1 on cream). Used for the hero emphasis. */
+  --terracotta-ink: color-mix(in srgb, var(--terracotta) 78%, var(--ink));
   --terracotta-90: color-mix(in srgb, var(--terracotta) 90%, transparent);
   --terracotta-40: color-mix(in srgb, var(--terracotta) 40%, transparent);
   --terracotta-16: color-mix(in srgb, var(--terracotta) 16%, transparent);
