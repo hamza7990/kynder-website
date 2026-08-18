@@ -15,7 +15,16 @@ import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
 const DATA_DIR = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE_FILES = ['questions.ts', 'topics.ts', 'nav.ts', 'site.ts', 'home.ts', 'book.ts'];
+const SOURCE_FILES = [
+  'questions.ts',
+  'topics.ts',
+  'nav.ts',
+  'site.ts',
+  'home.ts',
+  'book.ts',
+  'about.ts',
+  'contact.ts',
+];
 
 const FORBIDDEN: Record<string, string> = {
   '’': 'U+2019 RIGHT SINGLE QUOTATION MARK (curly apostrophe)',
