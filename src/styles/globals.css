@@ -78,14 +78,31 @@
     animation: kynder-ambient var(--dur-ambient) var(--ease-in-out) infinite;
     will-change: transform;
   }
+
+  /* Very slow, tiny (±4px) transform-only float for the decorative coach-pool
+     circles. Per-circle offset comes from an inline animation-delay. */
+  @keyframes kynder-float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -4px, 0);
+    }
+  }
+  .animate-float {
+    animation: kynder-float 6s var(--ease-in-out) infinite;
+    will-change: transform;
+  }
 }
 
 @layer base {
   /* Respect users who prefer reduced motion — cancel all transitions,
      animations and smooth scrolling. */
   @media (prefers-reduced-motion: reduce) {
-    /* Ambient loops are paused entirely (not just slowed). */
-    .animate-ambient {
+    /* Ambient/float loops are paused entirely (not just slowed). */
+    .animate-ambient,
+    .animate-float {
       animation: none !important;
     }
   }

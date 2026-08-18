@@ -17,6 +17,7 @@ export interface SiteConfig {
   };
   schedulerBaseUrl: string;
   newsletterEndpoint: string;
+  formEndpoint: string;
 }
 
 export const site: SiteConfig = {
@@ -31,4 +32,5 @@ export const site: SiteConfig = {
   },
   schedulerBaseUrl: process.env.NEXT_PUBLIC_SCHEDULER_URL ?? '[PENDING: scheduler base url]',
   newsletterEndpoint: process.env.NEWSLETTER_ENDPOINT ?? '[PENDING: newsletter endpoint]',
+  formEndpoint: process.env.FORM_ENDPOINT ?? '[PENDING: form endpoint]',
 };
