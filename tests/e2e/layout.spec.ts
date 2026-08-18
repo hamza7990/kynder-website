@@ -59,8 +59,9 @@ test.describe('global layout (Phase 5)', () => {
 
   test('axe: zero violations with the drawer closed and open', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 900 });
+    // Pause ambient ripples + settle fonts so contrast is measured on a stable frame.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    // Settle fonts + network so contrast is measured against final rendered type.
     await page.evaluate(() => document.fonts.ready);
     await page.waitForLoadState('networkidle');
 

@@ -31,10 +31,11 @@ test.describe('home page (Phase 6)', () => {
   });
 
   test('axe: zero violations on the home page (mobile width)', async ({ page }) => {
+    // Pause ambient ripples so contrast is sampled on a stable frame; settle fonts
+    // so it is measured against final rendered type, not a fallback-font frame.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 375, height: 900 });
     await page.goto('/');
-    // Settle fonts + network before analysing so contrast is measured against the
-    // final rendered type, not a transient fallback-font frame.
     await page.evaluate(() => document.fonts.ready);
     await page.waitForLoadState('networkidle');
     const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
