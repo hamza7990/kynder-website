@@ -60,6 +60,9 @@ test.describe('global layout (Phase 5)', () => {
   test('axe: zero violations with the drawer closed and open', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 900 });
     await page.goto('/');
+    // Settle fonts + network so contrast is measured against final rendered type.
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState('networkidle');
 
     const closed = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
     expect(closed.violations, 'violations with drawer closed').toEqual([]);

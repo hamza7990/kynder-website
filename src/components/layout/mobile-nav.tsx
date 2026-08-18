@@ -29,6 +29,16 @@ export function MobileNav({ className }: { className?: string }) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
+    // The panel is a modal: make the dimmed background inert so it's removed from
+    // the a11y tree (and so contrast tooling doesn't evaluate text under the scrim).
+    const background = [document.getElementById('main'), document.querySelector('footer')].filter(
+      (el): el is HTMLElement => el !== null,
+    );
+    background.forEach((el) => {
+      el.setAttribute('inert', '');
+      el.setAttribute('aria-hidden', 'true');
+    });
+
     const getFocusable = () => Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE));
     getFocusable()[0]?.focus();
 
@@ -55,6 +65,10 @@ export function MobileNav({ className }: { className?: string }) {
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
+      background.forEach((el) => {
+        el.removeAttribute('inert');
+        el.removeAttribute('aria-hidden');
+      });
       document.body.style.overflow = previousOverflow;
     };
   }, [open]);
