@@ -7,7 +7,9 @@ const buttonVariants = cva(
   [
     'focus-ring inline-flex select-none items-center justify-center gap-2',
     'rounded-full font-sans font-semibold',
-    'transition-[background-color,border-color,color,box-shadow] duration-fast ease-out',
+    // Smooth transform, opacity and colour-family transitions (never box-shadow
+    // or layout properties). Colour changes use --dur-fast / --ease-out.
+    'transition-[transform,opacity,color,background-color,border-color] duration-fast ease-out motion-safe:active:scale-[0.98]',
     'disabled:pointer-events-none disabled:opacity-50',
   ],
   {
