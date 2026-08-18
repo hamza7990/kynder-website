@@ -18,7 +18,7 @@ export type Pillar =
   | "GROWTH MINDSET";
 
 export type Question = {
-  /** Display number, "01"–"10". Also the deep-link anchor: /questions#q-01 */
+  /** Display number, "01"-"10". Also the deep-link anchor: /questions#q-01 */
   no: string;
   question: string;
   pillar: Pillar;
