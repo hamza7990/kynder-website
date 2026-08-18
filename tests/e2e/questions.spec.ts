@@ -72,6 +72,23 @@ test.describe('questions page (Phase 7)', () => {
     expect(filtered.violations, 'filtered').toEqual([]);
   });
 
+  test('under reduced motion the panel opens instantly (no fade/stagger)', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1024, height: 800 });
+    await page.goto('/questions/');
+
+    const trigger = page.locator('[data-q-trigger]').first();
+    const panelId = await trigger.getAttribute('aria-controls');
+    await trigger.click();
+
+    // Immediately (no animation wait) the last step is fully opaque — no staggered
+    // fade — which only holds if the reveal transition is disabled.
+    const lastStep = page.locator(`#${panelId} li`).last();
+    await expect(lastStep).toBeVisible();
+    const opacity = await lastStep.evaluate((el) => getComputedStyle(el).opacity);
+    expect(opacity).toBe('1');
+  });
+
   test('CLS below 0.05 when a question expands', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'layout-shift API is Chromium-only');
 
