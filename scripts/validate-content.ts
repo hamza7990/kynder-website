@@ -16,6 +16,7 @@ import { topics as realTopics } from '../src/data/topics.ts';
 import { site } from '../src/data/site.ts';
 import { allNavItems, bookingCta } from '../src/data/nav.ts';
 import * as home from '../src/data/home.ts';
+import { book } from '../src/data/book.ts';
 
 /** The canonical Pillar union (mirrors the `Pillar` type in questions.ts). */
 export const PILLARS: readonly string[] = [
@@ -125,7 +126,15 @@ const invokedPath = process.argv[1] ? resolve(process.argv[1]) : '';
 if (invokedPath === fileURLToPath(import.meta.url)) {
   const strings: string[] = [];
   collectStrings(
-    { site, allNavItems, bookingCta, questions: realQuestions, topics: realTopics, home: { ...home } },
+    {
+      site,
+      allNavItems,
+      bookingCta,
+      questions: realQuestions,
+      topics: realTopics,
+      home: { ...home },
+      book: { ...book },
+    },
     strings,
   );
 
