@@ -7,7 +7,7 @@
  */
 export const contact = {
   heading: "Contact",
-  intro: "[PENDING: contact page intro line]",
+  intro: "Whether you have a question about coaching, want to explore working together or simply need to get in touch — we'd love to hear from you.",
   form: {
     nameLabel: "Name",
     emailLabel: "Email",

@@ -11,12 +11,12 @@ export const book = {
   selectedTopicLabel: "Your topic",
   changeTopicLabel: "Change topic",
 
-  /** Left rail. Labels functional; values are PENDING brief content. */
+  /** Left rail. Labels functional; values are session details. */
   details: [
-    { label: "What to expect", value: "[PENDING: what to expect in a session]" },
-    { label: "Session length", value: "[PENDING: session length]" },
-    { label: "Price", value: "[PENDING: session price]" },
-    { label: "Cancellation", value: "[PENDING: cancellation terms]" },
+    { label: "What to expect", value: "A confidential, one-to-one conversation with Shereen — space to think, reflect, challenge assumptions and turn insight into action." },
+    { label: "Session length", value: "60 minutes" },
+    { label: "Price", value: "Please enquire for current rates" },
+    { label: "Cancellation", value: "Free cancellation up to 24 hours before your session" },
   ],
 
   scheduler: {
@@ -36,8 +36,8 @@ export const book = {
   },
 
   confirmed: {
-    heading: "[PENDING: confirmation page heading]",
-    body: "[PENDING: confirmation page message]",
+    heading: "You're booked — see you soon.",
+    body: "Check your email for a confirmation with the session details. In the meantime, you might find it helpful to sit with one of the 10 Leadership Questions before your session.",
     cta: "Explore the 10 Questions",
   },
 } as const;

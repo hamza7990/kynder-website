@@ -1,15 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Lora } from 'next/font/google';
 import '@/styles/globals.css';
-import { SkipLink } from '@/components/layout/skip-link';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 import { Analytics } from '@/components/analytics/analytics';
+import { AppShell } from '@/components/layout/app-shell';
 import { site } from '@/data/site';
 import { pageSeo, ogImage } from '@/data/seo';
+import { getSiteContent } from '@/lib/content';
 
-// Self-hosted via next/font — fonts are downloaded at build time and served
-// from our own origin. No render-blocking external font CSS.
 const lora = Lora({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -56,18 +53,14 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // Header/Footer copy is read from the DB (falling back to static site data).
+  const siteContent = await getSiteContent();
   return (
     <html lang="en" className={`${lora.variable} ${inter.variable}`}>
       <body>
         <Analytics />
-        <SkipLink />
-        <Header />
-        {/* tabIndex=-1 makes <main> the programmatic focus target for the skip link. */}
-        <main id="main" tabIndex={-1} className="focus:outline-none">
-          {children}
-        </main>
-        <Footer />
+        <AppShell site={siteContent}>{children}</AppShell>
       </body>
     </html>
   );

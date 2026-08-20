@@ -9,7 +9,7 @@ import { bookingCta } from '@/data/nav';
 import { MobileNav } from './mobile-nav';
 import { Nav } from './nav';
 
-export function Header() {
+export function Header({ siteName = 'KYNDER' }: { siteName?: string }) {
   const scrolled = useScrolled(40);
 
   return (
@@ -34,7 +34,7 @@ export function Header() {
             href="/"
             className="focus-ring rounded-sm font-display text-h4 font-semibold tracking-[0.04em] text-navy-deep"
           >
-            KYNDER
+            {siteName}
           </Link>
 
           <div className="hidden items-center gap-8 md:flex">

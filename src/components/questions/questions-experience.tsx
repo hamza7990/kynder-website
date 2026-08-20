@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '@/lib/motion';
 import { track } from '@/lib/analytics';
-import { pillars, questions } from '@/data/questions';
+import { pillars, questions as staticQuestions, type Question } from '@/data/questions';
 import { PillarFilter, type PillarFilterValue } from './pillar-filter';
 import { QuestionItem } from './question-item';
 
@@ -17,7 +17,11 @@ const HEADER_OFFSET = 112;
  * pillar filter, deep-link (#q-NN) open + scroll, hash sync without history spam,
  * and roving keyboard navigation. All copy comes from questions.ts.
  */
-export function QuestionsExperience() {
+export function QuestionsExperience({
+  questions = staticQuestions,
+}: {
+  questions?: Question[];
+}) {
   const [openNo, setOpenNo] = useState<string | null>(null);
   const [filter, setFilter] = useState<PillarFilterValue>('ALL');
   const listRef = useRef<HTMLDivElement>(null);

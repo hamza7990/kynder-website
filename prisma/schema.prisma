@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Connection string comes from the environment ONLY — no hardcoded fallback.
+  // Point this at a Neon or Supabase free-tier database (see docs/DATABASE.md).
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         String    @default("COACH") // "ADMIN" or "COACH"
+  avatar       String?
+  title        String?   // e.g. "Senior Leadership & Culture Coach"
+  bio          String?
+  specialties  String?   // comma-separated topic slugs or titles
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  bookings     Booking[]
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  clientName  String
+  clientEmail String
+  clientPhone String?
+  topicSlug   String
+  topicTitle  String?
+  coachId     String?
+  coach       User?    @relation(fields: [coachId], references: [id])
+  date        DateTime
+  duration    Int      @default(60) // minutes
+  status      String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  no        String   @unique
+  question  String
+  pillar    String
+  steps     String   // JSON string of array of 5 steps
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Topic {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  blurb     String
+  cluster   String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

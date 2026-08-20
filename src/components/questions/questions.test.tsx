@@ -130,13 +130,13 @@ describe('questions — pillar filter', () => {
 });
 
 describe('questions — content integrity', () => {
-  it('never renders the internal "Build note" text', () => {
-    const { container } = render(<QuestionsPage />);
+  it('never renders the internal "Build note" text', async () => {
+    const { container } = render(await QuestionsPage());
     expect(container.textContent).not.toContain('Build note');
   });
 
-  it('renders every question and all 50 steps verbatim from questions.ts', () => {
-    render(<QuestionsPage />);
+  it('renders every question and all 50 steps verbatim from questions.ts', async () => {
+    render(await QuestionsPage());
 
     for (const q of questions) {
       expect(screen.getByText(q.question)).toBeInTheDocument();

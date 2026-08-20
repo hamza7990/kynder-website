@@ -3,16 +3,25 @@ import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants } from '@/components/ui';
 import { Container } from '@/components/ui';
 import { Reveal } from '@/lib/motion';
-import { hero } from '@/data/home';
+import { hero as staticHero } from '@/data/home';
 import { Section } from './section';
 import { Ripples } from './ripples';
 
+type HeroContent = {
+  eyebrow: string;
+  headline: string;
+  headlineEmphasis: string;
+  lead: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+};
+
 /**
  * Renders the headline with its emphasised word in italic display serif /
- * terracotta. Splitting on the exact substring adds and removes no words.
+ * terracotta. Splitting on the exact substring adds and removes no words. If the
+ * (CMS-editable) headline no longer contains the emphasis word, it renders plain.
  */
-function Headline() {
-  const { headline, headlineEmphasis } = hero;
+function Headline({ headline, headlineEmphasis }: Pick<HeroContent, 'headline' | 'headlineEmphasis'>) {
   const at = headline.indexOf(headlineEmphasis);
   if (at === -1) {
     return <>{headline}</>;
@@ -26,7 +35,7 @@ function Headline() {
   );
 }
 
-export function HeroSection() {
+export function HeroSection({ hero = staticHero }: { hero?: HeroContent }) {
   return (
     // 160 padding: a grand, unhurried opening — the tallest rhythm on the page.
     <Section space="lg" className="overflow-hidden">
@@ -40,7 +49,7 @@ export function HeroSection() {
             {hero.eyebrow}
           </span>
           <h1 className="text-balance font-display text-h2 tracking-display text-navy-deep xs:text-display-2 lg:text-display-1">
-            <Headline />
+            <Headline headline={hero.headline} headlineEmphasis={hero.headlineEmphasis} />
           </h1>
           <p className="max-w-[54ch] text-lead text-ink-80">{hero.lead}</p>
           <div className="mt-2 flex w-full flex-col gap-3 xs:w-auto xs:flex-row">

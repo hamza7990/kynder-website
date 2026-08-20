@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 let mockSearch = '';
 vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(mockSearch),
+  useRouter: () => ({ push: () => {}, replace: () => {}, prefetch: () => {} }),
 }));
 
 import BookPage from '@/app/book/page';
@@ -16,10 +17,13 @@ afterEach(() => {
 });
 
 describe('book page', () => {
-  it('renders the not-connected placeholder (scheduler env unset), not a calendar', () => {
+  it('mounts the direct booking form (scheduler env unset), not a calendar iframe', () => {
     mockSearch = `topic=${topics[0]!.slug}`;
     render(<BookPage />);
-    expect(screen.getByText(book.scheduler.notConnectedTitle)).toBeInTheDocument();
+    // With no external scheduler configured, /book shows the built-in booking
+    // form that saves to the database — never an embedded third-party calendar.
+    expect(screen.getByRole('heading', { name: /request a 1-on-1 session/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /confirm & request session/i })).toBeInTheDocument();
     expect(document.querySelector('iframe')).toBeNull();
   });
 

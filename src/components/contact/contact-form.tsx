@@ -3,15 +3,14 @@
 import { useRef, useState } from 'react';
 import { Button, Field, Input, Textarea } from '@/components/ui';
 import { contact } from '@/data/contact';
-import { site } from '@/data/site';
 import { isBlank, isValidEmail } from '@/lib/validation';
 import { track } from '@/lib/analytics';
+import { submitContactMessage } from '@/lib/actions/contact';
 
 type FieldName = 'name' | 'email' | 'message';
 type Errors = Partial<Record<FieldName, string>>;
-type Status = 'idle' | 'submitting' | 'success' | 'error' | 'notConnected';
+type Status = 'idle' | 'submitting' | 'success' | 'error';
 
-const isPending = (value: string) => value.startsWith('[PENDING');
 const ORDER: FieldName[] = ['name', 'email', 'message'];
 
 export function ContactForm() {
@@ -46,21 +45,17 @@ export function ContactForm() {
       setStatus('idle');
       return;
     }
-    // Endpoint unset → report honestly; never fake a success.
-    if (isPending(site.formEndpoint)) {
-      setStatus('notConnected');
-      return;
-    }
     setStatus('submitting');
     try {
-      const res = await fetch(site.formEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
-      setStatus(res.ok ? 'success' : 'error');
-      // Count only a real, accepted submission — never the not-connected path.
-      if (res.ok) track('contact_submitted');
+      // Saves to the database via a server action. Success is shown ONLY when the
+      // record was actually written — a failed save reports an error, never "sent".
+      const res = await submitContactMessage(values);
+      if (res.success) {
+        setStatus('success');
+        track('contact_submitted');
+      } else {
+        setStatus('error');
+      }
     } catch {
       setStatus('error');
     }
@@ -71,9 +66,7 @@ export function ContactForm() {
       ? contact.form.success
       : status === 'error'
         ? contact.form.genericError
-        : status === 'notConnected'
-          ? contact.form.notConnected
-          : '';
+        : '';
 
   return (
     <form

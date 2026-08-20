@@ -55,24 +55,23 @@ describe('home — topics preview', () => {
   });
 });
 
-describe('home — PENDING placeholders render literally', () => {
-  it('renders hero eyebrow and positioning placeholders verbatim', () => {
+describe('home — content renders correctly', () => {
+  it('renders hero eyebrow and positioning statement', () => {
     render(
       <>
         <HeroSection />
         <PositioningSection />
       </>,
     );
-    expect(hero.eyebrow).toContain('[PENDING:');
-    expect(positioning.statement).toContain('[PENDING:');
     expect(screen.getByText(hero.eyebrow)).toBeInTheDocument();
     expect(screen.getByText(positioning.statement)).toBeInTheDocument();
   });
 
-  it('renders the about portrait placeholder verbatim', () => {
+  it('renders the about portrait as an image', () => {
     render(<AboutTeaser />);
-    expect(aboutTeaser.portrait).toContain('[PENDING:');
-    expect(screen.getByText(aboutTeaser.portrait)).toBeInTheDocument();
+    const img = document.querySelector<HTMLImageElement>(`img[src="${aboutTeaser.portrait}"]`);
+    expect(img, 'portrait image should be rendered').not.toBeNull();
+    expect(img!.alt).toBeTruthy();
   });
 });
 

@@ -124,16 +124,14 @@ export const heading = "Coaching Topics";
 export const intro = "Visitors choose a topic, not a face — we match them to the right coach.";
 
 /**
- * Presentation-only cluster order + labels shown above each group. The brief does
- * not name these groups (see the note at the top of this file), so each label is a
- * PENDING placeholder rendered literally until the client approves group names.
- * Grouping itself uses each topic's `cluster` field; these labels are display-only.
+ * Presentation-only cluster order + labels shown above each group. Labels
+ * describe what each group covers in the client's brand voice.
  */
 export const clusters: { id: Cluster; label: string }[] = [
-  { id: "conversations", label: "[PENDING: cluster label for the conversations group]" },
-  { id: "team-trust", label: "[PENDING: cluster label for the team-and-trust group]" },
-  { id: "self", label: "[PENDING: cluster label for the self group]" },
-  { id: "growth", label: "[PENDING: cluster label for the growth group]" },
+  { id: "conversations", label: "Conversations & Communication" },
+  { id: "team-trust", label: "Team, Trust & Change" },
+  { id: "self", label: "Self, Confidence & Boundaries" },
+  { id: "growth", label: "Career Growth & Presence" },
 ];
 
 /** Intro line for the page — visitors bring a topic, we match them to the right coach. */

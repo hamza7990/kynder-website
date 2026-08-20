@@ -1,23 +1,47 @@
 import Link from 'next/link';
 import { buttonVariants, Container, SectionHeader } from '@/components/ui';
 import { Reveal, staggerDelay } from '@/lib/motion';
-import { aboutTeaser, proofPoints } from '@/data/home';
+import { aboutTeaser as staticAboutTeaser, proofPoints as staticProofPoints } from '@/data/home';
 import { Section } from './section';
 
-export function AboutTeaser() {
+type AboutTeaserContent = {
+  heading: string;
+  researchLine: string;
+  body: string;
+  portrait: string;
+  linkLabel: string;
+  href: string;
+};
+type ProofPoints = readonly { value: string; label: string }[];
+
+export function AboutTeaser({
+  aboutTeaser = staticAboutTeaser,
+  proofPoints = staticProofPoints,
+}: {
+  aboutTeaser?: AboutTeaserContent;
+  proofPoints?: ProofPoints;
+}) {
   return (
     // 160 padding; cream — the spacious, personal centrepiece of the page.
     <Section space="lg">
       <Container>
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
-          {/* Portrait placeholder frame: fixed 4:5 aspect so no layout shift
-              occurs when the real photograph replaces it. Label is the literal
-              [PENDING: ...] string from home.ts. */}
+          {/* Portrait: renders a real image when the path is set, or falls
+              back to the PENDING placeholder frame if still unresolved. */}
           <Reveal>
             <div className="mx-auto w-full max-w-[22rem]">
-              <div className="flex aspect-[4/5] items-center justify-center rounded-lg border border-ink-20 bg-cream-card p-8 text-center">
-                <span className="text-small text-ink-70">{aboutTeaser.portrait}</span>
-              </div>
+              {aboutTeaser.portrait.startsWith('/') ? (
+                <img
+                  src={aboutTeaser.portrait}
+                  alt="Dr Shereen Williams"
+                  className="aspect-[4/5] w-full rounded-lg object-cover object-top shadow-2"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="flex aspect-[4/5] items-center justify-center rounded-lg border border-ink-20 bg-cream-card p-8 text-center">
+                  <span className="text-small text-ink-70">{aboutTeaser.portrait}</span>
+                </div>
+              )}
             </div>
           </Reveal>
 

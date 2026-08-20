@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { site } from '@/data/site';
+import { site as staticSite } from '@/data/site';
+import type { SiteContent } from '@/lib/content';
 import { NewsletterForm } from './newsletter-form';
 
 const isPending = (value: string) => value.startsWith('[PENDING');
@@ -44,8 +45,13 @@ function SocialLink({ label, href }: { label: string; href: string }) {
   );
 }
 
-export function Footer() {
-  const { social, contactEmail, tagline, copyright } = site;
+export function Footer({ site }: { site?: SiteContent }) {
+  // DB-backed site content with a fall back to the static (env-based) defaults.
+  const name = site?.name ?? staticSite.name;
+  const tagline = site?.tagline ?? staticSite.tagline;
+  const copyright = site?.copyright ?? staticSite.copyright;
+  const contactEmail = site?.contactEmail ?? staticSite.contactEmail;
+  const social = site?.social ?? staticSite.social;
 
   return (
     <footer className="bg-navy-deep text-cream">
@@ -53,7 +59,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="flex flex-col gap-4 lg:col-span-1">
-            <span className="font-display text-h3 tracking-[0.04em] text-cream">KYNDER</span>
+            <span className="font-display text-h3 tracking-[0.04em] text-cream">{name}</span>
             <p className="max-w-[28ch] text-body text-cream">{tagline}</p>
           </div>
 
@@ -94,6 +100,12 @@ export function Footer() {
 
         <div className="mt-16 flex flex-col gap-2 border-t border-cream/20 pt-8 text-small text-cream xs:flex-row xs:items-center xs:justify-between">
           <p>{copyright}</p>
+          <Link
+            href="/login"
+            className="text-xs text-cream/70 hover:text-terracotta transition-colors"
+          >
+            Coach & Admin Portal →
+          </Link>
         </div>
       </div>
     </footer>

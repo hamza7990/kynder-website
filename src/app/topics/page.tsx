@@ -1,15 +1,20 @@
 import type { Metadata } from 'next';
 import { Container } from '@/components/ui';
 import { Reveal, staggerDelay } from '@/lib/motion';
-import { clusters, heading, intro, moreLine, topics, trustMarkers } from '@/data/topics';
+import { clusters, heading, intro, moreLine, trustMarkers } from '@/data/topics';
 import { CoachPool } from '@/components/topics/coach-pool';
 import { TopicCard } from '@/components/topics/topic-card';
 import { ServiceJsonLd } from '@/components/seo/service-json-ld';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { getTopicsContent } from '@/lib/content';
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.topics, heading);
 
-export default function TopicsPage() {
+// Rendered per request so admin edits to topics appear immediately.
+export const dynamic = 'force-dynamic';
+
+export default async function TopicsPage() {
+  const topics = await getTopicsContent();
   return (
     <section className="py-section-lg">
       <ServiceJsonLd />

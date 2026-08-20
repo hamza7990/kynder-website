@@ -3,8 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { Footer } from './footer';
 
 // vitest hoists vi.mock above the imports, so Footer receives this site config.
-// LinkedIn/Instagram/YouTube are configured (real URLs); contactEmail is left
-// unset so its [PENDING: ...] fallback path is exercised in the same render.
+// LinkedIn/Instagram/YouTube are configured (arbitrary test URLs); contactEmail
+// is left unset so its [PENDING: ...] fallback path is exercised in the same render.
 vi.mock('@/data/site', () => ({
   site: {
     name: 'KYNDER',
@@ -12,9 +12,9 @@ vi.mock('@/data/site', () => ({
     copyright: '© Test copyright',
     contactEmail: '[PENDING: contact email]',
     social: {
-      linkedin: 'https://www.linkedin.com/company/kynder',
-      instagram: 'https://www.instagram.com/kynder',
-      youtube: 'https://www.youtube.com/@kynder',
+      linkedin: 'https://example.com/linkedin',
+      instagram: 'https://example.com/instagram',
+      youtube: 'https://example.com/youtube',
     },
     schedulerBaseUrl: '[PENDING: scheduler base url]',
     newsletterEndpoint: '[PENDING: newsletter endpoint]',
