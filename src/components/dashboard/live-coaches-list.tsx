@@ -154,7 +154,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                         className={`inline-block rounded-md px-2.5 py-0.5 text-small font-semibold ${
                           c.role === 'ADMIN'
                             ? 'bg-purple-100 text-purple-800'
-                            : 'bg-blue-100 text-blue-800'
+                            : 'bg-info-soft text-info'
                         }`}
                       >
                         {c.role}
@@ -180,7 +180,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                       </div>
                     </td>
                     <td className="px-6 py-4 font-semibold text-navy-deep">
-                      <span className="rounded-full bg-navy/10 px-2.5 py-0.5 text-small">
+                      <span className="rounded-full bg-ink-10 px-2.5 py-0.5 text-small">
                         {c._count.bookings} sessions
                       </span>
                     </td>
@@ -188,13 +188,13 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                       <span
                         className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-small font-semibold ${
                           c.isActive
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
+                            ? 'bg-success-soft text-success'
+                            : 'bg-ink-10 text-ink'
                         }`}
                       >
                         <span
                           className={`h-1.5 w-1.5 rounded-full ${
-                            c.isActive ? 'bg-green-600' : 'bg-gray-400'
+                            c.isActive ? 'bg-success' : 'bg-ink-40'
                           }`}
                         />
                         {c.isActive ? 'Active' : 'Inactive'}
@@ -221,7 +221,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                           <button
                             type="button"
                             onClick={() => handleDelete(c.id, c.name)}
-                            className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-small font-semibold text-red-700 hover:bg-red-100 btn-press transition-colors"
+                            className="rounded-md border border-danger-soft bg-danger-soft px-3 py-1.5 text-small font-semibold text-danger hover:border-danger btn-press transition-colors"
                           >
                             🗑️ Delete
                           </button>

@@ -36,7 +36,7 @@ export default async function AdminMessagesPage() {
                       {m.email}
                     </a>
                     {m.handled && (
-                      <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-small font-semibold text-green-800">
+                      <span className="rounded-full bg-success-soft px-2.5 py-0.5 text-small font-semibold text-success">
                         Handled
                       </span>
                     )}

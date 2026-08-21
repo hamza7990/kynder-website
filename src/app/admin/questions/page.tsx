@@ -128,7 +128,7 @@ export default async function AdminQuestionsPage() {
                   >
                     <button
                       type="submit"
-                      className="rounded-md border border-red-200 bg-red-50 px-3 py-1 text-small font-semibold text-red-700 hover:bg-red-100 transition-colors"
+                      className="rounded-md border border-danger-soft bg-danger-soft px-3 py-1 text-small font-semibold text-danger hover:border-danger transition-colors"
                     >
                       Delete
                     </button>

@@ -192,12 +192,12 @@ export function LiveBookingsList({
                     <span
                       className={`rounded-full px-3 py-0.5 text-small font-semibold uppercase tracking-wider ${
                         b.status === 'CONFIRMED'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-success-soft text-success'
                           : b.status === 'COMPLETED'
-                          ? 'bg-blue-100 text-blue-800'
+                          ? 'bg-info-soft text-info'
                           : b.status === 'CANCELLED'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-amber-100 text-amber-800 pulse-live'
+                          ? 'bg-danger-soft text-danger'
+                          : 'bg-warning-soft text-warning pulse-live'
                       }`}
                     >
                       {b.status}

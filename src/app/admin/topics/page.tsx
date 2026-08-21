@@ -97,7 +97,7 @@ export default async function AdminTopicsPage() {
                 <h3 className="font-display text-h3 font-bold text-navy-deep">
                   {cluster.label}
                 </h3>
-                <span className="rounded-full bg-navy/10 px-2.5 py-0.5 text-small font-semibold text-navy-deep">
+                <span className="rounded-full bg-ink-10 px-2.5 py-0.5 text-small font-semibold text-navy-deep">
                   {clusterTopics.length} topics
                 </span>
               </div>
@@ -126,7 +126,7 @@ export default async function AdminTopicsPage() {
                       >
                         <button
                           type="submit"
-                          className="rounded-md border border-red-200 bg-red-50 px-2.5 py-1 text-small font-semibold text-red-700 hover:bg-red-100 transition-colors"
+                          className="rounded-md border border-danger-soft bg-danger-soft px-2.5 py-1 text-small font-semibold text-danger hover:border-danger transition-colors"
                         >
                           Delete
                         </button>

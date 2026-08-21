@@ -144,7 +144,7 @@ export default async function AdminDashboardPage() {
             >
               <div className="flex items-center justify-between">
                 <span className="text-3xl">{c.icon}</span>
-                <span className="rounded-full bg-navy/10 px-2.5 py-0.5 text-small font-semibold text-navy-deep">
+                <span className="rounded-full bg-ink-10 px-2.5 py-0.5 text-small font-semibold text-navy-deep">
                   {c.count}
                 </span>
               </div>
@@ -190,12 +190,12 @@ export default async function AdminDashboardPage() {
                       <span
                         className={`rounded-full px-2.5 py-0.5 text-small font-semibold ${
                           b.status === 'CONFIRMED'
-                            ? 'bg-green-100 text-green-800'
+                            ? 'bg-success-soft text-success'
                             : b.status === 'COMPLETED'
-                            ? 'bg-blue-100 text-blue-800'
+                            ? 'bg-info-soft text-info'
                             : b.status === 'CANCELLED'
-                            ? 'bg-red-100 text-red-800'
-                            : 'bg-amber-100 text-amber-800'
+                            ? 'bg-danger-soft text-danger'
+                            : 'bg-warning-soft text-warning'
                         }`}
                       >
                         {b.status}
@@ -246,7 +246,7 @@ export default async function AdminDashboardPage() {
                     <p className="text-small text-ink-60">{c.title || 'Leadership Coach'}</p>
                   </div>
                 </div>
-                <span className="rounded-full bg-navy/10 px-2 py-0.5 text-small font-semibold text-navy-deep">
+                <span className="rounded-full bg-ink-10 px-2 py-0.5 text-small font-semibold text-navy-deep">
                   {c._count.bookings} sessions
                 </span>
               </div>
