@@ -5,49 +5,87 @@ import { topics } from '../src/data/topics';
 
 const prisma = new PrismaClient();
 
+// Non-secret profile copy for an admin account. Credentials (email/password)
+// ALWAYS come from the environment; only these display fields live in-file.
+type AdminProfile = {
+  name: string;
+  title?: string | null;
+  avatar?: string | null;
+  bio?: string | null;
+  specialties?: string | null;
+};
+
+// Idempotent admin upsert. First run CREATES the account with the given
+// password. Any later run refreshes the profile fields but DELIBERATELY leaves
+// passwordHash and role untouched — re-seeding must never reset or duplicate an
+// existing admin (a human may have changed their password in the app since).
+async function ensureAdmin(
+  rawEmail: string | undefined,
+  password: string | undefined,
+  profile: AdminProfile,
+  { required, label }: { required: boolean; label: string },
+): Promise<void> {
+  const email = rawEmail?.trim().toLowerCase();
+
+  if (!email || !password) {
+    if (required) {
+      throw new Error(
+        'ADMIN_EMAIL and ADMIN_PASSWORD must be set to seed the primary admin ' +
+          'account. Refusing to seed a known default password.',
+      );
+    }
+    console.log(`  - ${label} (${'ADMIN2_EMAIL/ADMIN2_PASSWORD'}) not set — skipping.`);
+    return;
+  }
+
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) {
+    await prisma.user.update({
+      where: { email },
+      data: { role: 'ADMIN', isActive: true, ...profile },
+    });
+    console.log(`  - ${label} ${email}: already existed — profile refreshed, password left unchanged.`);
+    return;
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  await prisma.user.create({
+    data: { email, passwordHash, role: 'ADMIN', isActive: true, ...profile },
+  });
+  console.log(`  - ${label} ${email}: created.`);
+}
+
 async function main() {
   console.log('Seeding KYNDER database...');
 
-  // Admin credentials come from the environment ONLY — no default password lives
-  // in this file. Set ADMIN_EMAIL and ADMIN_PASSWORD before seeding.
-  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  const adminPassword = process.env.ADMIN_PASSWORD;
-
-  if (!adminEmail || !adminPassword) {
-    throw new Error(
-      'ADMIN_EMAIL and ADMIN_PASSWORD must be set to seed the admin account. ' +
-        'Refusing to seed a known default password.',
-    );
-  }
-
-  const adminPasswordHash = await bcrypt.hash(adminPassword, 10);
-
-  // 1. Create or update the founder/admin account. Keyed on email, so re-running
-  //    updates in place rather than creating a duplicate.
-  await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: {
-      name: 'Dr. Shereen Williams',
-      passwordHash: adminPasswordHash,
-      role: 'ADMIN',
-      title: 'Founder of KYNDER | ICF-Certified Coach',
-      avatar: '/shereen-williams.jpg',
-      bio: 'Professional Doctorate in Leadership & Cultural Transformation with Distinction. Author of The Currency of Kindness.',
-      specialties: 'having-hard-conversations,executive-presence,leading-through-change,cross-cultural-leadership',
-      isActive: true,
-    },
-    create: {
-      email: adminEmail,
-      name: 'Dr. Shereen Williams',
-      passwordHash: adminPasswordHash,
-      role: 'ADMIN',
-      title: 'Founder of KYNDER | ICF-Certified Coach',
-      avatar: '/shereen-williams.jpg',
-      bio: 'Professional Doctorate in Leadership & Cultural Transformation with Distinction. Author of The Currency of Kindness.',
-      specialties: 'having-hard-conversations,executive-presence,leading-through-change,cross-cultural-leadership',
-      isActive: true,
-    },
+  // 1. Admin accounts. Credentials come from the environment ONLY — no default
+  //    password lives in this file. The primary admin (ADMIN_EMAIL/ADMIN_PASSWORD)
+  //    is required; a second admin (ADMIN2_EMAIL/ADMIN2_PASSWORD) is created only
+  //    if that second pair is also set. Both are idempotent (see ensureAdmin).
+  const founderProfile: AdminProfile = {
+    name: 'Dr. Shereen Williams',
+    title: 'Founder of KYNDER | ICF-Certified Coach',
+    avatar: '/shereen-williams.jpg',
+    bio: 'Professional Doctorate in Leadership & Cultural Transformation with Distinction. Author of The Currency of Kindness.',
+    specialties: 'having-hard-conversations,executive-presence,leading-through-change,cross-cultural-leadership',
+  };
+  await ensureAdmin(process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD, founderProfile, {
+    required: true,
+    label: 'primary admin',
   });
+
+  // Second admin: a plain ADMIN with no founder profile. The display name is
+  // derived mechanically from the email local-part (not invented biography).
+  const admin2Email = process.env.ADMIN2_EMAIL?.trim().toLowerCase();
+  const admin2Name = admin2Email
+    ? admin2Email.split('@')[0].replace(/[._-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+    : 'Admin';
+  await ensureAdmin(
+    process.env.ADMIN2_EMAIL,
+    process.env.ADMIN2_PASSWORD,
+    { name: admin2Name, title: null, avatar: null, bio: null, specialties: null },
+    { required: false, label: 'second admin' },
+  );
 
   // NOTE: The two fabricated coaches ("Sarah Jenkins" and "Marcus Vance") were
   // removed — they were invented, not real KYNDER coaches. Do not re-add coach
