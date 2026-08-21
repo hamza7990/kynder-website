@@ -78,7 +78,7 @@ async function main() {
   // derived mechanically from the email local-part (not invented biography).
   const admin2Email = process.env.ADMIN2_EMAIL?.trim().toLowerCase();
   const admin2Name = admin2Email
-    ? admin2Email.split('@')[0].replace(/[._-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+    ? (admin2Email.split('@')[0] ?? 'admin').replace(/[._-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
     : 'Admin';
   await ensureAdmin(
     process.env.ADMIN2_EMAIL,
