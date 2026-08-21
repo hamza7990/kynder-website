@@ -44,8 +44,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             key={toast.id}
             className={cn(
               'pointer-events-auto flex items-start gap-3 rounded-xl border p-4 shadow-3 animate-scale-in transition-colors',
-              toast.type === 'success' && 'border-green-300 bg-green-50 text-green-900',
-              toast.type === 'error' && 'border-red-300 bg-red-50 text-red-900',
+              toast.type === 'success' && 'border-success bg-success-soft text-success',
+              toast.type === 'error' && 'border-danger bg-danger-soft text-danger',
               toast.type === 'info' && 'border-navy/20 bg-cream-card text-navy-deep'
             )}
           >

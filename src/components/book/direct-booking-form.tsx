@@ -73,7 +73,7 @@ export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormPr
       </div>
 
       {error && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-small text-red-700">
+        <div className="mb-6 rounded-lg border border-danger-soft bg-danger-soft p-4 text-small text-danger">
           {error}
         </div>
       )}
