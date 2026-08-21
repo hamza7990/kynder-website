@@ -27,7 +27,7 @@ export default async function QuestionsPage() {
         </div>
 
         <div className="mt-16 flex flex-col items-start gap-6 border-t border-ink-10 pt-12">
-          <p className="max-w-[60ch] text-lead text-ink-80">{closingLine}</p>
+          <p className="max-w-[54ch] text-lead text-ink-80">{closingLine}</p>
           <TrackLink
             event="booking_cta_click"
             href="/book"

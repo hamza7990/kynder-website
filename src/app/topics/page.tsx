@@ -53,7 +53,7 @@ export default async function TopicsPage() {
         </div>
 
         <div className="mt-16 flex flex-col items-center gap-8 border-t border-ink-10 pt-12 text-center">
-          <p className="max-w-[60ch] text-lead text-ink-80">{moreLine}</p>
+          <p className="max-w-[54ch] text-lead text-ink-80">{moreLine}</p>
           <ul className="flex flex-wrap justify-center gap-3">
             {trustMarkers.map((marker) => (
               <li key={marker}>
