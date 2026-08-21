@@ -115,7 +115,7 @@ export default async function AdminQuestionsPage() {
                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-deep font-display font-bold text-cream text-sm">
                       {q.no}
                     </span>
-                    <span className="rounded-full bg-terracotta/15 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-terracotta-text">
+                    <span className="rounded-full bg-terracotta-soft px-3 py-0.5 text-small font-semibold uppercase tracking-wider text-terracotta-text">
                       {q.pillar}
                     </span>
                   </div>
@@ -128,7 +128,7 @@ export default async function AdminQuestionsPage() {
                   >
                     <button
                       type="submit"
-                      className="rounded-md border border-red-200 bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-100 transition-colors"
+                      className="rounded-md border border-red-200 bg-red-50 px-3 py-1 text-small font-semibold text-red-700 hover:bg-red-100 transition-colors"
                     >
                       Delete
                     </button>
@@ -174,7 +174,7 @@ export default async function AdminQuestionsPage() {
                   </div>
 
                   <div className="space-y-2 pt-2">
-                    <label className="block text-xs font-semibold uppercase tracking-eyebrow text-ink-70">
+                    <label className="block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
                       5 Action Steps
                     </label>
                     {[0, 1, 2, 3, 4].map((idx) => (

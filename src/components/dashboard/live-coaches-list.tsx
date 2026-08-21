@@ -90,14 +90,14 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-2.5 top-2.5 text-xs font-bold text-ink-60 hover:text-navy-deep"
+              className="absolute right-2.5 top-2.5 text-small font-bold text-ink-60 hover:text-navy-deep"
             >
               ✕
             </button>
           )}
         </div>
 
-        <div className="text-xs font-semibold uppercase tracking-eyebrow text-ink-60">
+        <div className="text-small font-semibold uppercase tracking-eyebrow text-ink-60">
           Showing {filtered.length} of {coaches.length} Mentors
           {isPending && <span className="ml-2 text-terracotta-text animate-pulse">Syncing...</span>}
         </div>
@@ -107,7 +107,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
       <div className="overflow-hidden rounded-2xl border border-ink-10 bg-cream-card shadow-1">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-body">
-            <thead className="border-b border-ink-10 bg-cream/60 font-sans text-xs font-semibold uppercase tracking-eyebrow text-ink-70">
+            <thead className="border-b border-ink-10 bg-cream/60 font-sans text-small font-semibold uppercase tracking-eyebrow text-ink-70">
               <tr>
                 <th className="px-6 py-4">Coach</th>
                 <th className="px-6 py-4">Role & Title</th>
@@ -145,13 +145,13 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                         )}
                         <div>
                           <div className="font-semibold text-navy-deep">{c.name}</div>
-                          <div className="text-xs text-ink-60">{c.email}</div>
+                          <div className="text-small text-ink-60">{c.email}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-semibold ${
+                        className={`inline-block rounded-md px-2.5 py-0.5 text-small font-semibold ${
                           c.role === 'ADMIN'
                             ? 'bg-purple-100 text-purple-800'
                             : 'bg-blue-100 text-blue-800'
@@ -159,7 +159,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                       >
                         {c.role}
                       </span>
-                      <div className="mt-1 text-xs text-ink-70">
+                      <div className="mt-1 text-small text-ink-70">
                         {c.title || 'Leadership Coach'}
                       </div>
                     </td>
@@ -175,18 +175,18 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                             </span>
                           ))
                         ) : (
-                          <span className="text-xs text-ink-60">General Topics</span>
+                          <span className="text-small text-ink-60">General Topics</span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 font-semibold text-navy-deep">
-                      <span className="rounded-full bg-navy/10 px-2.5 py-0.5 text-xs">
+                      <span className="rounded-full bg-navy/10 px-2.5 py-0.5 text-small">
                         {c._count.bookings} sessions
                       </span>
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-small font-semibold ${
                           c.isActive
                             ? 'bg-green-100 text-green-800'
                             : 'bg-gray-100 text-gray-800'
@@ -203,7 +203,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                     <td className="px-6 py-4 text-right space-x-2">
                       <Link
                         href={`/admin/coaches/${c.id}`}
-                        className="inline-block rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-xs font-semibold text-navy-deep hover:bg-cream-card btn-press transition-colors"
+                        className="inline-block rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-small font-semibold text-navy-deep hover:bg-cream-card btn-press transition-colors"
                       >
                         ✏️ Edit
                       </Link>
@@ -213,7 +213,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                           <button
                             type="button"
                             onClick={() => handleToggleStatus(c.id, c.isActive, c.name)}
-                            className="rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-xs font-semibold text-ink-70 hover:bg-cream-card btn-press transition-colors"
+                            className="rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-small font-semibold text-ink-70 hover:bg-cream-card btn-press transition-colors"
                           >
                             {c.isActive ? '⏸️ Deactivate' : '▶️ Activate'}
                           </button>
@@ -221,7 +221,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                           <button
                             type="button"
                             onClick={() => handleDelete(c.id, c.name)}
-                            className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100 btn-press transition-colors"
+                            className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-small font-semibold text-red-700 hover:bg-red-100 btn-press transition-colors"
                           >
                             🗑️ Delete
                           </button>

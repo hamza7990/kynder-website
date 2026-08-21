@@ -97,7 +97,7 @@ export default async function CoachProfilePage() {
                 placeholder="having-hard-conversations, imposter-syndrome"
                 className="bg-cream"
               />
-              <p className="mt-1 text-xs text-ink-60">
+              <p className="mt-1 text-small text-ink-60">
                 Available topics: {topics.map((t) => t.slug).join(', ')}
               </p>
             </Field>

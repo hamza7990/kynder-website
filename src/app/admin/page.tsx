@@ -144,7 +144,7 @@ export default async function AdminDashboardPage() {
             >
               <div className="flex items-center justify-between">
                 <span className="text-3xl">{c.icon}</span>
-                <span className="rounded-full bg-navy/10 px-2.5 py-0.5 text-xs font-semibold text-navy-deep">
+                <span className="rounded-full bg-navy/10 px-2.5 py-0.5 text-small font-semibold text-navy-deep">
                   {c.count}
                 </span>
               </div>
@@ -188,7 +188,7 @@ export default async function AdminDashboardPage() {
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-navy-deep">{b.clientName}</span>
                       <span
-                        className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        className={`rounded-full px-2.5 py-0.5 text-small font-semibold ${
                           b.status === 'CONFIRMED'
                             ? 'bg-green-100 text-green-800'
                             : b.status === 'COMPLETED'
@@ -204,13 +204,13 @@ export default async function AdminDashboardPage() {
                     <p className="text-small text-ink-70">
                       Topic: <span className="font-medium text-navy-deep">{b.topicTitle || b.topicSlug}</span>
                     </p>
-                    <p className="text-xs text-ink-60">
+                    <p className="text-small text-ink-60">
                       Coach: {b.coach ? b.coach.name : 'Unassigned'} • Date: {new Date(b.date).toLocaleDateString()}
                     </p>
                   </div>
                   <Link
                     href="/admin/bookings"
-                    className="self-start rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-xs font-semibold text-navy-deep hover:bg-cream-card transition-colors"
+                    className="self-start rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-small font-semibold text-navy-deep hover:bg-cream-card transition-colors"
                   >
                     Manage
                   </Link>
@@ -243,10 +243,10 @@ export default async function AdminDashboardPage() {
                   </div>
                   <div>
                     <p className="text-small font-semibold text-navy-deep">{c.name}</p>
-                    <p className="text-xs text-ink-60">{c.title || 'Leadership Coach'}</p>
+                    <p className="text-small text-ink-60">{c.title || 'Leadership Coach'}</p>
                   </div>
                 </div>
-                <span className="rounded-full bg-navy/10 px-2 py-0.5 text-xs font-semibold text-navy-deep">
+                <span className="rounded-full bg-navy/10 px-2 py-0.5 text-small font-semibold text-navy-deep">
                   {c._count.bookings} sessions
                 </span>
               </div>

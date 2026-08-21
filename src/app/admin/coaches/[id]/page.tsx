@@ -111,7 +111,7 @@ export default async function EditCoachPage({
               defaultValue={coach.specialties || ''}
               className="bg-cream"
             />
-            <p className="mt-2 text-xs text-ink-60">
+            <p className="mt-2 text-small text-ink-60">
               Available: {topics.map((t) => t.slug).join(', ')}
             </p>
           </Field>

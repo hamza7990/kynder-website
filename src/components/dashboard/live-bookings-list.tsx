@@ -132,7 +132,7 @@ export function LiveBookingsList({
             <button
               key={s}
               onClick={() => setFilterStatus(s)}
-              className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold btn-press transition-colors ${
+              className={`rounded-lg px-3.5 py-1.5 text-small font-semibold btn-press transition-colors ${
                 filterStatus === s
                   ? 'bg-navy-deep text-cream shadow-1'
                   : 'bg-cream text-ink-80 hover:bg-cream-card hover:text-navy-deep'
@@ -155,7 +155,7 @@ export function LiveBookingsList({
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-2.5 text-xs font-bold text-ink-60 hover:text-navy-deep"
+              className="absolute right-2.5 top-2.5 text-small font-bold text-ink-60 hover:text-navy-deep"
             >
               ✕
             </button>
@@ -164,7 +164,7 @@ export function LiveBookingsList({
       </div>
 
       {/* Results Header */}
-      <div className="flex items-center justify-between text-xs text-ink-60 font-semibold uppercase tracking-eyebrow">
+      <div className="flex items-center justify-between text-small text-ink-60 font-semibold uppercase tracking-eyebrow">
         <span>Showing {filtered.length} of {bookings.length} Sessions</span>
         {isPending && <span className="text-terracotta-text animate-pulse">Syncing...</span>}
       </div>
@@ -190,7 +190,7 @@ export function LiveBookingsList({
                       {b.clientName}
                     </h3>
                     <span
-                      className={`rounded-full px-3 py-0.5 text-xs font-semibold uppercase tracking-wider ${
+                      className={`rounded-full px-3 py-0.5 text-small font-semibold uppercase tracking-wider ${
                         b.status === 'CONFIRMED'
                           ? 'bg-green-100 text-green-800'
                           : b.status === 'COMPLETED'
@@ -212,7 +212,7 @@ export function LiveBookingsList({
                     {/* Copy Email Button */}
                     <button
                       onClick={() => copyToClipboard(b.clientEmail, `email-${b.id}`)}
-                      className="inline-flex items-center gap-1.5 rounded-md border border-ink-10 bg-cream px-2.5 py-1 text-xs font-medium hover:border-terracotta hover:text-terracotta btn-press transition-colors"
+                      className="inline-flex items-center gap-1.5 rounded-md border border-ink-10 bg-cream px-2.5 py-1 text-small font-medium hover:border-terracotta hover:text-terracotta btn-press transition-colors"
                       title="Click to copy email"
                     >
                       <span>📧 {b.clientEmail}</span>
@@ -224,7 +224,7 @@ export function LiveBookingsList({
                     {b.clientPhone && (
                       <button
                         onClick={() => copyToClipboard(b.clientPhone!, `phone-${b.id}`)}
-                        className="inline-flex items-center gap-1.5 rounded-md border border-ink-10 bg-cream px-2.5 py-1 text-xs font-medium hover:border-terracotta hover:text-terracotta btn-press transition-colors"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-ink-10 bg-cream px-2.5 py-1 text-small font-medium hover:border-terracotta hover:text-terracotta btn-press transition-colors"
                         title="Click to copy phone"
                       >
                         <span>📞 {b.clientPhone}</span>
@@ -234,11 +234,11 @@ export function LiveBookingsList({
                       </button>
                     )}
 
-                    <span className="rounded-md bg-cream px-2.5 py-1 text-xs font-medium border border-ink-10">
+                    <span className="rounded-md bg-cream px-2.5 py-1 text-small font-medium border border-ink-10">
                       🗓️ {new Date(b.date).toLocaleString()}
                     </span>
 
-                    <span className="rounded-md bg-cream px-2.5 py-1 text-xs font-medium border border-ink-10">
+                    <span className="rounded-md bg-cream px-2.5 py-1 text-small font-medium border border-ink-10">
                       ⏱️ {b.duration} mins
                     </span>
                   </div>
@@ -254,7 +254,7 @@ export function LiveBookingsList({
                 <div className="flex flex-col gap-3 min-w-[220px] border-t border-ink-10 pt-4 md:border-t-0 md:pt-0">
                   {userRole === 'ADMIN' && (
                     <div>
-                      <label className="mb-1 block text-xs font-semibold uppercase tracking-eyebrow text-ink-70">
+                      <label className="mb-1 block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
                         Assigned Coach
                       </label>
                       <select
@@ -274,7 +274,7 @@ export function LiveBookingsList({
 
                   {/* Interactive Status Changer */}
                   <div>
-                    <label className="mb-1 block text-xs font-semibold uppercase tracking-eyebrow text-ink-70">
+                    <label className="mb-1 block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
                       Action Status
                     </label>
                     <div className="grid grid-cols-2 gap-1.5">
@@ -283,7 +283,7 @@ export function LiveBookingsList({
                           key={st}
                           onClick={() => handleStatusChange(b.id, st)}
                           disabled={b.status === st}
-                          className={`rounded-md border py-1.5 text-xs font-semibold btn-press transition-colors ${
+                          className={`rounded-md border py-1.5 text-small font-semibold btn-press transition-colors ${
                             b.status === st
                               ? 'bg-navy-deep text-cream opacity-50 cursor-default'
                               : 'border-ink-20 bg-cream text-navy-deep hover:bg-cream-card hover:border-navy-deep'

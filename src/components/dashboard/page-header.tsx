@@ -24,7 +24,7 @@ export function PageHeader({
     >
       <div>
         {badge && (
-          <span className="mb-2 inline-block rounded-full bg-terracotta/10 px-3 py-1 font-sans text-small font-semibold uppercase tracking-eyebrow text-terracotta-text">
+          <span className="mb-2 inline-block rounded-full bg-terracotta-soft px-3 py-1 font-sans text-small font-semibold uppercase tracking-eyebrow text-terracotta-text">
             {badge}
           </span>
         )}

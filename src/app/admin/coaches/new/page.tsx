@@ -99,7 +99,7 @@ export default function NewCoachPage() {
               placeholder="e.g. having-hard-conversations, building-trust-as-a-new-manager"
               className="bg-cream"
             />
-            <p className="mt-2 text-xs text-ink-60">
+            <p className="mt-2 text-small text-ink-60">
               Available topics: {topics.map((t) => t.slug).join(', ')}
             </p>
           </Field>

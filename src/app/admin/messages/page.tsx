@@ -36,12 +36,12 @@ export default async function AdminMessagesPage() {
                       {m.email}
                     </a>
                     {m.handled && (
-                      <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-800">
+                      <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-small font-semibold text-green-800">
                         Handled
                       </span>
                     )}
                   </div>
-                  <p className="mt-1 text-xs text-ink-60">
+                  <p className="mt-1 text-small text-ink-60">
                     {new Date(m.createdAt).toLocaleString()}
                   </p>
                 </div>
@@ -54,7 +54,7 @@ export default async function AdminMessagesPage() {
                 >
                   <button
                     type="submit"
-                    className="rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-xs font-semibold text-navy-deep transition-colors hover:bg-cream-card"
+                    className="rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-small font-semibold text-navy-deep transition-colors hover:bg-cream-card"
                   >
                     {m.handled ? 'Mark unhandled' : 'Mark handled'}
                   </button>

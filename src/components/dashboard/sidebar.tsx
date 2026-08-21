@@ -40,7 +40,7 @@ export function Sidebar({ user }: SidebarProps) {
         <Link href="/" className="font-display text-h3 font-bold tracking-wider text-navy-deep hover:opacity-90">
           KYNDER
         </Link>
-        <span className="rounded-full bg-navy-deep px-2.5 py-0.5 text-xs font-semibold text-cream uppercase tracking-wider">
+        <span className="rounded-full bg-navy-deep px-2.5 py-0.5 text-small font-semibold text-cream uppercase tracking-wider">
           {isAdmin ? '👑 Admin' : '🧑‍💼 Coach'}
         </span>
       </div>
@@ -61,7 +61,7 @@ export function Sidebar({ user }: SidebarProps) {
           )}
           <div className="min-w-0 flex-1">
             <p className="truncate text-body font-semibold text-navy-deep">{user.name}</p>
-            <p className="truncate text-xs text-ink-60">{user.email}</p>
+            <p className="truncate text-small text-ink-60">{user.email}</p>
           </div>
         </div>
       </div>
