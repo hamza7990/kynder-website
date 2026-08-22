@@ -3,8 +3,11 @@ import { db } from '@/lib/db';
 import { PageHeader } from '@/components/dashboard/page-header';
 import { StatCard } from '@/components/dashboard/stat-card';
 import { buttonVariants } from '@/components/ui';
+import { getI18n } from '@/i18n/server';
+import { formatDate } from '@/lib/format';
 
 export default async function AdminDashboardPage() {
+  const { t } = await getI18n();
   const [
     coachesCount,
     totalBookings,
@@ -36,68 +39,68 @@ export default async function AdminDashboardPage() {
 
   const cmsShortcuts = [
     {
-      title: '10 Leadership Questions',
-      count: `${questionsCount} questions`,
+      title: t('dashboard.cms.questionsTitle'),
+      count: t('dashboard.cms.questionsCount', { count: questionsCount }),
       href: '/admin/questions',
       icon: '❓',
-      desc: 'Edit questions, pillars & 50 reflection steps',
+      desc: t('dashboard.cms.questionsDesc'),
     },
     {
-      title: '15 Coaching Topics',
-      count: `${topicsCount} topics`,
+      title: t('dashboard.cms.topicsTitle'),
+      count: t('dashboard.cms.topicsCount', { count: topicsCount }),
       href: '/admin/topics',
       icon: '🏷️',
-      desc: 'Manage topic clusters & descriptions',
+      desc: t('dashboard.cms.topicsDesc'),
     },
     {
-      title: 'Dr. Shereen Williams Bio',
-      count: 'Founder Bio',
+      title: t('dashboard.cms.bioTitle'),
+      count: t('dashboard.cms.bioCount'),
       href: '/admin/about',
       icon: '👩‍💼',
-      desc: 'Edit background, story, credentials & photo',
+      desc: t('dashboard.cms.bioDesc'),
     },
     {
-      title: 'Hero & Home Page CMS',
-      count: 'Live copy',
+      title: t('dashboard.cms.heroTitle'),
+      count: t('dashboard.cms.heroCount'),
       href: '/admin/content',
       icon: '🏠',
-      desc: 'Edit hero headline, eyebrow & positioning',
+      desc: t('dashboard.cms.heroDesc'),
     },
     {
-      title: 'Coach Roster',
-      count: `${coachesCount} coaches`,
+      title: t('dashboard.cms.rosterTitle'),
+      count: t('dashboard.cms.rosterCount', { count: coachesCount }),
       href: '/admin/coaches',
       icon: '👥',
-      desc: 'Onboard coaches & manage specialties',
+      desc: t('dashboard.cms.rosterDesc'),
     },
     {
-      title: 'Site Settings & SEO',
-      count: 'Global config',
+      title: t('dashboard.cms.settingsTitle'),
+      count: t('dashboard.cms.settingsCount'),
       href: '/admin/settings',
       icon: '⚙️',
-      desc: 'Email, phone, social links & endpoints',
+      desc: t('dashboard.cms.settingsDesc'),
     },
   ];
 
   return (
     <div className="space-y-10">
       <PageHeader
-        title="Admin Control Center"
-        description="Comprehensive management of coaches, curriculum questions, topics, bookings, and live website copy."
-        badge="Enterprise Hub"
+        title={t('dashboard.title')}
+        description={t('dashboard.description')}
+        badge={t('dashboard.badge')}
       >
         <div className="flex gap-3">
           <Link
             href="/admin/coaches/new"
             className={buttonVariants({ variant: 'primary', size: 'md' })}
           >
-            + Add Coach
+            + {t('dashboard.addCoach')}
           </Link>
           <Link
             href="/admin/bookings"
             className={buttonVariants({ variant: 'ghost', size: 'md' })}
           >
-            + Schedule Booking
+            + {t('dashboard.scheduleBooking')}
           </Link>
         </div>
       </PageHeader>
@@ -105,27 +108,27 @@ export default async function AdminDashboardPage() {
       {/* Primary Key Metrics */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          title="Active Coaches"
+          title={t('dashboard.stats.activeCoaches')}
           value={coachesCount}
-          description="Accredited mentors on team"
+          description={t('dashboard.stats.activeCoachesDesc')}
           icon={<span className="text-2xl">👥</span>}
         />
         <StatCard
-          title="Pending Requests"
+          title={t('dashboard.stats.pendingRequests')}
           value={pendingBookings}
-          trend={pendingBookings > 0 ? 'Requires action' : 'All clear'}
+          trend={pendingBookings > 0 ? t('dashboard.stats.requiresAction') : t('dashboard.stats.allClear')}
           icon={<span className="text-2xl">⏳</span>}
         />
         <StatCard
-          title="Total Bookings"
+          title={t('dashboard.stats.totalBookings')}
           value={totalBookings}
-          description="Client coaching sessions"
+          description={t('dashboard.stats.totalBookingsDesc')}
           icon={<span className="text-2xl">📅</span>}
         />
         <StatCard
-          title="Completed Sessions"
+          title={t('dashboard.stats.completedSessions')}
           value={completedBookings}
-          description="Delivered leadership hours"
+          description={t('dashboard.stats.completedSessionsDesc')}
           icon={<span className="text-2xl">✅</span>}
         />
       </div>
@@ -133,7 +136,7 @@ export default async function AdminDashboardPage() {
       {/* CMS & Content Management Hub Shortcuts */}
       <div className="space-y-4">
         <h2 className="font-display text-h3 font-bold text-navy-deep">
-          Content & Curriculum Control (CMS)
+          {t('dashboard.cmsHeading')}
         </h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cmsShortcuts.map((c) => (
@@ -153,7 +156,7 @@ export default async function AdminDashboardPage() {
               </h3>
               <p className="mt-1 text-small text-ink-70">{c.desc}</p>
               <span className="mt-4 inline-block text-small font-semibold text-terracotta-text">
-                Open CMS →
+                {t('dashboard.openCms')} <span className="dir-flip">→</span>
               </span>
             </Link>
           ))}
@@ -166,20 +169,20 @@ export default async function AdminDashboardPage() {
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-6 shadow-1 lg:col-span-2">
           <div className="flex items-center justify-between border-b border-ink-10 pb-4">
             <h2 className="font-display text-h4 font-bold text-navy-deep">
-              Recent Session Bookings
+              {t('dashboard.recentBookings')}
             </h2>
             <Link
               href="/admin/bookings"
               className="text-small font-semibold text-terracotta-text hover:underline"
             >
-              View all bookings →
+              {t('dashboard.viewAllBookings')} <span className="dir-flip">→</span>
             </Link>
           </div>
 
           <div className="mt-4 divide-y divide-ink-10">
             {recentBookings.length === 0 ? (
               <p className="py-6 text-center text-body text-ink-60">
-                No bookings recorded yet.
+                {t('dashboard.noBookings')}
               </p>
             ) : (
               recentBookings.map((b) => (
@@ -198,21 +201,21 @@ export default async function AdminDashboardPage() {
                             : 'bg-warning-soft text-warning'
                         }`}
                       >
-                        {b.status}
+                        {t(`statuses.${b.status}`)}
                       </span>
                     </div>
                     <p className="text-small text-ink-70">
-                      Topic: <span className="font-medium text-navy-deep">{b.topicTitle || b.topicSlug}</span>
+                      {t('dashboard.topicLabel')}: <span className="font-medium text-navy-deep">{b.topicTitle || b.topicSlug}</span>
                     </p>
                     <p className="text-small text-ink-60">
-                      Coach: {b.coach ? b.coach.name : 'Unassigned'} • Date: {new Date(b.date).toLocaleDateString()}
+                      {t('dashboard.coachLabel')}: {b.coach ? b.coach.name : t('dashboard.unassignedCoach')} • {t('dashboard.dateLabel')}: {formatDate(b.date)}
                     </p>
                   </div>
                   <Link
                     href="/admin/bookings"
                     className="self-start rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-small font-semibold text-navy-deep hover:bg-cream-card transition-colors"
                   >
-                    Manage
+                    {t('dashboard.manage')}
                   </Link>
                 </div>
               ))
@@ -224,13 +227,13 @@ export default async function AdminDashboardPage() {
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-6 shadow-1">
           <div className="flex items-center justify-between border-b border-ink-10 pb-4">
             <h2 className="font-display text-h4 font-bold text-navy-deep">
-              Coach Roster
+              {t('dashboard.coachRoster')}
             </h2>
             <Link
               href="/admin/coaches"
               className="text-small font-semibold text-terracotta-text hover:underline"
             >
-              Manage all →
+              {t('dashboard.manageAll')} <span className="dir-flip">→</span>
             </Link>
           </div>
 
@@ -243,11 +246,11 @@ export default async function AdminDashboardPage() {
                   </div>
                   <div>
                     <p className="text-small font-semibold text-navy-deep">{c.name}</p>
-                    <p className="text-small text-ink-60">{c.title || 'Leadership Coach'}</p>
+                    <p className="text-small text-ink-60">{c.title || t('dashboard.defaultCoachTitle')}</p>
                   </div>
                 </div>
                 <span className="rounded-full bg-ink-10 px-2 py-0.5 text-small font-semibold text-navy-deep">
-                  {c._count.bookings} sessions
+                  {t('dashboard.sessionsCount', { count: c._count.bookings })}
                 </span>
               </div>
             ))}
@@ -259,7 +262,7 @@ export default async function AdminDashboardPage() {
               className="flex items-center justify-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-small font-semibold text-cream hover:bg-navy-hover transition-colors"
             >
               <span>+</span>
-              <span>Onboard New Coach</span>
+              <span>{t('dashboard.onboardNewCoach')}</span>
             </Link>
           </div>
         </div>

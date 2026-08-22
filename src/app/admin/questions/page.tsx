@@ -7,8 +7,10 @@ import {
   deleteQuestionAction,
 } from '@/lib/actions/cms';
 import { pillars } from '@/data/questions';
+import { getI18n } from '@/i18n/server';
 
 export default async function AdminQuestionsPage() {
+  const { t } = await getI18n();
   const questionsList = await db.question.findMany({
     orderBy: { order: 'asc' },
   });
@@ -16,15 +18,15 @@ export default async function AdminQuestionsPage() {
   return (
     <div className="space-y-10">
       <PageHeader
-        title="10 Leadership Questions CMS"
-        description="Manage the core questions, leadership pillars, and the 5 actionable reflection steps for each question."
-        badge="Curriculum & Content"
+        title={t('questions.title')}
+        description={t('questions.description')}
+        badge={t('questions.badge')}
       />
 
       {/* Add New Question Section */}
       <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1">
         <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-          + Add New Question
+          + {t('questions.addHeading')}
         </h2>
         <form
           action={async (formData: FormData) => {
@@ -34,17 +36,17 @@ export default async function AdminQuestionsPage() {
           className="mt-6 space-y-6"
         >
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <Field label="Question Number" htmlFor="new_no">
+            <Field label={t('questions.number')} htmlFor="new_no">
               <Input
                 id="new_no"
                 name="no"
-                placeholder="e.g. 11"
+                placeholder={t('questions.numberPlaceholder')}
                 required
                 className="bg-cream"
               />
             </Field>
 
-            <Field label="Leadership Pillar" htmlFor="new_pillar">
+            <Field label={t('questions.pillar')} htmlFor="new_pillar">
               <select
                 id="new_pillar"
                 name="pillar"
@@ -60,32 +62,32 @@ export default async function AdminQuestionsPage() {
             </Field>
           </div>
 
-          <Field label="Question Text (Prompt for the leader)" htmlFor="new_question">
+          <Field label={t('questions.questionText')} htmlFor="new_question">
             <Input
               id="new_question"
               name="question"
               required
-              placeholder="e.g. What conversation have I been avoiding?"
+              placeholder={t('questions.questionTextPlaceholder')}
               className="bg-cream"
             />
           </Field>
 
           <div className="space-y-3">
             <label className="block font-sans text-small font-semibold uppercase tracking-eyebrow text-ink-70">
-              5 Action Steps (Practical steps to work through)
+              {t('questions.stepsLabel')}
             </label>
             {[1, 2, 3, 4, 5].map((stepNum) => (
               <Input
                 key={stepNum}
                 name={`step${stepNum}`}
-                placeholder={`Step ${stepNum}: Actionable step for the leader...`}
+                placeholder={t('questions.stepPlaceholder', { n: stepNum })}
                 className="bg-cream"
               />
             ))}
           </div>
 
           <Button type="submit" variant="primary" size="md">
-            Publish Question
+            {t('questions.publish')}
           </Button>
         </form>
       </div>
@@ -93,7 +95,7 @@ export default async function AdminQuestionsPage() {
       {/* Existing Questions List */}
       <div className="space-y-6">
         <h2 className="font-display text-h3 font-bold text-navy-deep">
-          Active Questions ({questionsList.length})
+          {t('questions.activeHeading', { count: questionsList.length })}
         </h2>
 
         <div className="space-y-6">
@@ -130,7 +132,7 @@ export default async function AdminQuestionsPage() {
                       type="submit"
                       className="rounded-md border border-danger-soft bg-danger-soft px-3 py-1 text-small font-semibold text-danger hover:border-danger transition-colors"
                     >
-                      Delete
+                      {t('common.delete')}
                     </button>
                   </form>
                 </div>
@@ -144,7 +146,7 @@ export default async function AdminQuestionsPage() {
                 >
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                     <div className="md:col-span-3">
-                      <Field label="Question" htmlFor={`q_${q.id}`}>
+                      <Field label={t('questions.question')} htmlFor={`q_${q.id}`}>
                         <Input
                           id={`q_${q.id}`}
                           name="question"
@@ -156,7 +158,7 @@ export default async function AdminQuestionsPage() {
                     </div>
 
                     <div>
-                      <Field label="Pillar" htmlFor={`p_${q.id}`}>
+                      <Field label={t('questions.pillarShort')} htmlFor={`p_${q.id}`}>
                         <select
                           id={`p_${q.id}`}
                           name="pillar"
@@ -175,14 +177,14 @@ export default async function AdminQuestionsPage() {
 
                   <div className="space-y-2 pt-2">
                     <label className="block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
-                      5 Action Steps
+                      {t('questions.stepsShort')}
                     </label>
                     {[0, 1, 2, 3, 4].map((idx) => (
                       <Input
                         key={idx}
                         name={`step${idx + 1}`}
                         defaultValue={stepsArr[idx] || ''}
-                        placeholder={`Step ${idx + 1}...`}
+                        placeholder={t('questions.stepShortPlaceholder', { n: idx + 1 })}
                         className="bg-cream text-small"
                       />
                     ))}
@@ -190,7 +192,7 @@ export default async function AdminQuestionsPage() {
 
                   <div className="flex justify-end pt-2">
                     <Button type="submit" variant="ghost" size="sm">
-                      💾 Save Changes to Q{q.no}
+                      💾 {t('questions.saveTo', { no: q.no })}
                     </Button>
                   </div>
                 </form>

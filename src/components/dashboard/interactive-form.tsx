@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useToast } from '@/components/ui/toast';
 import { Button } from '@/components/ui';
+import { useT } from '@/i18n/client';
 
 interface InteractiveFormProps {
   action: (formData: FormData) => Promise<{ success?: boolean; error?: string; message?: string }>;
@@ -14,12 +15,13 @@ interface InteractiveFormProps {
 
 export function InteractiveForm({
   action,
-  successMessage = 'Changes saved successfully!',
-  submitLabel = 'Save Changes',
+  successMessage,
+  submitLabel,
   children,
   className,
 }: InteractiveFormProps) {
   const { showToast } = useToast();
+  const t = useT();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,21 +34,21 @@ export function InteractiveForm({
       if (res?.error) {
         showToast({
           type: 'error',
-          title: 'Error',
+          title: t('toast.error'),
           message: res.error,
         });
       } else {
         showToast({
           type: 'success',
-          title: 'Success',
-          message: res?.message || successMessage,
+          title: t('toast.success'),
+          message: res?.message || successMessage || t('toast.changesSaved'),
         });
       }
     } catch {
       showToast({
         type: 'error',
-        title: 'Error',
-        message: 'Something went wrong. Please try again.',
+        title: t('toast.error'),
+        message: t('toast.somethingWrong'),
       });
     } finally {
       setLoading(false);
@@ -64,7 +66,7 @@ export function InteractiveForm({
           isLoading={loading}
           className="btn-press"
         >
-          💾 {submitLabel}
+          💾 {submitLabel || t('common.saveChanges')}
         </Button>
       </div>
     </form>

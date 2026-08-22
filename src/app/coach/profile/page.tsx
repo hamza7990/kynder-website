@@ -5,8 +5,10 @@ import { Button, Field, Input, Textarea } from '@/components/ui';
 import { updateCoachSelfProfileAction } from '@/lib/actions/coaches';
 import { changePasswordAction } from '@/lib/actions/auth';
 import { topics } from '@/data/topics';
+import { getI18n } from '@/i18n/server';
 
 export default async function CoachProfilePage() {
+  const { t } = await getI18n();
   const session = await getSession();
   if (!session) return null;
 
@@ -19,16 +21,16 @@ export default async function CoachProfilePage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="My Coach Profile"
-        description="Update your bio, leadership specialties, and account security."
-        badge="Profile Settings"
+        title={t('coachProfile.title')}
+        description={t('coachProfile.description')}
+        badge={t('coachProfile.badge')}
       />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Profile Information */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            Professional Information
+            {t('coachProfile.professionalInfo')}
           </h2>
 
           <form
@@ -38,7 +40,7 @@ export default async function CoachProfilePage() {
             }}
             className="mt-6 space-y-6"
           >
-            <Field label="Full Name" htmlFor="name">
+            <Field label={t('coachProfile.fullName')} htmlFor="name">
               <Input
                 id="name"
                 name="name"
@@ -48,7 +50,7 @@ export default async function CoachProfilePage() {
               />
             </Field>
 
-            <Field label="Email Address (Read-only)" htmlFor="email">
+            <Field label={t('coachProfile.emailReadonly')} htmlFor="email">
               <Input
                 id="email"
                 name="email"
@@ -58,52 +60,52 @@ export default async function CoachProfilePage() {
               />
             </Field>
 
-            <Field label="Professional Title" htmlFor="title">
+            <Field label={t('coachProfile.title')} htmlFor="title">
               <Input
                 id="title"
                 name="title"
                 defaultValue={coach.title || ''}
-                placeholder="e.g. Executive & Team Leadership Coach"
+                placeholder={t('coachProfile.titlePlaceholder')}
                 className="bg-cream"
               />
             </Field>
 
-            <Field label="Avatar URL" htmlFor="avatar">
+            <Field label={t('coachProfile.avatarUrl')} htmlFor="avatar">
               <Input
                 id="avatar"
                 name="avatar"
                 defaultValue={coach.avatar || ''}
-                placeholder="/images/profile.jpg or https://..."
+                placeholder={t('coachProfile.avatarPlaceholder')}
                 className="bg-cream"
               />
             </Field>
 
-            <Field label="Bio & Credentials" htmlFor="bio">
+            <Field label={t('coachProfile.bio')} htmlFor="bio">
               <Textarea
                 id="bio"
                 name="bio"
                 rows={4}
                 defaultValue={coach.bio || ''}
-                placeholder="Your coaching background, focus areas..."
+                placeholder={t('coachProfile.bioPlaceholder')}
                 className="bg-cream"
               />
             </Field>
 
-            <Field label="Coaching Specialties (Comma-separated topic slugs)" htmlFor="specialties">
+            <Field label={t('coachProfile.specialties')} htmlFor="specialties">
               <Input
                 id="specialties"
                 name="specialties"
                 defaultValue={coach.specialties || ''}
-                placeholder="having-hard-conversations, imposter-syndrome"
+                placeholder={t('coachProfile.specialtiesPlaceholder')}
                 className="bg-cream"
               />
               <p className="mt-1 text-small text-ink-60">
-                Available topics: {topics.map((t) => t.slug).join(', ')}
+                {t('coachProfile.availableTopics', { slugs: topics.map((tp) => tp.slug).join(', ') })}
               </p>
             </Field>
 
             <Button type="submit" variant="primary" size="md" className="w-full">
-              Save Profile Changes
+              {t('coachProfile.saveProfile')}
             </Button>
           </form>
         </div>
@@ -111,7 +113,7 @@ export default async function CoachProfilePage() {
         {/* Change Password */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 h-fit">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            Change Password
+            {t('coachProfile.changePassword')}
           </h2>
 
           <form
@@ -121,7 +123,7 @@ export default async function CoachProfilePage() {
             }}
             className="mt-6 space-y-6"
           >
-            <Field label="Current Password" htmlFor="currentPassword">
+            <Field label={t('coachProfile.currentPassword')} htmlFor="currentPassword">
               <Input
                 id="currentPassword"
                 name="currentPassword"
@@ -131,7 +133,7 @@ export default async function CoachProfilePage() {
               />
             </Field>
 
-            <Field label="New Password (Min 6 characters)" htmlFor="newPassword">
+            <Field label={t('coachProfile.newPassword')} htmlFor="newPassword">
               <Input
                 id="newPassword"
                 name="newPassword"
@@ -141,7 +143,7 @@ export default async function CoachProfilePage() {
               />
             </Field>
 
-            <Field label="Confirm New Password" htmlFor="confirmPassword">
+            <Field label={t('coachProfile.confirmPassword')} htmlFor="confirmPassword">
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
@@ -152,7 +154,7 @@ export default async function CoachProfilePage() {
             </Field>
 
             <Button type="submit" variant="primary" size="md" className="w-full">
-              Update Password
+              {t('coachProfile.updatePassword')}
             </Button>
           </form>
         </div>

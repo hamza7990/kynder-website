@@ -5,6 +5,12 @@ import { topics } from '../src/data/topics';
 
 const prisma = new PrismaClient();
 
+// Only 'en' and 'ar' are supported admin-interface languages.
+function normalizeLocale(raw: string | undefined, fallback: 'en' | 'ar'): 'en' | 'ar' {
+  const v = raw?.trim().toLowerCase();
+  return v === 'ar' || v === 'en' ? v : fallback;
+}
+
 // Non-secret profile copy for an admin account. Credentials (email/password)
 // ALWAYS come from the environment; only these display fields live in-file.
 type AdminProfile = {
@@ -23,7 +29,7 @@ async function ensureAdmin(
   rawEmail: string | undefined,
   password: string | undefined,
   profile: AdminProfile,
-  { required, label }: { required: boolean; label: string },
+  { required, label, defaultLocale }: { required: boolean; label: string; defaultLocale: string },
 ): Promise<void> {
   const email = rawEmail?.trim().toLowerCase();
 
@@ -40,19 +46,22 @@ async function ensureAdmin(
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
+    // Refresh profile copy, but DELIBERATELY leave passwordHash, role AND locale
+    // untouched — the interface language follows the account and a human may have
+    // switched it in the app since the last seed.
     await prisma.user.update({
       where: { email },
       data: { role: 'ADMIN', isActive: true, ...profile },
     });
-    console.log(`  - ${label} ${email}: already existed — profile refreshed, password left unchanged.`);
+    console.log(`  - ${label} ${email}: already existed — profile refreshed, password + locale left unchanged.`);
     return;
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
   await prisma.user.create({
-    data: { email, passwordHash, role: 'ADMIN', isActive: true, ...profile },
+    data: { email, passwordHash, role: 'ADMIN', isActive: true, locale: defaultLocale, ...profile },
   });
-  console.log(`  - ${label} ${email}: created.`);
+  console.log(`  - ${label} ${email}: created (locale '${defaultLocale}').`);
 }
 
 async function main() {
@@ -69,9 +78,12 @@ async function main() {
     bio: 'Professional Doctorate in Leadership & Cultural Transformation with Distinction. Author of The Currency of Kindness.',
     specialties: 'having-hard-conversations,executive-presence,leading-through-change,cross-cultural-leadership',
   };
+  // Interface-language defaults (only applied on first CREATE — see ensureAdmin).
+  // One admin prefers Arabic, the other English; both are overridable via env.
   await ensureAdmin(process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD, founderProfile, {
     required: true,
     label: 'primary admin',
+    defaultLocale: normalizeLocale(process.env.ADMIN_LOCALE, 'en'),
   });
 
   // Second admin: a plain ADMIN with no founder profile. The display name is
@@ -84,7 +96,7 @@ async function main() {
     process.env.ADMIN2_EMAIL,
     process.env.ADMIN2_PASSWORD,
     { name: admin2Name, title: null, avatar: null, bio: null, specialties: null },
-    { required: false, label: 'second admin' },
+    { required: false, label: 'second admin', defaultLocale: normalizeLocale(process.env.ADMIN2_LOCALE, 'ar') },
   );
 
   // NOTE: The two fabricated coaches ("Sarah Jenkins" and "Marcus Vance") were

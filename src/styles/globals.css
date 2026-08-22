@@ -60,6 +60,13 @@
     }
   }
 
+  /* Mirror directional glyphs (arrows, chevrons) when inside an RTL subtree —
+     e.g. the "back" and "→" markers in the dashboard. Text is unaffected. */
+  [dir='rtl'] .dir-flip {
+    display: inline-block;
+    transform: scaleX(-1);
+  }
+
   /* Interactive Button Micro-press Feedback */
   .btn-press {
     transform: translateZ(0);

@@ -38,6 +38,7 @@ export async function loginAction(formData: FormData) {
       name: user.name,
       email: user.email,
       role: user.role as 'ADMIN' | 'COACH',
+      locale: user.locale === 'ar' ? 'ar' : 'en',
       title: user.title,
       avatar: user.avatar,
     });
@@ -53,6 +54,33 @@ export async function loginAction(formData: FormData) {
 export async function logoutAction() {
   await clearSessionCookie();
   redirect('/login');
+}
+
+/**
+ * Saves the admin/coach interface language to the user's record and re-issues
+ * the session cookie so the change takes effect immediately AND persists across
+ * devices, logout and login (the locale is read from the DB again at each sign
+ * in — see loginAction). The public site is unaffected.
+ */
+export async function updateLocaleAction(locale: string) {
+  const session = await getSession();
+  if (!session) {
+    return { error: 'Unauthorized' };
+  }
+
+  const next = locale === 'ar' ? 'ar' : locale === 'en' ? 'en' : null;
+  if (!next) {
+    return { error: 'Unsupported language.' };
+  }
+
+  try {
+    await db.user.update({ where: { id: session.id }, data: { locale: next } });
+    await setSessionCookie({ ...session, locale: next });
+  } catch {
+    return { error: 'Could not update your language. Please try again.' };
+  }
+
+  return { success: true };
 }
 
 export async function changePasswordAction(formData: FormData) {

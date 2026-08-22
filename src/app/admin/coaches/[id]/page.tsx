@@ -5,12 +5,14 @@ import { PageHeader } from '@/components/dashboard/page-header';
 import { Button, Field, Input, Textarea } from '@/components/ui';
 import { updateCoachAction } from '@/lib/actions/coaches';
 import { topics } from '@/data/topics';
+import { getI18n } from '@/i18n/server';
 
 export default async function EditCoachPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const { t } = await getI18n();
   const { id } = await params;
   const coach = await db.user.findUnique({
     where: { id },
@@ -21,15 +23,15 @@ export default async function EditCoachPage({
   return (
     <div className="space-y-8">
       <PageHeader
-        title={`Edit Coach: ${coach.name}`}
-        description="Update profile, specialties, title, or reset password."
-        badge={coach.role}
+        title={t('coachForm.editTitle', { name: coach.name })}
+        description={t('coachForm.editDescription')}
+        badge={t(`roles.${coach.role}`)}
       >
         <Link
           href="/admin/coaches"
           className="rounded-lg border border-ink-20 bg-cream px-4 py-2 text-small font-semibold text-navy-deep hover:bg-cream-card"
         >
-          ← Back to Roster
+          <span className="dir-flip">←</span> {t('coachForm.backToRoster')}
         </Link>
       </PageHeader>
 
@@ -45,7 +47,7 @@ export default async function EditCoachPage({
           }}
           className="space-y-6"
         >
-          <Field label="Full Name" htmlFor="name">
+          <Field label={t('coachForm.fullName')} htmlFor="name">
             <Input
               id="name"
               name="name"
@@ -55,7 +57,7 @@ export default async function EditCoachPage({
             />
           </Field>
 
-          <Field label="Email Address" htmlFor="email">
+          <Field label={t('coachForm.email')} htmlFor="email">
             <Input
               id="email"
               name="email"
@@ -66,7 +68,7 @@ export default async function EditCoachPage({
             />
           </Field>
 
-          <Field label="Reset Password (Leave blank to keep current)" htmlFor="newPassword">
+          <Field label={t('coachForm.resetPassword')} htmlFor="newPassword">
             <Input
               id="newPassword"
               name="newPassword"
@@ -76,7 +78,7 @@ export default async function EditCoachPage({
             />
           </Field>
 
-          <Field label="Professional Title" htmlFor="title">
+          <Field label={t('coachForm.title')} htmlFor="title">
             <Input
               id="title"
               name="title"
@@ -85,7 +87,7 @@ export default async function EditCoachPage({
             />
           </Field>
 
-          <Field label="Avatar URL" htmlFor="avatar">
+          <Field label={t('coachForm.avatarUrlEdit')} htmlFor="avatar">
             <Input
               id="avatar"
               name="avatar"
@@ -94,7 +96,7 @@ export default async function EditCoachPage({
             />
           </Field>
 
-          <Field label="Biography & Credentials" htmlFor="bio">
+          <Field label={t('coachForm.bio')} htmlFor="bio">
             <Textarea
               id="bio"
               name="bio"
@@ -104,7 +106,7 @@ export default async function EditCoachPage({
             />
           </Field>
 
-          <Field label="Specialties / Topic Slugs" htmlFor="specialties">
+          <Field label={t('coachForm.specialtiesEdit')} htmlFor="specialties">
             <Input
               id="specialties"
               name="specialties"
@@ -112,7 +114,7 @@ export default async function EditCoachPage({
               className="bg-cream"
             />
             <p className="mt-2 text-small text-ink-60">
-              Available: {topics.map((t) => t.slug).join(', ')}
+              {t('coachForm.available', { slugs: topics.map((tp) => tp.slug).join(', ') })}
             </p>
           </Field>
 
@@ -121,10 +123,10 @@ export default async function EditCoachPage({
               href="/admin/coaches"
               className="rounded-lg border border-ink-20 px-6 py-2.5 text-body font-semibold text-ink-70 hover:bg-cream"
             >
-              Cancel
+              {t('coachForm.cancel')}
             </Link>
             <Button type="submit" variant="primary" size="md">
-              Save Changes
+              {t('coachForm.saveChanges')}
             </Button>
           </div>
         </form>

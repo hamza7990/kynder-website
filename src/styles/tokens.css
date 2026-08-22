@@ -91,6 +91,8 @@
   --font-display: var(--font-lora, 'Lora'), Georgia, 'Times New Roman', serif;
   --font-sans: var(--font-inter, 'Inter'), system-ui, -apple-system, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif;
+  /* Arabic UI face (injected by next/font); used only by the dashboard in RTL. */
+  --font-arabic: var(--font-arabic-plex, 'IBM Plex Sans Arabic'), 'Segoe UI', Tahoma, sans-serif;
 
   /* Modular scale ~1.25 — 64 / 48 / 36 / 28 / 22 / 18 / 16 / 14 (px → rem). */
   --fs-display-1: 4rem; /* 64 */

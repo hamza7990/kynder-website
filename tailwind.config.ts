@@ -65,6 +65,7 @@ const config: Config = {
       fontFamily: {
         display: 'var(--font-display)',
         sans: 'var(--font-sans)',
+        arabic: 'var(--font-arabic)',
       },
       fontSize: {
         'display-1': ['var(--fs-display-1)', { lineHeight: 'var(--lh-tight)', letterSpacing: 'var(--tracking-display)' }],

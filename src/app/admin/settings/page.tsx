@@ -2,8 +2,11 @@ import { db } from '@/lib/db';
 import { PageHeader } from '@/components/dashboard/page-header';
 import { Button, Field, Input } from '@/components/ui';
 import { updateSiteSettingsAction } from '@/lib/actions/content';
+import { getI18n } from '@/i18n/server';
+import { LanguageSwitcher } from '@/components/dashboard/language-switcher';
 
 export default async function AdminSettingsPage() {
+  const { t, locale } = await getI18n();
   const settings = await db.siteSetting.findMany();
   const getSetting = (key: string, fallback: string = '') => {
     return settings.find((s) => s.key === key)?.value ?? fallback;
@@ -12,10 +15,14 @@ export default async function AdminSettingsPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Site Settings & Global Config"
-        description="Manage brand identity, contact information, social links, and integrations."
-        badge="System Configuration"
+        title={t('settings.title')}
+        description={t('settings.description')}
+        badge={t('settings.badge')}
       />
+
+      {/* Per-admin interface language. Saved to the user record, so it follows
+          the account across devices — not a browser setting. */}
+      <LanguageSwitcher currentLocale={locale} />
 
       <form
         action={async (formData: FormData) => {
@@ -27,11 +34,11 @@ export default async function AdminSettingsPage() {
         {/* Brand & Identity */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 space-y-6">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            1. Brand Identity
+            1. {t('settings.section1')}
           </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field label="Brand Name" htmlFor="site_name">
+            <Field label={t('settings.brandName')} htmlFor="site_name">
               <Input
                 id="site_name"
                 name="site_name"
@@ -40,7 +47,7 @@ export default async function AdminSettingsPage() {
               />
             </Field>
 
-            <Field label="Tagline" htmlFor="site_tagline">
+            <Field label={t('settings.tagline')} htmlFor="site_tagline">
               <Input
                 id="site_tagline"
                 name="site_tagline"
@@ -50,7 +57,7 @@ export default async function AdminSettingsPage() {
             </Field>
           </div>
 
-          <Field label="Footer Copyright Line" htmlFor="site_copyright">
+          <Field label={t('settings.copyright')} htmlFor="site_copyright">
             <Input
               id="site_copyright"
               name="site_copyright"
@@ -63,11 +70,11 @@ export default async function AdminSettingsPage() {
         {/* Contact Information */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 space-y-6">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            2. Contact & Communications
+            2. {t('settings.section2')}
           </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field label="Primary Contact Email" htmlFor="contact_email">
+            <Field label={t('settings.contactEmail')} htmlFor="contact_email">
               <Input
                 id="contact_email"
                 name="contact_email"
@@ -77,7 +84,7 @@ export default async function AdminSettingsPage() {
               />
             </Field>
 
-            <Field label="Contact Phone / WhatsApp" htmlFor="contact_phone">
+            <Field label={t('settings.contactPhone')} htmlFor="contact_phone">
               <Input
                 id="contact_phone"
                 name="contact_phone"
@@ -92,11 +99,11 @@ export default async function AdminSettingsPage() {
         {/* Social Media */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 space-y-6">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            3. Social Channels
+            3. {t('settings.section3')}
           </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <Field label="LinkedIn URL" htmlFor="social_linkedin">
+            <Field label={t('settings.linkedin')} htmlFor="social_linkedin">
               <Input
                 id="social_linkedin"
                 name="social_linkedin"
@@ -105,7 +112,7 @@ export default async function AdminSettingsPage() {
               />
             </Field>
 
-            <Field label="Instagram URL" htmlFor="social_instagram">
+            <Field label={t('settings.instagram')} htmlFor="social_instagram">
               <Input
                 id="social_instagram"
                 name="social_instagram"
@@ -114,7 +121,7 @@ export default async function AdminSettingsPage() {
               />
             </Field>
 
-            <Field label="YouTube URL" htmlFor="social_youtube">
+            <Field label={t('settings.youtube')} htmlFor="social_youtube">
               <Input
                 id="social_youtube"
                 name="social_youtube"
@@ -128,11 +135,11 @@ export default async function AdminSettingsPage() {
         {/* Integrations */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 space-y-6">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            4. Endpoints & Integrations
+            4. {t('settings.section4')}
           </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field label="Newsletter API Endpoint" htmlFor="newsletter_endpoint">
+            <Field label={t('settings.newsletter')} htmlFor="newsletter_endpoint">
               <Input
                 id="newsletter_endpoint"
                 name="newsletter_endpoint"
@@ -142,7 +149,7 @@ export default async function AdminSettingsPage() {
               />
             </Field>
 
-            <Field label="External Scheduler URL (Optional embed)" htmlFor="scheduler_url">
+            <Field label={t('settings.scheduler')} htmlFor="scheduler_url">
               <Input
                 id="scheduler_url"
                 name="scheduler_url"
@@ -156,7 +163,7 @@ export default async function AdminSettingsPage() {
 
         <div className="flex justify-end">
           <Button type="submit" variant="primary" size="md">
-            Save System Settings
+            {t('settings.saveSystem')}
           </Button>
         </div>
       </form>

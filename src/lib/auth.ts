@@ -5,11 +5,14 @@ import { JWT_SECRET } from './jwt-secret';
 
 const COOKIE_NAME = 'kynder_session';
 
+export type Locale = 'en' | 'ar';
+
 export interface SessionUser {
   id: string;
   name: string;
   email: string;
   role: 'ADMIN' | 'COACH';
+  locale: Locale;
   title?: string | null;
   avatar?: string | null;
 }
@@ -38,6 +41,7 @@ export async function verifySessionToken(token: string): Promise<SessionUser | n
       name: payload.name as string,
       email: payload.email as string,
       role: payload.role as 'ADMIN' | 'COACH',
+      locale: payload.locale === 'ar' ? 'ar' : 'en',
       title: (payload.title as string) || null,
       avatar: (payload.avatar as string) || null,
     };

@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/toast';
 import { toggleCoachStatusAction, deleteCoachAction } from '@/lib/actions/coaches';
+import { useT } from '@/i18n/client';
 
 interface Coach {
   id: string;
@@ -19,6 +20,7 @@ interface Coach {
 
 export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] }) {
   const { showToast } = useToast();
+  const t = useT();
   const [coaches, setCoaches] = useState(initialCoaches);
   const [search, setSearch] = useState('');
   const [isPending, startTransition] = useTransition();
@@ -40,37 +42,40 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
         );
         showToast({
           type: 'success',
-          title: 'Status Changed',
-          message: `${name} is now ${!currentStatus ? 'Active' : 'Inactive'}`,
+          title: t('toast.statusChanged'),
+          message: t('toast.coachNowStatus', {
+            name,
+            status: !currentStatus ? t('statuses.active') : t('statuses.inactive'),
+          }),
         });
       } catch {
         showToast({
           type: 'error',
-          title: 'Failed',
-          message: 'Could not change coach status.',
+          title: t('toast.failed'),
+          message: t('toast.couldNotChangeStatus'),
         });
       }
     });
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to remove ${name}?`)) return;
+    if (!confirm(t('coaches.confirmDelete', { name }))) return;
 
     startTransition(async () => {
       try {
         const res = await deleteCoachAction(id);
         if (res.error) {
-          showToast({ type: 'error', title: 'Action Failed', message: res.error });
+          showToast({ type: 'error', title: t('toast.actionFailed'), message: res.error });
         } else {
           setCoaches((prev) => prev.filter((c) => c.id !== id));
           showToast({
             type: 'info',
-            title: 'Coach Removed',
-            message: res.message || `${name} was deleted.`,
+            title: t('toast.coachRemoved'),
+            message: res.message || t('toast.coachDeleted', { name }),
           });
         }
       } catch {
-        showToast({ type: 'error', title: 'Error', message: 'Could not delete coach.' });
+        showToast({ type: 'error', title: t('toast.error'), message: t('toast.couldNotDelete') });
       }
     });
   };
@@ -84,13 +89,13 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="🔍 Search coach by name, email, specialty..."
-            className="w-full rounded-lg border border-ink-20 bg-cream py-2 pl-3 pr-8 text-small text-navy-deep focus:outline-none focus:ring-1 focus:ring-terracotta transition-colors"
+            placeholder={`🔍 ${t('coaches.searchPlaceholder')}`}
+            className="w-full rounded-lg border border-ink-20 bg-cream py-2 ps-3 pe-8 text-small text-navy-deep focus:outline-none focus:ring-1 focus:ring-terracotta transition-colors"
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-2.5 top-2.5 text-small font-bold text-ink-60 hover:text-navy-deep"
+              className="absolute end-2.5 top-2.5 text-small font-bold text-ink-60 hover:text-navy-deep"
             >
               ✕
             </button>
@@ -98,30 +103,30 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
         </div>
 
         <div className="text-small font-semibold uppercase tracking-eyebrow text-ink-60">
-          Showing {filtered.length} of {coaches.length} Mentors
-          {isPending && <span className="ml-2 text-terracotta-text animate-pulse">Syncing...</span>}
+          {t('coaches.showing', { shown: filtered.length, total: coaches.length })}
+          {isPending && <span className="ms-2 text-terracotta-text animate-pulse">{t('common.syncing')}</span>}
         </div>
       </div>
 
       {/* Coaches Table */}
       <div className="overflow-hidden rounded-2xl border border-ink-10 bg-cream-card shadow-1">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-body">
+          <table className="w-full text-start text-body">
             <thead className="border-b border-ink-10 bg-cream/60 font-sans text-small font-semibold uppercase tracking-eyebrow text-ink-70">
               <tr>
-                <th className="px-6 py-4">Coach</th>
-                <th className="px-6 py-4">Role & Title</th>
-                <th className="px-6 py-4">Specialties</th>
-                <th className="px-6 py-4">Sessions</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4 text-right">Interactive Actions</th>
+                <th className="px-6 py-4 text-start">{t('coaches.thCoach')}</th>
+                <th className="px-6 py-4 text-start">{t('coaches.thRoleTitle')}</th>
+                <th className="px-6 py-4 text-start">{t('coaches.thSpecialties')}</th>
+                <th className="px-6 py-4 text-start">{t('coaches.thSessions')}</th>
+                <th className="px-6 py-4 text-start">{t('coaches.thStatus')}</th>
+                <th className="px-6 py-4 text-end">{t('coaches.thActions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-ink-10">
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-ink-60">
-                    No coaches match your search.
+                    {t('coaches.noMatch')}
                   </td>
                 </tr>
               ) : (
@@ -157,10 +162,10 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                             : 'bg-info-soft text-info'
                         }`}
                       >
-                        {c.role}
+                        {t(`roles.${c.role}`)}
                       </span>
                       <div className="mt-1 text-small text-ink-70">
-                        {c.title || 'Leadership Coach'}
+                        {c.title || t('coaches.defaultTitle')}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -175,13 +180,13 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                             </span>
                           ))
                         ) : (
-                          <span className="text-small text-ink-60">General Topics</span>
+                          <span className="text-small text-ink-60">{t('coaches.generalTopics')}</span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 font-semibold text-navy-deep">
                       <span className="rounded-full bg-ink-10 px-2.5 py-0.5 text-small">
-                        {c._count.bookings} sessions
+                        {t('dashboard.sessionsCount', { count: c._count.bookings })}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -197,15 +202,15 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                             c.isActive ? 'bg-success' : 'bg-ink-40'
                           }`}
                         />
-                        {c.isActive ? 'Active' : 'Inactive'}
+                        {c.isActive ? t('statuses.active') : t('statuses.inactive')}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right space-x-2">
+                    <td className="px-6 py-4 text-end space-x-2">
                       <Link
                         href={`/admin/coaches/${c.id}`}
                         className="inline-block rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-small font-semibold text-navy-deep hover:bg-cream-card btn-press transition-colors"
                       >
-                        ✏️ Edit
+                        ✏️ {t('common.edit')}
                       </Link>
 
                       {c.role !== 'ADMIN' && (
@@ -215,7 +220,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                             onClick={() => handleToggleStatus(c.id, c.isActive, c.name)}
                             className="rounded-md border border-ink-20 bg-cream px-3 py-1.5 text-small font-semibold text-ink-70 hover:bg-cream-card btn-press transition-colors"
                           >
-                            {c.isActive ? '⏸️ Deactivate' : '▶️ Activate'}
+                            {c.isActive ? `⏸️ ${t('coaches.deactivate')}` : `▶️ ${t('coaches.activate')}`}
                           </button>
 
                           <button
@@ -223,7 +228,7 @@ export function LiveCoachesList({ initialCoaches }: { initialCoaches: Coach[] })
                             onClick={() => handleDelete(c.id, c.name)}
                             className="rounded-md border border-danger-soft bg-danger-soft px-3 py-1.5 text-small font-semibold text-danger hover:border-danger btn-press transition-colors"
                           >
-                            🗑️ Delete
+                            🗑️ {t('common.delete')}
                           </button>
                         </>
                       )}

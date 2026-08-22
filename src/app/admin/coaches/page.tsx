@@ -3,8 +3,10 @@ import { db } from '@/lib/db';
 import { PageHeader } from '@/components/dashboard/page-header';
 import { buttonVariants } from '@/components/ui';
 import { LiveCoachesList } from '@/components/dashboard/live-coaches-list';
+import { getI18n } from '@/i18n/server';
 
 export default async function AdminCoachesPage() {
+  const { t } = await getI18n();
   const coaches = await db.user.findMany({
     orderBy: [{ role: 'asc' }, { createdAt: 'desc' }],
     include: {
@@ -17,15 +19,15 @@ export default async function AdminCoachesPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Coach Management Roster"
-        description="Add, edit, deactivate, or assign specialties to coaches with real-time feedback."
-        badge="Team Operations"
+        title={t('coaches.title')}
+        description={t('coaches.description')}
+        badge={t('coaches.badge')}
       >
         <Link
           href="/admin/coaches/new"
           className={buttonVariants({ variant: 'primary', size: 'md' })}
         >
-          + Add New Coach
+          + {t('coaches.addNew')}
         </Link>
       </PageHeader>
 

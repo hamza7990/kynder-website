@@ -2,8 +2,10 @@ import { db } from '@/lib/db';
 import { PageHeader } from '@/components/dashboard/page-header';
 import { Button, Field, Input, Textarea } from '@/components/ui';
 import { updateSiteSettingsAction } from '@/lib/actions/content';
+import { getI18n } from '@/i18n/server';
 
 export default async function AdminAboutPage() {
+  const { t } = await getI18n();
   const settings = await db.siteSetting.findMany();
   const getSetting = (key: string, fallback: string = '') => {
     return settings.find((s) => s.key === key)?.value ?? fallback;
@@ -12,9 +14,9 @@ export default async function AdminAboutPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Dr. Shereen Williams Bio & About CMS"
-        description="Edit founder biography, career background, transformation story, and credentials shown on the public site."
-        badge="Founder & About"
+        title={t('about.title')}
+        description={t('about.description')}
+        badge={t('about.badge')}
       />
 
       <form
@@ -27,11 +29,11 @@ export default async function AdminAboutPage() {
         {/* Section 1: Headshot & Main Titles */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 space-y-6">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            1. Title & Photography
+            1. {t('about.section1')}
           </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field label="Section / Page Heading" htmlFor="about_heading">
+            <Field label={t('about.heading')} htmlFor="about_heading">
               <Input
                 id="about_heading"
                 name="about_heading"
@@ -40,7 +42,7 @@ export default async function AdminAboutPage() {
               />
             </Field>
 
-            <Field label="Portrait Image Path or URL" htmlFor="about_portrait">
+            <Field label={t('about.portrait')} htmlFor="about_portrait">
               <Input
                 id="about_portrait"
                 name="about_portrait"
@@ -50,7 +52,7 @@ export default async function AdminAboutPage() {
             </Field>
           </div>
 
-          <Field label="Introductory Title / Subtitle" htmlFor="about_intro">
+          <Field label={t('about.intro')} htmlFor="about_intro">
             <Input
               id="about_intro"
               name="about_intro"
@@ -66,10 +68,10 @@ export default async function AdminAboutPage() {
         {/* Section 2: Narrative Copy */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 space-y-6">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            2. Detailed Biography & Story
+            2. {t('about.section2')}
           </h2>
 
-          <Field label="Background Bio (First Section)" htmlFor="about_bio">
+          <Field label={t('about.bio')} htmlFor="about_bio">
             <Textarea
               id="about_bio"
               name="about_bio"
@@ -82,7 +84,7 @@ export default async function AdminAboutPage() {
             />
           </Field>
 
-          <Field label="The Story / Corporate Transformation (Second Section)" htmlFor="about_story">
+          <Field label={t('about.story')} htmlFor="about_story">
             <Textarea
               id="about_story"
               name="about_story"
@@ -92,7 +94,7 @@ export default async function AdminAboutPage() {
             />
           </Field>
 
-          <Field label="Credentials, Accreditations & GKI (Third Section)" htmlFor="about_credentials">
+          <Field label={t('about.credentials')} htmlFor="about_credentials">
             <Textarea
               id="about_credentials"
               name="about_credentials"
@@ -109,11 +111,11 @@ export default async function AdminAboutPage() {
         {/* Section 3: Proof Points */}
         <div className="rounded-2xl border border-ink-10 bg-cream-card p-8 shadow-1 space-y-6">
           <h2 className="border-b border-ink-10 pb-3 font-display text-h3 font-bold text-navy-deep">
-            3. Key Credential Proof Points (Numbers)
+            3. {t('about.section3')}
           </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <Field label="Stat 1 (e.g. Doctorate)" htmlFor="stat_1_val">
+            <Field label={t('about.stat1')} htmlFor="stat_1_val">
               <Input
                 id="stat_1_val"
                 name="stat_1_val"
@@ -122,7 +124,7 @@ export default async function AdminAboutPage() {
               />
             </Field>
 
-            <Field label="Stat 2 (e.g. Experience)" htmlFor="stat_2_val">
+            <Field label={t('about.stat2')} htmlFor="stat_2_val">
               <Input
                 id="stat_2_val"
                 name="stat_2_val"
@@ -131,7 +133,7 @@ export default async function AdminAboutPage() {
               />
             </Field>
 
-            <Field label="Stat 3 (e.g. Global Reach)" htmlFor="stat_3_val">
+            <Field label={t('about.stat3')} htmlFor="stat_3_val">
               <Input
                 id="stat_3_val"
                 name="stat_3_val"
@@ -144,7 +146,7 @@ export default async function AdminAboutPage() {
 
         <div className="flex justify-end">
           <Button type="submit" variant="primary" size="md">
-            Save Bio Changes
+            {t('about.saveBio')}
           </Button>
         </div>
       </form>

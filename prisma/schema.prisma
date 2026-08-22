@@ -15,6 +15,7 @@ model User {
   email        String    @unique
   passwordHash String
   role         String    @default("COACH") // "ADMIN" or "COACH"
+  locale       String    @default("en") // admin-interface language: "en" or "ar"
   avatar       String?
   title        String?   // e.g. "Senior Leadership & Culture Coach"
   bio          String?

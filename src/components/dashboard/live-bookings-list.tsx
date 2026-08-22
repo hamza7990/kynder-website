@@ -3,6 +3,8 @@
 import { useState, useTransition } from 'react';
 import { useToast } from '@/components/ui/toast';
 import { updateBookingStatusAction, assignCoachAction } from '@/lib/actions/bookings';
+import { useT } from '@/i18n/client';
+import { formatDateTime } from '@/lib/format';
 
 interface BookingItem {
   id: string;
@@ -37,6 +39,7 @@ export function LiveBookingsList({
   userRole = 'ADMIN',
 }: LiveBookingsListProps) {
   const { showToast } = useToast();
+  const t = useT();
   const [bookings, setBookings] = useState(initialBookings);
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -65,14 +68,14 @@ export function LiveBookingsList({
         );
         showToast({
           type: 'success',
-          title: 'Status Updated',
-          message: `Booking set to ${newStatus}`,
+          title: t('toast.statusUpdated'),
+          message: t('toast.bookingSetTo', { status: t(`statuses.${newStatus}`) }),
         });
       } catch {
         showToast({
           type: 'error',
-          title: 'Update Failed',
-          message: 'Could not update status. Please try again.',
+          title: t('toast.updateFailed'),
+          message: t('toast.couldNotUpdateStatus'),
         });
       }
     });
@@ -96,14 +99,14 @@ export function LiveBookingsList({
         );
         showToast({
           type: 'success',
-          title: 'Coach Assigned',
-          message: assignedCoach ? `Assigned to ${assignedCoach.name}` : 'Unassigned',
+          title: t('toast.coachAssigned'),
+          message: assignedCoach ? t('toast.assignedTo', { name: assignedCoach.name }) : t('toast.unassigned'),
         });
       } catch {
         showToast({
           type: 'error',
-          title: 'Assignment Failed',
-          message: 'Could not assign coach.',
+          title: t('toast.assignmentFailed'),
+          message: t('toast.couldNotAssign'),
         });
       }
     });
@@ -114,7 +117,7 @@ export function LiveBookingsList({
     setCopiedId(id);
     showToast({
       type: 'info',
-      title: 'Copied to Clipboard',
+      title: t('toast.copied'),
       message: text,
     });
     setTimeout(() => setCopiedId(null), 2000);
@@ -138,7 +141,7 @@ export function LiveBookingsList({
                   : 'bg-cream text-ink-80 hover:bg-cream-card hover:text-navy-deep'
               }`}
             >
-              {s}
+              {t(`statuses.${s}`)}
             </button>
           ))}
         </div>
@@ -149,13 +152,13 @@ export function LiveBookingsList({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="🔍 Quick search client, email..."
-            className="w-full rounded-lg border border-ink-20 bg-cream py-2 pl-3 pr-8 text-small text-navy-deep focus:outline-none focus:ring-1 focus:ring-terracotta transition-colors"
+            placeholder={`🔍 ${t('bookings.searchPlaceholder')}`}
+            className="w-full rounded-lg border border-ink-20 bg-cream py-2 ps-3 pe-8 text-small text-navy-deep focus:outline-none focus:ring-1 focus:ring-terracotta transition-colors"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-2.5 text-small font-bold text-ink-60 hover:text-navy-deep"
+              className="absolute end-2.5 top-2.5 text-small font-bold text-ink-60 hover:text-navy-deep"
             >
               ✕
             </button>
@@ -165,16 +168,16 @@ export function LiveBookingsList({
 
       {/* Results Header */}
       <div className="flex items-center justify-between text-small text-ink-60 font-semibold uppercase tracking-eyebrow">
-        <span>Showing {filtered.length} of {bookings.length} Sessions</span>
-        {isPending && <span className="text-terracotta-text animate-pulse">Syncing...</span>}
+        <span>{t('bookings.showing', { shown: filtered.length, total: bookings.length })}</span>
+        {isPending && <span className="text-terracotta-text animate-pulse">{t('common.syncing')}</span>}
       </div>
 
       {/* Cards List */}
       <div className="space-y-4">
         {filtered.length === 0 ? (
           <div className="rounded-xl border border-ink-10 bg-cream-card p-12 text-center text-ink-60 animate-fade-in-up">
-            <p className="text-lead font-semibold text-navy-deep">No matching bookings found.</p>
-            <p className="mt-1 text-small">Try adjusting your search query or status filter.</p>
+            <p className="text-lead font-semibold text-navy-deep">{t('bookings.noMatchTitle')}</p>
+            <p className="mt-1 text-small">{t('bookings.noMatchHint')}</p>
           </div>
         ) : (
           filtered.map((b) => (
@@ -200,12 +203,12 @@ export function LiveBookingsList({
                           : 'bg-warning-soft text-warning pulse-live'
                       }`}
                     >
-                      {b.status}
+                      {t(`statuses.${b.status}`)}
                     </span>
                   </div>
 
                   <p className="text-body text-ink-80">
-                    <strong>Topic:</strong> {b.topicTitle || b.topicSlug}
+                    <strong>{t('bookings.topicInline')}</strong> {b.topicTitle || b.topicSlug}
                   </p>
 
                   <div className="flex flex-wrap items-center gap-3 text-small text-ink-70">
@@ -213,11 +216,11 @@ export function LiveBookingsList({
                     <button
                       onClick={() => copyToClipboard(b.clientEmail, `email-${b.id}`)}
                       className="inline-flex items-center gap-1.5 rounded-md border border-ink-10 bg-cream px-2.5 py-1 text-small font-medium hover:border-terracotta hover:text-terracotta btn-press transition-colors"
-                      title="Click to copy email"
+                      title={t('bookings.copyEmailTitle')}
                     >
                       <span>📧 {b.clientEmail}</span>
                       <span className="text-[10px] opacity-70">
-                        {copiedId === `email-${b.id}` ? '✓ Copied!' : '📋'}
+                        {copiedId === `email-${b.id}` ? `✓ ${t('bookings.copied')}` : '📋'}
                       </span>
                     </button>
 
@@ -225,27 +228,27 @@ export function LiveBookingsList({
                       <button
                         onClick={() => copyToClipboard(b.clientPhone!, `phone-${b.id}`)}
                         className="inline-flex items-center gap-1.5 rounded-md border border-ink-10 bg-cream px-2.5 py-1 text-small font-medium hover:border-terracotta hover:text-terracotta btn-press transition-colors"
-                        title="Click to copy phone"
+                        title={t('bookings.copyPhoneTitle')}
                       >
                         <span>📞 {b.clientPhone}</span>
                         <span className="text-[10px] opacity-70">
-                          {copiedId === `phone-${b.id}` ? '✓ Copied!' : '📋'}
+                          {copiedId === `phone-${b.id}` ? `✓ ${t('bookings.copied')}` : '📋'}
                         </span>
                       </button>
                     )}
 
                     <span className="rounded-md bg-cream px-2.5 py-1 text-small font-medium border border-ink-10">
-                      🗓️ {new Date(b.date).toLocaleString()}
+                      🗓️ {formatDateTime(b.date)}
                     </span>
 
                     <span className="rounded-md bg-cream px-2.5 py-1 text-small font-medium border border-ink-10">
-                      ⏱️ {b.duration} mins
+                      ⏱️ {t('bookings.minutes', { count: b.duration })}
                     </span>
                   </div>
 
                   {b.notes && (
                     <div className="mt-3 rounded-lg bg-cream p-3.5 text-small text-ink-80 border border-ink-10">
-                      <strong className="text-navy-deep">Client Focus Note:</strong> {b.notes}
+                      <strong className="text-navy-deep">{t('bookings.clientFocusNote')}</strong> {b.notes}
                     </div>
                   )}
                 </div>
@@ -255,17 +258,17 @@ export function LiveBookingsList({
                   {userRole === 'ADMIN' && (
                     <div>
                       <label className="mb-1 block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
-                        Assigned Coach
+                        {t('bookings.assignedCoach')}
                       </label>
                       <select
                         value={b.coachId || ''}
                         onChange={(e) => handleCoachAssign(b.id, e.target.value)}
                         className="w-full rounded-lg border border-ink-20 bg-cream p-2 text-small text-navy-deep focus:outline-none focus:ring-1 focus:ring-terracotta transition-colors cursor-pointer"
                       >
-                        <option value="">Unassigned</option>
+                        <option value="">{t('bookings.unassigned')}</option>
                         {coaches.map((c) => (
                           <option key={c.id} value={c.id}>
-                            {c.name} ({c.role})
+                            {c.name} ({t(`roles.${c.role}`)})
                           </option>
                         ))}
                       </select>
@@ -275,7 +278,7 @@ export function LiveBookingsList({
                   {/* Interactive Status Changer */}
                   <div>
                     <label className="mb-1 block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
-                      Action Status
+                      {t('bookings.actionStatus')}
                     </label>
                     <div className="grid grid-cols-2 gap-1.5">
                       {['CONFIRMED', 'COMPLETED', 'CANCELLED', 'PENDING'].map((st) => (
@@ -292,7 +295,7 @@ export function LiveBookingsList({
                           {st === 'CONFIRMED' && '✓ '}
                           {st === 'COMPLETED' && '⭐ '}
                           {st === 'CANCELLED' && '✕ '}
-                          {st}
+                          {t(`statuses.${st}`)}
                         </button>
                       ))}
                     </div>

@@ -3,20 +3,22 @@ import { PageHeader } from '@/components/dashboard/page-header';
 import { Button, Field, Input, Textarea } from '@/components/ui';
 import { createCoachAction } from '@/lib/actions/coaches';
 import { topics } from '@/data/topics';
+import { getI18n } from '@/i18n/server';
 
-export default function NewCoachPage() {
+export default async function NewCoachPage() {
+  const { t } = await getI18n();
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Add New Coach"
-        description="Register a new leadership coach into the KYNDER system."
-        badge="Onboarding"
+        title={t('coachForm.newTitle')}
+        description={t('coachForm.newDescription')}
+        badge={t('coachForm.newBadge')}
       >
         <Link
           href="/admin/coaches"
           className="rounded-lg border border-ink-20 bg-cream px-4 py-2 text-small font-semibold text-navy-deep hover:bg-cream-card"
         >
-          ← Back to Roster
+          <span className="dir-flip">←</span> {t('coachForm.backToRoster')}
         </Link>
       </PageHeader>
 
@@ -32,75 +34,75 @@ export default function NewCoachPage() {
           }}
           className="space-y-6"
         >
-          <Field label="Full Name" htmlFor="name">
+          <Field label={t('coachForm.fullName')} htmlFor="name">
             <Input
               id="name"
               name="name"
               required
-              placeholder="e.g. Layla Al-Mansoor"
+              placeholder={t('coachForm.fullNamePlaceholder')}
               className="bg-cream"
             />
           </Field>
 
-          <Field label="Email Address" htmlFor="email">
+          <Field label={t('coachForm.email')} htmlFor="email">
             <Input
               id="email"
               name="email"
               type="email"
               required
-              placeholder="coach.name@kynder.com"
+              placeholder={t('coachForm.emailPlaceholder')}
               className="bg-cream"
             />
           </Field>
 
-          <Field label="Temporary Password" htmlFor="password">
+          <Field label={t('coachForm.tempPassword')} htmlFor="password">
             <Input
               id="password"
               name="password"
               type="password"
               required
-              placeholder="Min 6 characters"
+              placeholder={t('coachForm.tempPasswordPlaceholder')}
               className="bg-cream"
             />
           </Field>
 
-          <Field label="Professional Title" htmlFor="title">
+          <Field label={t('coachForm.title')} htmlFor="title">
             <Input
               id="title"
               name="title"
-              placeholder="e.g. Senior Executive & Transformation Coach"
+              placeholder={t('coachForm.titlePlaceholder')}
               className="bg-cream"
             />
           </Field>
 
-          <Field label="Avatar URL (Optional)" htmlFor="avatar">
+          <Field label={t('coachForm.avatarUrl')} htmlFor="avatar">
             <Input
               id="avatar"
               name="avatar"
-              placeholder="/images/coach.jpg or https://..."
+              placeholder={t('coachForm.avatarUrlPlaceholder')}
               className="bg-cream"
             />
           </Field>
 
-          <Field label="Biography & Credentials" htmlFor="bio">
+          <Field label={t('coachForm.bio')} htmlFor="bio">
             <Textarea
               id="bio"
               name="bio"
               rows={4}
-              placeholder="Coach background, experience across regions, ICF accreditations..."
+              placeholder={t('coachForm.bioPlaceholder')}
               className="bg-cream"
             />
           </Field>
 
-          <Field label="Specialties / Topic Slugs (Comma-separated)" htmlFor="specialties">
+          <Field label={t('coachForm.specialties')} htmlFor="specialties">
             <Input
               id="specialties"
               name="specialties"
-              placeholder="e.g. having-hard-conversations, building-trust-as-a-new-manager"
+              placeholder={t('coachForm.specialtiesPlaceholder')}
               className="bg-cream"
             />
             <p className="mt-2 text-small text-ink-60">
-              Available topics: {topics.map((t) => t.slug).join(', ')}
+              {t('coachForm.availableTopics', { slugs: topics.map((tp) => tp.slug).join(', ') })}
             </p>
           </Field>
 
@@ -109,10 +111,10 @@ export default function NewCoachPage() {
               href="/admin/coaches"
               className="rounded-lg border border-ink-20 px-6 py-2.5 text-body font-semibold text-ink-70 hover:bg-cream"
             >
-              Cancel
+              {t('coachForm.cancel')}
             </Link>
             <Button type="submit" variant="primary" size="md">
-              Create Coach Account
+              {t('coachForm.createAccount')}
             </Button>
           </div>
         </form>

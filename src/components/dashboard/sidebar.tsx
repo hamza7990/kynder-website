@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/cn';
 import { logoutAction } from '@/lib/actions/auth';
+import { useT } from '@/i18n/client';
 import type { SessionUser } from '@/lib/auth';
 
 interface SidebarProps {
@@ -12,36 +13,37 @@ interface SidebarProps {
 
 export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname() ?? '';
+  const t = useT();
   const isAdmin = user.role === 'ADMIN';
 
   const adminNav = [
-    { label: 'Overview', href: '/admin', icon: '📊' },
-    { label: 'Coaches Roster', href: '/admin/coaches', icon: '👥' },
-    { label: 'Session Bookings', href: '/admin/bookings', icon: '📅' },
-    { label: 'Contact Messages', href: '/admin/messages', icon: '✉️' },
-    { label: 'Hero & Home CMS', href: '/admin/content', icon: '🏠' },
-    { label: '10 Leadership Questions', href: '/admin/questions', icon: '❓' },
-    { label: '15 Coaching Topics', href: '/admin/topics', icon: '🏷️' },
-    { label: 'About Dr. Shereen', href: '/admin/about', icon: '👩‍💼' },
-    { label: 'Settings & Brand', href: '/admin/settings', icon: '⚙️' },
+    { label: t('sidebar.nav.overview'), href: '/admin', icon: '📊' },
+    { label: t('sidebar.nav.coaches'), href: '/admin/coaches', icon: '👥' },
+    { label: t('sidebar.nav.bookings'), href: '/admin/bookings', icon: '📅' },
+    { label: t('sidebar.nav.messages'), href: '/admin/messages', icon: '✉️' },
+    { label: t('sidebar.nav.content'), href: '/admin/content', icon: '🏠' },
+    { label: t('sidebar.nav.questions'), href: '/admin/questions', icon: '❓' },
+    { label: t('sidebar.nav.topics'), href: '/admin/topics', icon: '🏷️' },
+    { label: t('sidebar.nav.about'), href: '/admin/about', icon: '👩‍💼' },
+    { label: t('sidebar.nav.settings'), href: '/admin/settings', icon: '⚙️' },
   ];
 
   const coachNav = [
-    { label: 'My Bookings', href: '/coach', icon: '📅' },
-    { label: 'My Profile & Bio', href: '/coach/profile', icon: '👤' },
+    { label: t('sidebar.nav.myBookings'), href: '/coach', icon: '📅' },
+    { label: t('sidebar.nav.myProfile'), href: '/coach/profile', icon: '👤' },
   ];
 
   const links = isAdmin ? adminNav : coachNav;
 
   return (
-    <aside className="flex h-screen w-72 flex-col border-r border-ink-10 bg-cream p-5">
+    <aside className="flex h-screen w-72 flex-col border-e border-ink-10 bg-cream p-5">
       {/* Brand Header */}
       <div className="flex items-center justify-between border-b border-ink-10 pb-5">
         <Link href="/" className="font-display text-h3 font-bold tracking-wider text-navy-deep hover:opacity-90">
           KYNDER
         </Link>
         <span className="rounded-full bg-navy-deep px-2.5 py-0.5 text-small font-semibold text-cream uppercase tracking-wider">
-          {isAdmin ? '👑 Admin' : '🧑‍💼 Coach'}
+          {isAdmin ? `👑 ${t('sidebar.adminBadge')}` : `🧑‍💼 ${t('sidebar.coachBadge')}`}
         </span>
       </div>
 
@@ -67,7 +69,7 @@ export function Sidebar({ user }: SidebarProps) {
       </div>
 
       {/* Navigation List */}
-      <nav className="flex-1 space-y-1 overflow-y-auto pr-1">
+      <nav className="flex-1 space-y-1 overflow-y-auto pe-1">
         {links.map((item) => {
           const isActive =
             item.href === '/admin' || item.href === '/coach'
@@ -100,7 +102,7 @@ export function Sidebar({ user }: SidebarProps) {
           className="flex items-center gap-2.5 rounded-lg px-3.5 py-2 text-small text-ink-70 hover:bg-cream-card hover:text-navy-deep transition-colors"
         >
           <span>🌐</span>
-          <span>Open Live Website</span>
+          <span>{t('sidebar.openWebsite')}</span>
         </Link>
 
         <form
@@ -113,7 +115,7 @@ export function Sidebar({ user }: SidebarProps) {
             className="flex w-full items-center gap-2.5 rounded-lg px-3.5 py-2 text-small font-semibold text-terracotta-text hover:bg-cream-card transition-colors"
           >
             <span>🚪</span>
-            <span>Sign Out</span>
+            <span>{t('sidebar.signOut')}</span>
           </button>
         </form>
       </div>
