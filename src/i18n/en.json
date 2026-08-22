@@ -308,6 +308,27 @@
     "scheduler": "External Scheduler URL (Optional embed)",
     "saveSystem": "Save System Settings"
   },
+  "imageUpload": {
+    "dropHint": "Drag & drop an image here, or click to choose",
+    "hint": "JPEG, PNG or WebP · up to 10 MB",
+    "choose": "Choose image",
+    "replace": "Replace",
+    "remove": "Remove",
+    "uploading": "Uploading…",
+    "current": "Current image",
+    "preview": "Preview",
+    "noImage": "No image set",
+    "err": {
+      "unauthorized": "You must be signed in as an admin to upload.",
+      "no_file": "No file was selected.",
+      "bad_type": "Unsupported file type. Use JPEG, PNG or WebP.",
+      "too_large": "That image is too large. Maximum size is 10 MB.",
+      "not_image": "That file is not a valid image.",
+      "too_small": "That image is too small (minimum 200×200px).",
+      "upload_failed": "Upload failed. Please try again.",
+      "network": "Upload failed — check your connection and try again."
+    }
+  },
   "profile": {
     "languageHeading": "Interface Language",
     "languageDescription": "Choose the language for your dashboard. This is saved to your account and follows you across devices. The public website is unaffected.",

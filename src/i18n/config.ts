@@ -7,10 +7,7 @@ export type Locale = (typeof locales)[number];
 // English is the source of truth for the key shape; Arabic mirrors it.
 export type Dictionary = typeof en;
 
-const dictionaries: Record<Locale, Dictionary> = {
-  en,
-  ar: ar as Dictionary,
-};
+const dictionaries: Record<Locale, Dictionary> = { en, ar };
 
 export function isLocale(value: unknown): value is Locale {
   return value === 'en' || value === 'ar';

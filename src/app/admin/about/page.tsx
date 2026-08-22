@@ -3,6 +3,7 @@ import { PageHeader } from '@/components/dashboard/page-header';
 import { Button, Field, Input, Textarea } from '@/components/ui';
 import { updateSiteSettingsAction } from '@/lib/actions/content';
 import { getI18n } from '@/i18n/server';
+import { ImageUpload } from '@/components/dashboard/image-upload';
 
 export default async function AdminAboutPage() {
   const { t } = await getI18n();
@@ -43,11 +44,10 @@ export default async function AdminAboutPage() {
             </Field>
 
             <Field label={t('about.portrait')} htmlFor="about_portrait">
-              <Input
-                id="about_portrait"
+              <ImageUpload
                 name="about_portrait"
                 defaultValue={getSetting('about_portrait', '/shereen-williams.jpg')}
-                className="bg-cream"
+                aspectClass="aspect-[4/5]"
               />
             </Field>
           </div>

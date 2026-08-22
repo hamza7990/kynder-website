@@ -20,11 +20,12 @@ export default async function AboutPage() {
       <PersonJsonLd />
       <Container>
         <div className="grid gap-12 md:grid-cols-2 md:items-start">
-          {/* Portrait: renders a real image when the path is set, or falls
-              back to the PENDING placeholder frame if still unresolved. */}
+          {/* Portrait: renders a real image when a local path or uploaded URL is
+              set, or falls back to the PENDING placeholder frame if unresolved.
+              The 4/5 frame is reserved in both cases so nothing shifts. */}
           <Reveal immediate>
             <div className="mx-auto w-full max-w-[24rem]">
-              {about.portrait.startsWith('/') ? (
+              {/^(https?:\/\/|\/)/.test(about.portrait) ? (
                 <img
                   src={about.portrait}
                   alt="Dr Shereen Williams"

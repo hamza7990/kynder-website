@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import type * as AuthModule from '@/lib/auth';
 
 // The public site MUST stay English + left-to-right no matter who is signed in.
 // The per-admin Arabic/RTL interface is confined to the dashboard subtree.
@@ -8,18 +9,20 @@ import { describe, expect, it, vi } from 'vitest';
 // prove the public root layout is unaffected, while the admin layout mirrors.
 
 vi.mock('@/lib/auth', async () => {
-  const actual = await vi.importActual<typeof import('@/lib/auth')>('@/lib/auth');
+  const actual: typeof AuthModule = await vi.importActual('@/lib/auth');
   return {
     ...actual,
-    getSession: vi.fn(async () => ({
-      id: 'u1',
-      name: 'Admin',
-      email: 'admin@example.com',
-      role: 'ADMIN' as const,
-      locale: 'ar' as const,
-      title: null,
-      avatar: null,
-    })),
+    getSession: vi.fn(() =>
+      Promise.resolve({
+        id: 'u1',
+        name: 'Admin',
+        email: 'admin@example.com',
+        role: 'ADMIN' as const,
+        locale: 'ar' as const,
+        title: null,
+        avatar: null,
+      }),
+    ),
   };
 });
 
@@ -41,7 +44,7 @@ describe('interface-language isolation', () => {
       usePathname: () => '/admin',
     }));
     vi.doMock('@/i18n/server', () => ({
-      getI18n: vi.fn(async () => ({ locale: 'ar', dir: 'rtl', t: (k: string) => k })),
+      getI18n: vi.fn(() => Promise.resolve({ locale: 'ar', dir: 'rtl', t: (k: string) => k })),
     }));
     vi.doMock('@/lib/actions/auth', () => ({ logoutAction: vi.fn() }));
 
