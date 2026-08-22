@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <section className="py-section-lg">
       <Container>
-        <div className="mx-auto flex max-w-[42rem] flex-col gap-8">
+        <div className="flex max-w-[42rem] flex-col gap-8">
           <div className="flex flex-col gap-4">
             <h1 className="font-display text-h2 tracking-display text-navy-deep md:text-display-2">
               {contact.heading}

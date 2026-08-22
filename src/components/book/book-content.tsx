@@ -4,8 +4,12 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { buttonVariants } from '@/components/ui';
 import { book } from '@/data/book';
+import { site } from '@/data/site';
 import { topics } from '@/data/topics';
 import { SchedulerEmbed } from './scheduler-embed';
+import { DirectBookingForm } from './direct-booking-form';
+
+const isPending = (value: string) => value.startsWith('[PENDING');
 
 function NoTopic() {
   return (
@@ -56,7 +60,13 @@ export function BookContent() {
         </dl>
       </div>
 
-      <SchedulerEmbed topicSlug={topic.slug} />
+      {/* Direct booking saves to the database and is the active path. Once an
+          external scheduler URL is configured, the embed takes over instead. */}
+      {isPending(site.schedulerBaseUrl) ? (
+        <DirectBookingForm topicSlug={topic.slug} topicTitle={topic.title} />
+      ) : (
+        <SchedulerEmbed topicSlug={topic.slug} />
+      )}
     </div>
   );
 }

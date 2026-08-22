@@ -1,33 +1,25 @@
-# Netlify configuration for the KYNDER static export.
-# Docs for editors: docs/HANDOVER.md · Architecture: docs/ARCHITECTURE.md
+# ⚠️ Vercel is the recommended host for this app (see docs/DEPLOY.md). This file
+# is kept as a working Netlify SSR fallback. KYNDER is NO LONGER a static export —
+# it is a server-rendered Next.js App Router app with Server Actions and Prisma,
+# so the old `output: 'export'` / `publish = "out"` setup does not apply.
 
 [build]
-  command = "npm run build"   # runs prebuild content validation, then next build
-  publish = "out"             # next.config.mjs output: 'export'
+  # Runs DB migrations, then the SSR build. The @netlify/plugin-nextjs plugin
+  # handles serving the server-rendered output.
+  command = "prisma generate && prisma migrate deploy && next build"
+  publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "22"         # pinned; matches .github/workflows/ci.yml
+  NODE_VERSION = "22"
   NPM_FLAGS = "--no-audit --no-fund"
 
-# Production (default context) builds WITHOUT ALLOW_PENDING, so the
-# content-validation gate blocks a deploy while any brief copy is still
-# "[PENDING: …]". This is intentional — see docs/HANDOVER.md.
-
-# Deploy Previews (opened automatically on every PR) and branch deploys may build
-# with unresolved placeholders so the pipeline keeps running during authoring.
-[context.deploy-preview.environment]
-  ALLOW_PENDING = "true"
-
-[context.branch-deploy.environment]
-  ALLOW_PENDING = "true"
+# Official Next.js runtime for Netlify (SSR, Server Actions, route handlers).
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 # ── Security headers (applied to every response) ─────────────────────────────
-# CSP is currently scoped to first-party + Plausible. When the scheduler, form or
-# newsletter integrations are connected, add their origins:
-#   • scheduler embed  → frame-src   (replace 'none')
-#   • form / newsletter POST targets → connect-src
-# 'unsafe-inline' is required by Next's inline bootstrap/RSC scripts and React
-# inline style attributes in a static export (no nonces available); documented.
+# NOTE: 'unsafe-inline' is required by Next's inline bootstrap/RSC scripts. When
+# a scheduler embed is connected, add its origin to frame-src (replace 'none').
 [[headers]]
   for = "/*"
   [headers.values]
@@ -37,19 +29,9 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     X-Frame-Options = "DENY"
-    # HTML: always revalidate so content updates go live immediately.
-    Cache-Control = "public, max-age=0, must-revalidate"
 
-# ── Cache headers ────────────────────────────────────────────────────────────
-# Hashed build assets are immutable and safe to cache for a year (overrides the
-# revalidate default above for this path).
+# Hashed build assets are immutable and safe to cache for a year.
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-# Generated OG image + favicon: cache for a day.
-[[headers]]
-  for = "/opengraph-image"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"

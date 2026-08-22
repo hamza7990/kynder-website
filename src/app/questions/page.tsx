@@ -5,10 +5,15 @@ import { closingCta, closingLine, heading } from '@/data/questions';
 import { QuestionsExperience } from '@/components/questions/questions-experience';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
 import { FaqJsonLd } from '@/components/seo/faq-json-ld';
+import { getQuestionsContent } from '@/lib/content';
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.questions, heading);
 
-export default function QuestionsPage() {
+// Rendered per request so admin edits to questions appear immediately.
+export const dynamic = 'force-dynamic';
+
+export default async function QuestionsPage() {
+  const questions = await getQuestionsContent();
   return (
     <section className="py-section-lg">
       <FaqJsonLd />
@@ -18,11 +23,11 @@ export default function QuestionsPage() {
         </h1>
 
         <div className="mt-12">
-          <QuestionsExperience />
+          <QuestionsExperience questions={questions} />
         </div>
 
         <div className="mt-16 flex flex-col items-start gap-6 border-t border-ink-10 pt-12">
-          <p className="max-w-[60ch] text-lead text-ink-80">{closingLine}</p>
+          <p className="max-w-[54ch] text-lead text-ink-80">{closingLine}</p>
           <TrackLink
             event="booking_cta_click"
             href="/book"

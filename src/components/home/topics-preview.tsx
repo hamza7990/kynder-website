@@ -1,15 +1,21 @@
 import Link from 'next/link';
 import { buttonVariants, Card, Container, SectionHeader } from '@/components/ui';
 import { Reveal, staggerDelay } from '@/lib/motion';
-import { topicsPreview } from '@/data/home';
-import { topics } from '@/data/topics';
+import { topicsPreview as staticTopicsPreview } from '@/data/home';
+import { topics as staticTopics, type Topic } from '@/data/topics';
 import { Section } from './section';
 
 // Six topic cards, each routing to /book pre-filled with that topic's slug.
-// No coach names, photos or bios — visitors choose a topic, not a face.
-const preview = topics.slice(0, topicsPreview.count);
-
-export function TopicsPreview() {
+// No coach names, photos or bios — visitors choose a topic, not a face. Topics
+// come from the DB (falling back to topics.ts) so admin edits appear here too.
+export function TopicsPreview({
+  topics = staticTopics,
+  topicsPreview = staticTopicsPreview,
+}: {
+  topics?: Topic[];
+  topicsPreview?: typeof staticTopicsPreview;
+}) {
+  const preview = topics.slice(0, topicsPreview.count);
   return (
     // 120 padding; cream-card surface — a deliberate shift that groups the six
     // topic cards into one "browse" zone, set apart from the narrative sections.

@@ -28,8 +28,8 @@ export const site: SiteConfig = {
   // example.com fallback keeps metadataBase a valid URL but ships wrong
   // canonical/OG links, so it is tracked as a launch-blocking PENDING.
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com').replace(/\/$/, ''),
-  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE ?? '[PENDING: tagline]',
-  copyright: process.env.NEXT_PUBLIC_SITE_COPYRIGHT ?? '[PENDING: copyright]',
+  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE ?? 'Kind leadership is strong leadership.',
+  copyright: process.env.NEXT_PUBLIC_SITE_COPYRIGHT ?? '© 2025 KYNDER. All rights reserved.',
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '[PENDING: contact email]',
   social: {
     linkedin: process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? '[PENDING: linkedin url]',

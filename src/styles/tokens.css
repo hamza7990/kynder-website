@@ -6,8 +6,11 @@
  * (see `tailwind.config.ts`). Components reference tokens ONLY — never raw hex.
  *
  * PALETTE RULE: the seven brand colours below are the ONLY hex values in the
- * codebase. All other colour values are opacity-derived from them via
- * color-mix(..., transparent). No pure white, no pure black, no grey, no glows.
+ * public/brand palette. All other brand colour values are opacity-derived from
+ * them via color-mix(..., transparent). No pure white, no pure black, no grey,
+ * no glows. The one sanctioned exception is the UI-STATE group further down
+ * (success/danger/warning/info) — functional status hues used ONLY by the
+ * internal admin/coach dashboards, deliberately kept out of the brand palette.
  *
  * ACCESSIBILITY NOTE ON ACCENTS: --terracotta and --gold do not reach 4.5:1
  * against --cream / --cream-card, so they are used for FILLS, BORDERS, ICONS,
@@ -66,12 +69,30 @@
   --navy-active: color-mix(in srgb, var(--navy) 82%, var(--cream));
 
   /* ============================================================= *
+   * UI STATE — admin/internal only (NOT brand colours)
+   * Four muted semantic status hues for the internal admin/coach
+   * dashboards (status badges, delete affordances). Kept out of the
+   * public brand palette above. Each `*-soft` is a light tint for badge
+   * backgrounds; the base hue is AA as text on cream and on its own soft.
+   * ============================================================= */
+  --success: #3f6a46;
+  --success-soft: color-mix(in srgb, var(--success) 15%, transparent);
+  --danger: #a8433a;
+  --danger-soft: color-mix(in srgb, var(--danger) 15%, transparent);
+  --warning: #8a5a12;
+  --warning-soft: color-mix(in srgb, var(--warning) 16%, transparent);
+  --info: #3a5c82;
+  --info-soft: color-mix(in srgb, var(--info) 15%, transparent);
+
+  /* ============================================================= *
    * TYPOGRAPHY
    * ============================================================= */
   /* --font-lora / --font-inter are injected on <html> by next/font. */
   --font-display: var(--font-lora, 'Lora'), Georgia, 'Times New Roman', serif;
   --font-sans: var(--font-inter, 'Inter'), system-ui, -apple-system, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif;
+  /* Arabic UI face (injected by next/font); used only by the dashboard in RTL. */
+  --font-arabic: var(--font-arabic-plex, 'IBM Plex Sans Arabic'), 'Segoe UI', Tahoma, sans-serif;
 
   /* Modular scale ~1.25 — 64 / 48 / 36 / 28 / 22 / 18 / 16 / 14 (px → rem). */
   --fs-display-1: 4rem; /* 64 */

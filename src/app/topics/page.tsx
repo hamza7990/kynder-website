@@ -1,15 +1,20 @@
 import type { Metadata } from 'next';
 import { Container } from '@/components/ui';
 import { Reveal, staggerDelay } from '@/lib/motion';
-import { clusters, heading, intro, moreLine, topics, trustMarkers } from '@/data/topics';
+import { clusters, heading, intro, moreLine, trustMarkers } from '@/data/topics';
 import { CoachPool } from '@/components/topics/coach-pool';
 import { TopicCard } from '@/components/topics/topic-card';
 import { ServiceJsonLd } from '@/components/seo/service-json-ld';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { getTopicsContent } from '@/lib/content';
 
 export const metadata: Metadata = buildPageMetadata(pageSeo.topics, heading);
 
-export default function TopicsPage() {
+// Rendered per request so admin edits to topics appear immediately.
+export const dynamic = 'force-dynamic';
+
+export default async function TopicsPage() {
+  const topics = await getTopicsContent();
   return (
     <section className="py-section-lg">
       <ServiceJsonLd />
@@ -48,7 +53,7 @@ export default function TopicsPage() {
         </div>
 
         <div className="mt-16 flex flex-col items-center gap-8 border-t border-ink-10 pt-12 text-center">
-          <p className="max-w-[60ch] text-lead text-ink-80">{moreLine}</p>
+          <p className="max-w-[54ch] text-lead text-ink-80">{moreLine}</p>
           <ul className="flex flex-wrap justify-center gap-3">
             {trustMarkers.map((marker) => (
               <li key={marker}>

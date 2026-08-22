@@ -38,8 +38,7 @@
 }
 
 @layer components {
-  /* Shared, token-driven focus ring. Every interactive element applies this
-     class so the visible focus indicator is always --terracotta. */
+  /* Shared, token-driven focus ring. */
   .focus-ring {
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -60,11 +59,39 @@
       padding-inline: var(--gutter-lg);
     }
   }
+
+  /* Mirror directional glyphs (arrows, chevrons) when inside an RTL subtree —
+     e.g. the "back" and "→" markers in the dashboard. Text is unaffected. */
+  [dir='rtl'] .dir-flip {
+    display: inline-block;
+    transform: scaleX(-1);
+  }
+
+  /* Interactive Button Micro-press Feedback */
+  .btn-press {
+    transform: translateZ(0);
+    transition-property: transform, opacity, background-color, border-color, color;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  .btn-press:active {
+    transform: scale(0.97);
+  }
+
+  /* Card Hover Lift (GPU accelerated) */
+  .hover-lift {
+    transform: translateZ(0);
+    transition-property: transform, border-color, background-color, box-shadow;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+  }
 }
 
 @layer utilities {
-  /* Ambient decorative motion — a very slow transform-only loop for ripple
-     elements. Animates transform exclusively (no layout, no paint churn). */
+  /* Ambient decorative motion */
   @keyframes kynder-ambient {
     0%,
     100% {
@@ -79,8 +106,7 @@
     will-change: transform;
   }
 
-  /* Very slow, tiny (±4px) transform-only float for the decorative coach-pool
-     circles. Per-circle offset comes from an inline animation-delay. */
+  /* Float */
   @keyframes kynder-float {
     0%,
     100% {
@@ -94,33 +120,64 @@
     animation: kynder-float 6s var(--ease-in-out) infinite;
     will-change: transform;
   }
-}
 
-@layer base {
-  /* Respect users who prefer reduced motion — cancel all transitions,
-     animations and smooth scrolling. */
-  @media (prefers-reduced-motion: reduce) {
-    /* Ambient/float loops are paused entirely (not just slowed). */
-    .animate-ambient,
-    .animate-float {
-      animation: none !important;
+  /* Smooth Fade In Up */
+  @keyframes kynder-fade-in-up {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0);
     }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  .animate-in-up {
+    animation: kynder-fade-in-up 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Smooth Scale In (Modals, badges) */
+  @keyframes kynder-scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .animate-scale-in {
+    animation: kynder-scale-in 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Pulse Glow for Live Status */
+  @keyframes kynder-pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.25);
+    }
+  }
+  .pulse-live {
+    animation: kynder-pulse-glow 2s ease-in-out infinite;
   }
 }
 
 @layer base {
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      transition-delay: 0ms !important;
-      scroll-behavior: auto !important;
+    .animate-ambient,
+    .animate-float,
+    .animate-in-up,
+    .animate-scale-in,
+    .pulse-live,
+    .hover-lift {
+      animation: none !important;
+      transform: none !important;
+      transition: none !important;
     }
   }
 }

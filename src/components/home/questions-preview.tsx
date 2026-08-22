@@ -1,15 +1,21 @@
 import Link from 'next/link';
 import { Badge, buttonVariants, Card, Container, SectionHeader } from '@/components/ui';
 import { Reveal, staggerDelay } from '@/lib/motion';
-import { questionsPreview } from '@/data/home';
-import { questions } from '@/data/questions';
+import { questionsPreview as staticQuestionsPreview } from '@/data/home';
+import { questions as staticQuestions, type Question } from '@/data/questions';
 import { Section } from './section';
 
 // Closed-state previews only — the first `count` questions, each deep-linking to
-// its anchor on /questions. Not expandable here.
-const preview = questions.slice(0, questionsPreview.count);
-
-export function QuestionsPreview() {
+// its anchor on /questions. Not expandable here. Questions come from the DB
+// (falling back to questions.ts) so admin edits appear here too.
+export function QuestionsPreview({
+  questions = staticQuestions,
+  questionsPreview = staticQuestionsPreview,
+}: {
+  questions?: Question[];
+  questionsPreview?: typeof staticQuestionsPreview;
+}) {
+  const preview = questions.slice(0, questionsPreview.count);
   return (
     // 120 padding; cream (default) — stays in the narrative flow after positioning.
     <Section space="md">

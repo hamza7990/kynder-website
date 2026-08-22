@@ -2,26 +2,40 @@ import type { Metadata } from 'next';
 import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants, Container } from '@/components/ui';
 import { Reveal } from '@/lib/motion';
-import { about } from '@/data/about';
-import { proofPoints } from '@/data/home';
+import { about as staticAbout } from '@/data/about';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
 import { PersonJsonLd } from '@/components/seo/person-json-ld';
+import { getAboutContent } from '@/lib/content';
 
-export const metadata: Metadata = buildPageMetadata(pageSeo.about, about.heading);
+export const metadata: Metadata = buildPageMetadata(pageSeo.about, staticAbout.heading);
 
-export default function AboutPage() {
+// Rendered per request so About CMS edits appear immediately.
+export const dynamic = 'force-dynamic';
+
+export default async function AboutPage() {
+  const about = await getAboutContent();
+  const proofPoints = about.proofPoints;
   return (
     <section className="py-section-lg">
       <PersonJsonLd />
       <Container>
         <div className="grid gap-12 md:grid-cols-2 md:items-start">
-          {/* Portrait placeholder frame — fixed 4:5 so no layout shift occurs when
-              the real photograph replaces it. Label is the literal PENDING string. */}
+          {/* Portrait: renders a real image when a local path or uploaded URL is
+              set, or falls back to the PENDING placeholder frame if unresolved.
+              The 4/5 frame is reserved in both cases so nothing shifts. */}
           <Reveal immediate>
             <div className="mx-auto w-full max-w-[24rem]">
-              <div className="flex aspect-[4/5] items-center justify-center rounded-lg border border-ink-20 bg-cream-card p-8 text-center">
-                <span className="text-small text-ink-70">{about.portrait}</span>
-              </div>
+              {/^(https?:\/\/|\/)/.test(about.portrait) ? (
+                <img
+                  src={about.portrait}
+                  alt="Dr Shereen Williams"
+                  className="aspect-[4/5] w-full rounded-lg object-cover object-top shadow-2"
+                />
+              ) : (
+                <div className="flex aspect-[4/5] items-center justify-center rounded-lg border border-ink-20 bg-cream-card p-8 text-center">
+                  <span className="text-small text-ink-70">{about.portrait}</span>
+                </div>
+              )}
             </div>
           </Reveal>
 

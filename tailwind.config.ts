@@ -41,6 +41,12 @@ const config: Config = {
           DEFAULT: 'var(--gold)',
           soft: 'var(--gold-16)',
         },
+        // UI-state colours — internal admin/coach dashboards only (see the
+        // UI STATE block in tokens.css). Not part of the public brand palette.
+        success: { DEFAULT: 'var(--success)', soft: 'var(--success-soft)' },
+        danger: { DEFAULT: 'var(--danger)', soft: 'var(--danger-soft)' },
+        warning: { DEFAULT: 'var(--warning)', soft: 'var(--warning-soft)' },
+        info: { DEFAULT: 'var(--info)', soft: 'var(--info-soft)' },
         cream: {
           DEFAULT: 'var(--cream)',
           card: 'var(--cream-card)',
@@ -59,6 +65,7 @@ const config: Config = {
       fontFamily: {
         display: 'var(--font-display)',
         sans: 'var(--font-sans)',
+        arabic: 'var(--font-arabic)',
       },
       fontSize: {
         'display-1': ['var(--fs-display-1)', { lineHeight: 'var(--lh-tight)', letterSpacing: 'var(--tracking-display)' }],

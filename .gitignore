@@ -20,6 +20,11 @@
 # production
 /build
 
+# local sqlite database (obsolete after the Postgres migration; never commit)
+/dev.db
+/prisma/dev.db
+*.db
+
 # misc
 .DS_Store
 *.pem
