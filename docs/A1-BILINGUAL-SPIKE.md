@@ -36,7 +36,11 @@ Stop after these. Owner approves or rejects the sample before any further transl
     static params, and the switcher must translate the slug. More moving parts.
   - **Recommendation: shared English slugs.** Revisit only if Arabic organic search
     is a stated priority.
-- **Root `/` redirect — static-hosting wrinkle (flagging honestly).** The plan wants
+- **[CORRECTED 2026-08-23 in A2] Root `/` redirect.** A1 assumed static export; the
+  app is actually **SSR** (`next build`/`next start`, `force-dynamic` pages), so
+  middleware runs and the redirect is handled there cleanly — the "wrinkle" below
+  does not apply. Left for the record:
+- ~~**Root `/` redirect — static-hosting wrinkle (flagging honestly).** The plan wants
   Accept-Language detection + a `NEXT_LOCALE` cookie. On a **pure static export**
   there is no server to run middleware, so `/` can't do server-side Accept-Language.
   Options: (a) a Netlify **edge redirect** / `_redirects` rule for `/`, or (b) a tiny

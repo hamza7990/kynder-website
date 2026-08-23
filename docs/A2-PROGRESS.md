@@ -31,20 +31,34 @@ authored here; we build the plumbing + English/Arabic interface labels + fallbac
   - Verified: typecheck ✓, `layout.test.tsx` + `layout.i18n-isolation.test.tsx` ✓
     (public root stays `lang=en`/`dir=ltr`). Full prod build NOT yet run (A2 gate).
 
-- [ ] **Slice 2 — Routing restructure to `[locale]` (the backbone, do next).**
-  - Move public routes under `src/app/[locale]/` with
-    `generateStaticParams()` → `['en','ar']`. Public pages today (to move):
-    `page.tsx` (home), `about`, `book`, `book/confirmed`, `contact`, `questions`,
-    `topics`, `styleguide`. **Do NOT move** `admin`, `coach`, `login`, `api`,
-    `sitemap.ts`, `robots.ts`, `opengraph-image.tsx`, `not-found.tsx` (decide 404).
-  - Public `[locale]/layout.tsx` sets `lang`/`dir` per locale and applies
-    `font-arabic-display`/`font-arabic-body` under `ar`. Root `layout.tsx` keeps
-    `lang=en dir=ltr` on `<html>` (isolation test depends on this — keep it green).
-  - Static-export wrinkle (from A1): root `/` language redirect needs a Netlify edge
-    rule or a client detect — `src/middleware.ts` exists but middleware does NOT run
-    on pure static export. Decide the mechanism explicitly.
-  - Keep **shared English slugs** across locales (switch = prefix swap).
-  - **Commit only when the whole tree compiles and both `/en` and `/ar` render.**
+- [x] **Slice 2 — Routing restructure to `[locale]`** (commit `89b03b8`)
+  - **CORRECTION to A1:** the app is **SSR** (`next build`/`next start`, no
+    `output:'export'`, `force-dynamic` pages), NOT static export. So middleware DOES
+    run and the "static-hosting redirect wrinkle" from A1 does not apply — the root
+    `/` redirect is handled in middleware. (`out/` + lighthouse `./out` are stale
+    artifacts from an earlier static phase; unrelated to A2.)
+  - Moved under `src/app/[locale]/`: home, about, book(+confirmed), contact,
+    questions, topics, styleguide. **Not moved:** admin, coach, login, api,
+    sitemap.ts, robots.ts, opengraph-image.tsx, not-found.tsx, layout.tsx.
+  - `src/middleware.ts`: redirects unprefixed public paths → `/en|/ar`
+    (cookie `NEXT_LOCALE` → Accept-Language → en); sets `x-locale` request header;
+    keeps existing auth protection. Matcher excludes `api`, `_next`,
+    `opengraph-image`, and dotted files.
+  - **`<html lang/dir>` is set by the ROOT layout from the `x-locale` header**
+    (App Router can't set `<html>` from a nested layout). Absent header → en, so the
+    public site never inherits an admin's Arabic session. `[locale]/layout.tsx` only
+    validates the locale (`notFound` otherwise).
+  - Slugs: **shared English** across locales (switch = prefix swap).
+  - Verified: typecheck ✓, 24 unit tests ✓ (incl. isolation), production build ✓
+    (both locales, admin intact, middleware 39.4 kB), force-dynamic NOT frozen ✓.
+    Runtime probe (`next start`): `/about`→307→`/en/about`; `/en`→`<html lang=en
+    dir=ltr>`; `/ar`→`<html lang=ar dir=rtl>` with real content. ✓
+  - **Deferred to later slices (known, intentional):** internal `<Link href>` still
+    point at unprefixed paths (middleware redirects them to the cookie locale — works,
+    but Slice 3 makes links locale-explicit); page `metadata` is still static English
+    on both locales (Slice 3 adds `generateMetadata` + hreflang); `sitemap.ts` still
+    emits unprefixed URLs (Slice 3). Playwright e2e specs hit `/about` etc. and will
+    need `/en` paths — update at the A2 gate.
 
 - [ ] **Slice 3 — Header language switcher + SEO**: switcher on every page (prefix
   swap, preserves path + hash); `hreflang` alternates; both locales in
