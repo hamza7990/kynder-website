@@ -15,5 +15,31 @@
     "open": "Open menu",
     "close": "Close menu",
     "label": "Menu"
+  },
+  "newsletter": {
+    "emailLabel": "Email address",
+    "placeholder": "you@example.com",
+    "submitLabel": "Sign up",
+    "submittingLabel": "Signing up…",
+    "invalidEmail": "Please enter a valid email address.",
+    "notConnected": "Newsletter sign-up is not connected yet. Please check back soon.",
+    "success": "Thanks — you are on the list.",
+    "error": "Something went wrong. Please try again."
+  },
+  "contactForm": {
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "messageLabel": "Message",
+    "submitLabel": "Send message",
+    "submittingLabel": "Sending…",
+    "errors": {
+      "nameRequired": "Please enter your name.",
+      "emailRequired": "Please enter your email address.",
+      "emailInvalid": "Please enter a valid email address.",
+      "messageRequired": "Please enter a message."
+    },
+    "notConnected": "Message sending is not connected yet. Please email us directly for now.",
+    "genericError": "Something went wrong sending your message. Please try again.",
+    "success": "Thanks — your message has been sent."
   }
 }

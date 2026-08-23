@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { Button, Field, Input, Textarea } from '@/components/ui';
 import { contact } from '@/data/contact';
+import { usePublicT } from '@/i18n/public/client';
 import { isBlank, isValidEmail } from '@/lib/validation';
 import { track } from '@/lib/analytics';
 import { submitContactMessage } from '@/lib/actions/contact';
@@ -14,6 +15,7 @@ type Status = 'idle' | 'submitting' | 'success' | 'error';
 const ORDER: FieldName[] = ['name', 'email', 'message'];
 
 export function ContactForm() {
+  const t = usePublicT();
   const [values, setValues] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>('idle');
@@ -23,10 +25,10 @@ export function ContactForm() {
 
   const validate = (): Errors => {
     const next: Errors = {};
-    if (isBlank(values.name)) next.name = contact.form.errors.nameRequired;
-    if (isBlank(values.email)) next.email = contact.form.errors.emailRequired;
-    else if (!isValidEmail(values.email)) next.email = contact.form.errors.emailInvalid;
-    if (isBlank(values.message)) next.message = contact.form.errors.messageRequired;
+    if (isBlank(values.name)) next.name = t('contactForm.errors.nameRequired');
+    if (isBlank(values.email)) next.email = t('contactForm.errors.emailRequired');
+    else if (!isValidEmail(values.email)) next.email = t('contactForm.errors.emailInvalid');
+    if (isBlank(values.message)) next.message = t('contactForm.errors.messageRequired');
     return next;
   };
 
@@ -63,9 +65,9 @@ export function ContactForm() {
 
   const statusMessage =
     status === 'success'
-      ? contact.form.success
+      ? t('contactForm.success')
       : status === 'error'
-        ? contact.form.genericError
+        ? t('contactForm.genericError')
         : '';
 
   return (
@@ -75,7 +77,7 @@ export function ContactForm() {
       aria-label={contact.heading}
       className="flex flex-col gap-6"
     >
-      <Field label={contact.form.nameLabel} htmlFor="contact-name" error={errors.name}>
+      <Field label={t('contactForm.nameLabel')} htmlFor="contact-name" error={errors.name}>
         <Input
           id="contact-name"
           name="name"
@@ -85,7 +87,7 @@ export function ContactForm() {
         />
       </Field>
 
-      <Field label={contact.form.emailLabel} htmlFor="contact-email" error={errors.email}>
+      <Field label={t('contactForm.emailLabel')} htmlFor="contact-email" error={errors.email}>
         <Input
           id="contact-email"
           name="email"
@@ -97,7 +99,7 @@ export function ContactForm() {
         />
       </Field>
 
-      <Field label={contact.form.messageLabel} htmlFor="contact-message" error={errors.message}>
+      <Field label={t('contactForm.messageLabel')} htmlFor="contact-message" error={errors.message}>
         <Textarea
           id="contact-message"
           name="message"
@@ -116,7 +118,7 @@ export function ContactForm() {
       </div>
 
       <Button type="submit" isLoading={status === 'submitting'} className="self-start">
-        {status === 'submitting' ? contact.form.submittingLabel : contact.form.submitLabel}
+        {status === 'submitting' ? t('contactForm.submittingLabel') : t('contactForm.submitLabel')}
       </Button>
 
       <p role="status" aria-live="polite" className="min-h-[1.5rem] text-body font-medium text-navy-deep">

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { track } from '@/lib/analytics';
 import { isValidEmail } from '@/lib/validation';
-import { newsletter } from '@/data/newsletter';
+import { usePublicT } from '@/i18n/public/client';
 import { site } from '@/data/site';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error' | 'notConnected' | 'invalid';
@@ -18,6 +18,7 @@ const isPending = (value: string) => value.startsWith('[PENDING');
  * endpoint is unset it reports honestly as not connected — never a false success.
  */
 export function NewsletterForm() {
+  const t = usePublicT();
   const id = useId();
   const errorId = `${id}-status`;
   const [email, setEmail] = useState('');
@@ -49,13 +50,13 @@ export function NewsletterForm() {
 
   const message =
     status === 'invalid'
-      ? newsletter.invalidEmail
+      ? t('newsletter.invalidEmail')
       : status === 'notConnected'
-        ? newsletter.notConnected
+        ? t('newsletter.notConnected')
         : status === 'success'
-          ? newsletter.success
+          ? t('newsletter.success')
           : status === 'error'
-            ? newsletter.error
+            ? t('newsletter.error')
             : '';
 
   return (
@@ -66,7 +67,7 @@ export function NewsletterForm() {
       className="flex flex-col gap-3"
     >
       <label htmlFor={id} className="font-sans text-small font-medium text-cream">
-        {newsletter.emailLabel}
+        {t('newsletter.emailLabel')}
       </label>
       <div className="flex flex-col gap-2 xs:flex-row">
         <Input
@@ -75,7 +76,7 @@ export function NewsletterForm() {
           name="email"
           inputMode="email"
           autoComplete="email"
-          placeholder={newsletter.placeholder}
+          placeholder={t('newsletter.placeholder')}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           aria-invalid={status === 'invalid' || undefined}
@@ -83,7 +84,7 @@ export function NewsletterForm() {
           className="flex-1"
         />
         <Button type="submit" isLoading={status === 'submitting'}>
-          {status === 'submitting' ? newsletter.submittingLabel : newsletter.submitLabel}
+          {status === 'submitting' ? t('newsletter.submittingLabel') : t('newsletter.submitLabel')}
         </Button>
       </div>
       <p id={errorId} role="status" aria-live="polite" className="min-h-[1.25rem] text-small text-cream">

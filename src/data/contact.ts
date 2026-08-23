@@ -1,30 +1,13 @@
 /**
  * Contact page copy.
  *
- * Field labels, button labels, validation messages and submit-status text are
- * functional UI copy. The page intro is brand voice the brief does not supply, so
- * it is a [PENDING: ...] placeholder. The contact email itself comes from site.ts.
+ * The page heading and intro are client-facing copy (translated in A3). The FORM
+ * field labels, validation and status messages are interface chrome and have moved
+ * into the public interface dictionary (src/i18n/public) as of A2 Slice 4 — see
+ * ContactForm's `usePublicT('contactForm.*')`. The contact email comes from site.ts.
  */
 export const contact = {
   heading: "Contact",
   intro: "Whether you have a question about coaching, want to explore working together or simply need to get in touch — we'd love to hear from you.",
-  form: {
-    nameLabel: "Name",
-    emailLabel: "Email",
-    messageLabel: "Message",
-    submitLabel: "Send message",
-    submittingLabel: "Sending…",
-    errors: {
-      nameRequired: "Please enter your name.",
-      emailRequired: "Please enter your email address.",
-      emailInvalid: "Please enter a valid email address.",
-      messageRequired: "Please enter a message.",
-    },
-    // Shown honestly when FORM_ENDPOINT is unset — never a false success.
-    notConnected:
-      "Message sending is not connected yet. Please email us directly for now.",
-    genericError: "Something went wrong sending your message. Please try again.",
-    success: "Thanks — your message has been sent.",
-  },
   emailFallbackLabel: "Or email us directly:",
 } as const;
