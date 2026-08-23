@@ -87,12 +87,40 @@ authored here; we build the plumbing + English/Arabic interface labels + fallbac
     on `/en/questions#q-03` lands on `/ar/questions` (page-level, not anchor-level).
     Acceptable; enhance with a client hash-carry in Slice 5 if wanted.
 
-- [ ] **Slice 4 — Public interface-label dictionary**: extract public UI strings
-  (~80–120: nav/header/footer/buttons/form labels/validation/empty/error) into a
-  public dictionary (English + Arabic *interface labels* — these ARE allowed in A2;
-  they're interface, not client marketing copy). Reuse the admin i18n translator
-  pattern (`src/i18n/`), but a SEPARATE public dictionary — don't let the dashboard
-  shape the public site.
+- [ ] **Slice 4 — Public interface-label dictionary** (NEXT — start here)
+  - **Goal:** extract public UI *chrome* strings into a public dictionary
+    (English + Arabic interface labels; interface labels ARE allowed in A2).
+  - **SCOPE BOUNDARY — read before extracting.** A2 = interface only. So:
+    - **Extract (interface chrome):** buttons ("Book a 1-on-1 Session"), footer
+      column headings ("Explore"/"Connect"/"Stay in touch"), menu aria labels
+      ("Open menu"/"Close menu"), skip link ("Skip to…"), newsletter form
+      labels/placeholder/button, public FORM field labels + validation messages
+      (book form, contact form), empty/error/success microcopy, 404 chrome.
+    - **DO NOT extract (client marketing copy — stays English until A3):** hero &
+      positioning prose, about bio, the 10 questions + steps, topic titles/blurbs,
+      closing lines, page `<h1>`s that are verbatim brief copy.
+    - **Judgment call to make deliberately:** the NAV labels ("Leadership
+      Questions", "Coaching Topics", "About", "Contact") sit on the fence — nav
+      chrome vs. brand phrasing. Decide with the owner whether to translate them in
+      A2 (interface) or defer to A3 with the page copy for voice consistency. If
+      translated, the Arabic MUST use docs/GLOSSARY-AR.md terms.
+  - **Where the strings live (from a scan):** `src/data/nav.ts` (nav labels +
+    bookingCta), `src/components/layout/{footer,mobile-nav,skip-link,newsletter-form}.tsx`,
+    the public book/contact form components, `src/app/not-found.tsx`. The switcher is
+    already done.
+  - **Architecture:** a SEPARATE public dictionary (do NOT reuse the admin en/ar.json
+    — different audience, different register). Public locale comes from the **URL
+    param / `x-locale`**, NOT the session (that's the admin's mechanism). Mirror the
+    admin split (`src/i18n/client.tsx` + `server.ts` + `config.ts` translator) but
+    with a public dictionary and a URL-locale resolver. Provide the dictionary from
+    `[locale]/layout.tsx` via a public `I18nProvider` so client components
+    (Header/MobileNav) get a `useT`, and expose a server translator for server
+    components (Nav/Footer are server, though currently rendered inside the client
+    AppShell). Keep `src/lib/format.ts` for Western-digit numbers/dates.
+  - **Watch the tests:** header/footer/mobile-nav tests assert by visible label text
+    (e.g. `getByRole('link', { name: item.label })`). If nav labels move behind a
+    translator, those tests need the provider or a default-English fallback so
+    isolated renders still show English. Keep them green.
 
 - [ ] **Slice 5 — RTL logical-CSS sweep + guard test**: convert public components to
   logical properties (`ms/me`, `ps/pe`, `text-start/end`, `inset-inline`); add a
