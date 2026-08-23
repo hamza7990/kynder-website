@@ -87,7 +87,35 @@ authored here; we build the plumbing + English/Arabic interface labels + fallbac
     on `/en/questions#q-03` lands on `/ar/questions` (page-level, not anchor-level).
     Acceptable; enhance with a client hash-carry in Slice 5 if wanted.
 
-- [ ] **Slice 4 — Public interface-label dictionary** (NEXT — start here)
+- [~] **Slice 4 — Public interface-label dictionary** (IN PROGRESS — commit 1/2 done: `74280f4`)
+  - **DONE (commit 1):** built the separate public i18n — `src/i18n/public/`
+    (`en.json`/`ar.json` + `config.ts` translator + `client.tsx` English-defaulting
+    provider + `server.ts`). URL-locale, not session. Root layout resolves the dict
+    and provides it via `AppShell`. Translated GLOBAL CHROME: skip link, footer
+    headings + portal link, mobile-nav aria labels, header/mobile CTA button. Arabic
+    is DRAFT, glossary-consistent; English preserved verbatim. **Nav labels left
+    English** (owner boundary call — see below). Verified: typecheck, full suite
+    (288), build (36 pages), runtime probe (/ar chrome Arabic, /en English).
+  - **Also fixed two latent regressions** the full suite surfaced (Slice 2/3 misses
+    from running targeted tests only): `layout.i18n-isolation` now asserts lang/dir on
+    the `<html>` tag not whole markup (switcher legitimately renders `<a lang="ar">`);
+    `pages-copy.test` + `home.test` now read pages from `src/app/[locale]/`.
+    **Lesson for the gate: run the FULL `npm test`, not targeted subsets.**
+  - **REMAINING (commit 2 — start here next):**
+    - **Newsletter** strings live in `src/data/newsletter.ts` (emailLabel,
+      placeholder, submitLabel, submittingLabel, invalidEmail, notConnected, success,
+      error) — move into the public dict + `usePublicT` in `newsletter-form.tsx`.
+      Test asserts `getByLabelText('Email address')` → keep that English value exact.
+    - **404 chrome** in `src/app/not-found.tsx`.
+    - **Public FORMS** — book + contact form field labels, placeholders, validation
+      messages, submit/success/error microcopy. Read those components first; check
+      their tests (contact/book have suites) before changing.
+  - **OWNER DECISION PENDING — nav labels.** "Leadership Questions", "Coaching
+    Topics", "About", "Contact" are held ENGLISH for now (boundary: no client copy
+    without approval). Consistent with A2 (all /ar content is English until A3). Owner
+    to decide: translate now as interface, or defer to A3 with the page copy. If now,
+    it's a tiny add (author ~4 AR labels using GLOSSARY-AR terms).
+  - **Original goal + scope reference below (unchanged):**
   - **Goal:** extract public UI *chrome* strings into a public dictionary
     (English + Arabic interface labels; interface labels ARE allowed in A2).
   - **SCOPE BOUNDARY — read before extracting.** A2 = interface only. So:
