@@ -13,17 +13,41 @@ resolution.
 
 | # | Decision | Owner | Blocks | Status |
 |---|----------|-------|--------|--------|
-| 1 | Two founders — brief is built on Shereen alone and forbids profiles. Need written confirmation. | Client | B | **OPEN** |
-| 2 | Arabic — does the client want it, and who signs off on the translation? | Client | A (all) | **OPEN** |
-| 3 | Hisham's real bio, title, credentials | Client | B | **OPEN** |
-| 4 | Is bilingual + two founders inside the current fee, or a new line item? | You | All | **OPEN** |
+| 1 | Two founders — brief is built on Shereen alone and forbids profiles. Need written confirmation. | Client | B | **OPEN** — still with client |
+| 2 | Arabic — does the client want it, and who signs off on the translation? | Client | A (all) | **RESOLVED 2026-08-23** — see below |
+| 3 | Hisham's real bio, title, credentials | Client | B | **OPEN** — still with client |
+| 4 | Is bilingual + two founders inside the current fee, or a new line item? | You | All | **RESOLVED 2026-08-23** — owner-handled, not a build blocker |
 | 5 | Do the illustrations exist for all six pillars, or only some? | You | C1 | **OPEN** |
 
 ---
 
 ## Gate approvals & kill decisions
 
-_None yet._
+### 2026-08-23 — Decision 2: Arabic IS in scope
+Confirmed by owner. The whole public site goes bilingual (AR + EN, full RTL).
+**Critical constraint:** the owner reviews the Arabic himself; there is **no
+downstream human translator**. The A1 translation sample is therefore the **only
+quality gate** the Arabic gets — it sets the voice for all 47 remaining steps and
+every other client-facing string. Treat the sample accordingly.
+
+### 2026-08-23 — Decision 4: Fee is owner-handled
+The commercial question (is bilingual + two founders in-scope of the current fee)
+is the owner's to manage. **Not a blocker for build work.**
+
+### 2026-08-23 — Decisions 1 & 3 remain OPEN (block Workstream B only)
+Two-founder confirmation and Hisham's real content are still with the client. They
+block **B**, not **A**. A1/A2/A3 proceed without them.
+
+### 2026-08-23 — Standing guidance from owner (recorded so it isn't lost)
+- **Reuse the admin i18n plumbing, but do not let the dashboard set the public
+  site's shape.** The dashboard is a tool; the public site is the brand. Different
+  requirements. (See [[kynder-deploy-state]].)
+- **IBM Plex Sans Arabic stays for the admin only.** The public type decision is
+  fully open; do not default to Plex for convenience. If A1 recommends it anyway,
+  it must be justified against the editorial brief, not installation convenience.
+- **Steps-as-JSON:** A1 must present both options (parallel `stepsAr` column vs.
+  normalised step table) with a recommendation and the migration cost of each.
+  Owner picks.
 
 <!--
 Append entries as they happen, most recent last, e.g.:
