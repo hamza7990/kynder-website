@@ -1,8 +1,14 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import RootLayout from './layout';
-import HomePage from './page';
+import HomePage from './[locale]/page';
+
+// Root layout reads the public locale from the `x-locale` request header (set by
+// middleware). No header → English default.
+vi.mock('next/headers', () => ({
+  headers: () => Promise.resolve(new Headers()),
+}));
 
 describe('app shell', () => {
   it('root layout renders the html document shell around its children', async () => {

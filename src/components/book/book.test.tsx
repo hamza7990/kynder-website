@@ -7,8 +7,8 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: () => {}, replace: () => {}, prefetch: () => {} }),
 }));
 
-import BookPage from '@/app/book/page';
-import BookingConfirmedPage from '@/app/book/confirmed/page';
+import BookPage from '@/app/[locale]/book/page';
+import BookingConfirmedPage from '@/app/[locale]/book/confirmed/page';
 import { book } from '@/data/book';
 import { topics } from '@/data/topics';
 

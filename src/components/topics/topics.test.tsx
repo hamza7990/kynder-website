@@ -1,6 +1,6 @@
 import { render, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import TopicsPage from '@/app/topics/page';
+import TopicsPage from '@/app/[locale]/topics/page';
 import { clusters, topics } from '@/data/topics';
 
 describe('topics page', () => {

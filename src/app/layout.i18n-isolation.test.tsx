@@ -8,6 +8,13 @@ import type * as AuthModule from '@/lib/auth';
 // We simulate an Arabic-preferring admin being logged in (getSession → ar) and
 // prove the public root layout is unaffected, while the admin layout mirrors.
 
+// Public <html lang/dir> comes from the `x-locale` request header (middleware),
+// NOT from the admin session. With no header the public root is English — which is
+// exactly what must hold even when an Arabic admin is signed in.
+vi.mock('next/headers', () => ({
+  headers: () => Promise.resolve(new Headers()),
+}));
+
 vi.mock('@/lib/auth', async () => {
   const actual: typeof AuthModule = await vi.importActual('@/lib/auth');
   return {

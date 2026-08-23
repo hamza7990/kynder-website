@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import AboutPage from '@/app/about/page';
+import AboutPage from '@/app/[locale]/about/page';
 import { about } from '@/data/about';
 import { proofPoints } from '@/data/home';
 

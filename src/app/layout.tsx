@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { headers } from 'next/headers';
 import { Inter, Lora, IBM_Plex_Sans_Arabic, Markazi_Text, Noto_Sans_Arabic } from 'next/font/google';
 import '@/styles/globals.css';
 import { Analytics } from '@/components/analytics/analytics';
@@ -6,6 +7,7 @@ import { AppShell } from '@/components/layout/app-shell';
 import { site } from '@/data/site';
 import { pageSeo, ogImage } from '@/data/seo';
 import { getSiteContent } from '@/lib/content';
+import { dirFor, isLocale } from '@/i18n/config';
 
 const lora = Lora({
   subsets: ['latin'],
@@ -87,12 +89,21 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // Public locale drives <html lang/dir>. The middleware derives it from the URL
+  // prefix (/en, /ar) and passes it as `x-locale`; a nested layout can't set
+  // <html>. Absent header (admin/coach/login, or non-request contexts) → English,
+  // so the public site never inherits an admin's Arabic session. See
+  // layout.i18n-isolation.test.tsx.
+  const rawLocale = (await headers()).get('x-locale');
+  const locale = isLocale(rawLocale) ? rawLocale : 'en';
+  const dir = dirFor(locale);
+
   // Header/Footer copy is read from the DB (falling back to static site data).
   const siteContent = await getSiteContent();
   return (
     <html
-      lang="en"
-      dir="ltr"
+      lang={locale}
+      dir={dir}
       className={`${lora.variable} ${inter.variable} ${plexArabic.variable} ${markazi.variable} ${notoArabic.variable}`}
     >
       <body>
