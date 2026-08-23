@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Field, Input, Textarea } from '@/components/ui';
+import { usePublicT } from '@/i18n/public/client';
 import { createBookingAction } from '@/lib/actions/bookings';
 
 interface DirectBookingFormProps {
@@ -11,6 +12,7 @@ interface DirectBookingFormProps {
 }
 
 export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormProps) {
+  const t = usePublicT();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormPr
     const notes = formData.get('notes')?.toString().trim();
 
     if (!clientName || !clientEmail || !dateStr) {
-      setError('Please fill in all required fields.');
+      setError(t('bookForm.errors.required'));
       setLoading(false);
       return;
     }
@@ -47,10 +49,10 @@ export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormPr
       if (res.success) {
         router.push('/book/confirmed');
       } else {
-        setError('Failed to book session. Please try again.');
+        setError(t('bookForm.errors.failed'));
       }
     } catch {
-      setError('An error occurred. Please try again.');
+      setError(t('bookForm.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -65,10 +67,11 @@ export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormPr
     <div className="rounded-xl border border-ink-10 bg-cream-card p-8 shadow-1">
       <div className="mb-6 border-b border-ink-10 pb-4">
         <h3 className="font-display text-h3 font-bold text-navy-deep">
-          Request a 1-on-1 Session
+          {t('bookForm.title')}
         </h3>
         <p className="mt-1 text-small text-ink-70">
-          Selected Topic: <span className="font-semibold text-navy-deep">{topicTitle}</span>
+          {t('bookForm.selectedTopicPrefix')}{' '}
+          <span className="font-semibold text-navy-deep">{topicTitle}</span>
         </p>
       </div>
 
@@ -79,38 +82,38 @@ export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormPr
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        <Field label="Your Full Name" htmlFor="clientName">
+        <Field label={t('bookForm.nameLabel')} htmlFor="clientName">
           <Input
             id="clientName"
             name="clientName"
             required
-            placeholder="e.g. Maya Sterling"
+            placeholder={t('bookForm.namePlaceholder')}
             className="bg-cream"
           />
         </Field>
 
-        <Field label="Email Address" htmlFor="clientEmail">
+        <Field label={t('bookForm.emailLabel')} htmlFor="clientEmail">
           <Input
             id="clientEmail"
             name="clientEmail"
             type="email"
             required
-            placeholder="maya@company.com"
+            placeholder={t('bookForm.emailPlaceholder')}
             className="bg-cream"
           />
         </Field>
 
-        <Field label="Phone / WhatsApp (Optional)" htmlFor="clientPhone">
+        <Field label={t('bookForm.phoneLabel')} htmlFor="clientPhone">
           <Input
             id="clientPhone"
             name="clientPhone"
             type="tel"
-            placeholder="+1 555 123 4567"
+            placeholder={t('bookForm.phonePlaceholder')}
             className="bg-cream"
           />
         </Field>
 
-        <Field label="Preferred Date & Time" htmlFor="date">
+        <Field label={t('bookForm.dateLabel')} htmlFor="date">
           <Input
             id="date"
             name="date"
@@ -121,12 +124,12 @@ export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormPr
           />
         </Field>
 
-        <Field label="What would you like to focus on? (Optional)" htmlFor="notes">
+        <Field label={t('bookForm.notesLabel')} htmlFor="notes">
           <Textarea
             id="notes"
             name="notes"
             rows={3}
-            placeholder="Briefly describe the challenge, conversation, or decision you'd like to explore..."
+            placeholder={t('bookForm.notesPlaceholder')}
             className="bg-cream"
           />
         </Field>
@@ -138,7 +141,7 @@ export function DirectBookingForm({ topicSlug, topicTitle }: DirectBookingFormPr
           isLoading={loading}
           className="w-full"
         >
-          Confirm & Request Session
+          {t('bookForm.submit')}
         </Button>
       </form>
     </div>

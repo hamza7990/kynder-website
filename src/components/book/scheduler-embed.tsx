@@ -1,20 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { book } from '@/data/book';
 import { site } from '@/data/site';
+import { usePublicT } from '@/i18n/public/client';
 
 const isPending = (value: string) => value.startsWith('[PENDING');
 
 /** Panel shown while NEXT_PUBLIC_SCHEDULER_URL is unset — never a fake calendar. */
 function NotConnected() {
+  const t = usePublicT();
   return (
     <div
       role="status"
       className="flex min-h-[28rem] flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-ink-20 bg-cream-card p-8 text-center"
     >
-      <p className="font-display text-h4 text-navy-deep">{book.scheduler.notConnectedTitle}</p>
-      <p className="max-w-[40ch] text-body text-ink-70">{book.scheduler.notConnectedBody}</p>
+      <p className="font-display text-h4 text-navy-deep">{t('booking.scheduler.notConnectedTitle')}</p>
+      <p className="max-w-[40ch] text-body text-ink-70">{t('booking.scheduler.notConnectedBody')}</p>
     </div>
   );
 }
@@ -22,6 +23,7 @@ function NotConnected() {
 /** The real embed. Lazy iframe with the topic passed as a prefill query param,
  *  a branded skeleton until it loads, and an email fallback after 8s. */
 function Embed({ topicSlug }: { topicSlug: string | undefined }) {
+  const t = usePublicT();
   const [state, setState] = useState<'loading' | 'ready' | 'failed'>('loading');
 
   useEffect(() => {
@@ -36,9 +38,9 @@ function Embed({ topicSlug }: { topicSlug: string | undefined }) {
         role="status"
         className="flex min-h-[28rem] flex-col items-center justify-center gap-3 rounded-lg border border-ink-20 bg-cream-card p-8 text-center"
       >
-        <p className="font-display text-h4 text-navy-deep">{book.scheduler.fallbackTitle}</p>
+        <p className="font-display text-h4 text-navy-deep">{t('booking.scheduler.fallbackTitle')}</p>
         <p className="text-body text-ink-70">
-          {book.scheduler.fallbackContactPrefix}{' '}
+          {t('booking.scheduler.fallbackContactPrefix')}{' '}
           <a
             href={`mailto:${site.contactEmail}`}
             className="focus-ring rounded-sm text-navy-deep underline transition-colors duration-fast ease-out hover:text-terracotta"
@@ -62,7 +64,7 @@ function Embed({ topicSlug }: { topicSlug: string | undefined }) {
         />
       ) : null}
       <iframe
-        title={book.scheduler.regionLabel}
+        title={t('booking.scheduler.regionLabel')}
         src={src}
         loading="lazy"
         onLoad={() => setState('ready')}
@@ -73,8 +75,9 @@ function Embed({ topicSlug }: { topicSlug: string | undefined }) {
 }
 
 export function SchedulerEmbed({ topicSlug }: { topicSlug?: string }) {
+  const t = usePublicT();
   return (
-    <section aria-label={book.scheduler.regionLabel}>
+    <section aria-label={t('booking.scheduler.regionLabel')}>
       {isPending(site.schedulerBaseUrl) ? <NotConnected /> : <Embed topicSlug={topicSlug} />}
     </section>
   );

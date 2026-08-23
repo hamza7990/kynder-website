@@ -1,15 +1,18 @@
 /**
  * Booking page copy.
  *
- * Section labels and system messages are functional UI text. The actual session
- * DETAILS (what to expect, length, price, cancellation) and the confirmation
- * wording are brief content the brief does not supply, so they are explicit
- * [PENDING: ...] placeholders — never invent a duration, price or policy.
+ * The page heading, the session DETAILS (what to expect, length, price,
+ * cancellation) and the confirmation wording are client-facing content — the brief
+ * supplies none, so several are [PENDING: ...] placeholders; never invent a
+ * duration, price or policy. These stay here and are translated in A3.
+ *
+ * The functional booking CHROME (selected-topic label, change-topic link, the
+ * scheduler system-state messages) and the direct booking FORM moved into the
+ * public interface dictionary (src/i18n/public, `booking.*` / `bookForm.*`) in A2
+ * Slice 4 — see book-content / scheduler-embed / direct-booking-form `usePublicT`.
  */
 export const book = {
   heading: "Book a session",
-  selectedTopicLabel: "Your topic",
-  changeTopicLabel: "Change topic",
 
   /** Left rail. Labels functional; values are session details. */
   details: [
@@ -18,16 +21,6 @@ export const book = {
     { label: "Price", value: "Please enquire for current rates" },
     { label: "Cancellation", value: "Free cancellation up to 24 hours before your session" },
   ],
-
-  scheduler: {
-    regionLabel: "Booking calendar",
-    notConnectedTitle: "Booking calendar not yet connected",
-    notConnectedBody:
-      "The live scheduling calendar will appear here once booking is configured.",
-    loadingLabel: "Loading the booking calendar",
-    fallbackTitle: "The booking calendar could not load",
-    fallbackContactPrefix: "Please email us to book:",
-  },
 
   noTopic: {
     title: "Choose a topic to book",

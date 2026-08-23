@@ -6,6 +6,7 @@ import { buttonVariants } from '@/components/ui';
 import { book } from '@/data/book';
 import { site } from '@/data/site';
 import { topics } from '@/data/topics';
+import { usePublicT } from '@/i18n/public/client';
 import { SchedulerEmbed } from './scheduler-embed';
 import { DirectBookingForm } from './direct-booking-form';
 
@@ -24,6 +25,7 @@ function NoTopic() {
 }
 
 export function BookContent() {
+  const t = usePublicT();
   const params = useSearchParams();
   const slug = params.get('topic') ?? undefined;
   const topic = slug ? topics.find((t) => t.slug === slug) : undefined;
@@ -38,7 +40,7 @@ export function BookContent() {
       <div className="flex flex-col gap-8">
         <div className="flex flex-col items-start gap-2">
           <span className="font-sans text-small font-semibold uppercase tracking-eyebrow text-navy">
-            {book.selectedTopicLabel}
+            {t('booking.selectedTopicLabel')}
           </span>
           <h2 className="font-display text-h3 text-navy-deep">{topic.title}</h2>
           <p className="text-body text-ink-70">{topic.blurb}</p>
@@ -46,7 +48,7 @@ export function BookContent() {
             href="/topics"
             className="focus-ring rounded-sm text-small font-semibold text-navy-deep underline transition-colors duration-fast ease-out hover:text-terracotta"
           >
-            {book.changeTopicLabel}
+            {t('booking.changeTopicLabel')}
           </Link>
         </div>
 

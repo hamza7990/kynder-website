@@ -41,5 +41,36 @@
     "notConnected": "Message sending is not connected yet. Please email us directly for now.",
     "genericError": "Something went wrong sending your message. Please try again.",
     "success": "Thanks — your message has been sent."
+  },
+  "bookForm": {
+    "title": "Request a 1-on-1 Session",
+    "selectedTopicPrefix": "Selected Topic:",
+    "nameLabel": "Your Full Name",
+    "namePlaceholder": "e.g. Maya Sterling",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "maya@company.com",
+    "phoneLabel": "Phone / WhatsApp (Optional)",
+    "phonePlaceholder": "+1 555 123 4567",
+    "dateLabel": "Preferred Date & Time",
+    "notesLabel": "What would you like to focus on? (Optional)",
+    "notesPlaceholder": "Briefly describe the challenge, conversation, or decision you'd like to explore...",
+    "submit": "Confirm & Request Session",
+    "errors": {
+      "required": "Please fill in all required fields.",
+      "failed": "Failed to book session. Please try again.",
+      "generic": "An error occurred. Please try again."
+    }
+  },
+  "booking": {
+    "selectedTopicLabel": "Your topic",
+    "changeTopicLabel": "Change topic",
+    "scheduler": {
+      "regionLabel": "Booking calendar",
+      "notConnectedTitle": "Booking calendar not yet connected",
+      "notConnectedBody": "The live scheduling calendar will appear here once booking is configured.",
+      "loadingLabel": "Loading the booking calendar",
+      "fallbackTitle": "The booking calendar could not load",
+      "fallbackContactPrefix": "Please email us to book:"
+    }
   }
 }
