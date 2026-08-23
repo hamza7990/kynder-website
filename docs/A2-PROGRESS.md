@@ -101,15 +101,29 @@ authored here; we build the plumbing + English/Arabic interface labels + fallbac
     the `<html>` tag not whole markup (switcher legitimately renders `<a lang="ar">`);
     `pages-copy.test` + `home.test` now read pages from `src/app/[locale]/`.
     **Lesson for the gate: run the FULL `npm test`, not targeted subsets.**
-  - **REMAINING (commit 2 — start here next):**
-    - **Newsletter** strings live in `src/data/newsletter.ts` (emailLabel,
-      placeholder, submitLabel, submittingLabel, invalidEmail, notConnected, success,
-      error) — move into the public dict + `usePublicT` in `newsletter-form.tsx`.
-      Test asserts `getByLabelText('Email address')` → keep that English value exact.
-    - **404 chrome** in `src/app/not-found.tsx`.
-    - **Public FORMS** — book + contact form field labels, placeholders, validation
-      messages, submit/success/error microcopy. Read those components first; check
-      their tests (contact/book have suites) before changing.
+  - **DONE (commit 2a — `ea6c896`):** newsletter + contact FORM chrome moved into
+    the dict (`newsletter.*`, `contactForm.*`), components use `usePublicT`.
+    `src/data/newsletter.ts` deleted; `contact.ts` keeps page-level client copy
+    (heading/intro/emailFallbackLabel). `contact.test` now references the dict as the
+    English source. Verified: typecheck, full suite (287), build, runtime probe
+    (/ar/contact + newsletter Arabic; /en English). **Pattern for moving data-file
+    strings:** move interface object → dict (en verbatim + ar draft); update
+    component to `t()`; if a test referenced the data object, repoint it to
+    `import en from '@/i18n/public/en.json'`.
+  - **REMAINING (commit 2b — start here next):**
+    - **Public BOOK form** — `src/components/book/direct-booking-form.tsx` +
+      `book-content.tsx` + `scheduler-embed.tsx`, strings in `src/data/book.ts`.
+      **Careful:** `book.ts` heavily MIXES interface chrome (selectedTopicLabel,
+      changeTopicLabel, scheduler.regionLabel/loadingLabel, noTopic.cta,
+      confirmed.cta) with CLIENT COPY (details[].value session content,
+      confirmed.heading/body, noTopic.title/body marketing). Extract ONLY the chrome;
+      leave client copy in book.ts for A3. Read `book.test.tsx` first — it references
+      `book.*` values, so repoint moved ones to the dict.
+    - **404 chrome** (`src/app/not-found.tsx` + `src/data/not-found.ts`). NOTE: this
+      is a SERVER component OUTSIDE the `[locale]` provider tree, so `usePublicT`
+      won't reach it as-is. Needs a deliberate approach (e.g. a `[locale]/not-found.tsx`
+      using the server translator `getPublicT(locale)`, or pass strings via the tree).
+      Overlaps Workstream C2 (illustrated 404) — coordinate so it isn't built twice.
   - **OWNER DECISION PENDING — nav labels.** "Leadership Questions", "Coaching
     Topics", "About", "Contact" are held ENGLISH for now (boundary: no client copy
     without approval). Consistent with A2 (all /ar content is English until A3). Owner

@@ -49,6 +49,12 @@ labels only; questions/topics/page copy stay English until A3), so starting A2 d
   «التغذية الراجعة» (feedback). Owner yes/no before A3.
 These will be surfaced again for explicit sign-off at the A2→A3 boundary.
 
+### 2026-08-23 — Nav labels deferred to A3 (owner decision)
+Owner: the public nav labels ("Leadership Questions", "Coaching Topics", "About",
+"Contact") are **NOT translated in A2** — they stay English and are handled in **A3**
+with the page copy, for voice consistency. Held behind the interface/client boundary.
+Consistent with A2 (all `/ar` content is English until A3). See [[GLOSSARY-AR]].
+
 ### 2026-08-23 — Standing guidance from owner (recorded so it isn't lost)
 - **Reuse the admin i18n plumbing, but do not let the dashboard set the public
   site's shape.** The dashboard is a tool; the public site is the brand. Different
