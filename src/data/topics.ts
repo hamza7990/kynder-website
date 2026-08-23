@@ -22,6 +22,13 @@ export type Topic = {
   title: string;
   blurb: string;
   cluster: Cluster;
+  /**
+   * A2 Slice 6 — parallel Arabic content. Absent in A2 (authored in A3). The
+   * resolver prefers it under the `ar` locale and falls back to the English
+   * `title`/`blurb` otherwise — never a blank render.
+   */
+  titleAr?: string;
+  blurbAr?: string;
 };
 
 export const topics: Topic[] = [

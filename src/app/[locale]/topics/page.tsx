@@ -28,7 +28,7 @@ export default async function TopicsPage({
 } = {}) {
   const resolved = params ? await params : { locale: 'en' };
   const locale = isLocale(resolved.locale) ? resolved.locale : 'en';
-  const topics = await getTopicsContent();
+  const topics = await getTopicsContent(locale);
   return (
     <section className="py-section-lg">
       <ServiceJsonLd />

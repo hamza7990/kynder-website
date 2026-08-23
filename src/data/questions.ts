@@ -23,6 +23,13 @@ export type Question = {
   question: string;
   pillar: Pillar;
   steps: [string, string, string, string, string];
+  /**
+   * A2 Slice 6 — parallel Arabic content. Absent in A2 (no Arabic authored yet;
+   * that is A3). When present, the resolver prefers it under the `ar` locale and
+   * falls back to the English `question`/`steps` otherwise — never a blank render.
+   */
+  questionAr?: string;
+  stepsAr?: [string, string, string, string, string];
 };
 
 /** Brief Part 4 page name — the /questions page h1. Verbatim; matches home.ts. */

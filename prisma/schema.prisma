@@ -18,7 +18,9 @@ model User {
   locale       String    @default("en") // admin-interface language: "en" or "ar"
   avatar       String?
   title        String?   // e.g. "Senior Leadership & Culture Coach"
+  titleAr      String?   // A2 Slice 6: Arabic title. NULL → falls back to `title`.
   bio          String?
+  bioAr        String?   // A2 Slice 6: Arabic bio. NULL → falls back to `bio`.
   specialties  String?   // comma-separated topic slugs or titles
   isActive     Boolean   @default(true)
   createdAt    DateTime  @default(now())
@@ -44,21 +46,25 @@ model Booking {
 }
 
 model Question {
-  id        String   @id @default(cuid())
-  no        String   @unique
-  question  String
-  pillar    String
-  steps     String   // JSON string of array of 5 steps
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  no         String   @unique
+  question   String
+  questionAr String?  // A2 Slice 6: Arabic question. NULL → falls back to `question`.
+  pillar     String
+  steps      String   // JSON string of array of 5 steps
+  stepsAr    String?  // A2 Slice 6: Arabic steps JSON (5). NULL → falls back to `steps`.
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Topic {
   id        String   @id @default(cuid())
   slug      String   @unique
   title     String
+  titleAr   String?  // A2 Slice 6: Arabic title. NULL → falls back to `title`.
   blurb     String
+  blurbAr   String?  // A2 Slice 6: Arabic blurb. NULL → falls back to `blurb`.
   cluster   String
   order     Int      @default(0)
   createdAt DateTime @default(now())

@@ -35,8 +35,8 @@ export default async function HomePage({
   const locale = isLocale(resolved.locale) ? resolved.locale : 'en';
   const [home, questions, topics] = await Promise.all([
     getHomeContent(),
-    getQuestionsContent(),
-    getTopicsContent(),
+    getQuestionsContent(locale),
+    getTopicsContent(locale),
   ]);
 
   return (

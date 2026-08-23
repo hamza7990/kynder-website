@@ -28,7 +28,7 @@ export default async function QuestionsPage({
 } = {}) {
   const resolved = params ? await params : { locale: 'en' };
   const locale = isLocale(resolved.locale) ? resolved.locale : 'en';
-  const questions = await getQuestionsContent();
+  const questions = await getQuestionsContent(locale);
   return (
     <section className="py-section-lg">
       <FaqJsonLd />

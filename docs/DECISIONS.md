@@ -66,6 +66,22 @@ Consistent with A2 (all `/ar` content is English until A3). See [[GLOSSARY-AR]].
   normalised step table) with a recommendation and the migration cost of each.
   Owner picks.
 
+### 2026-08-23 — Content schema: Option A APPROVED (additive nullable `*Ar` columns)
+Owner approved the parallel-nullable-column model for bilingual content: each
+translatable field gains a sibling `*Ar` column (`questionAr`, `stepsAr`,
+`titleAr`, `blurbAr`, coach `bioAr`/`titleAr`). **Additive and nullable only** —
+no existing (English) column is altered, renamed or dropped; the English copy is
+contractually verbatim and must be byte-identical after the migration. NULL falls
+back to English at read time. Implemented in A2 Slice 6 (schema + plumbing only;
+no Arabic values — that's A3). See [[kynder-deploy-state]].
+
+### 2026-08-23 — Steps-as-JSON: Option 1 APPROVED (parallel `stepsAr` JSON column)
+Owner approved a parallel nullable `stepsAr` JSON column (mirroring the existing
+`steps` JSON), NOT a normalised step table. Rationale (owner): simpler migration,
+and the five steps are always read as an ordered set of five, never queried
+individually, so normalising buys nothing here. A length-5 shape is enforced at
+the app/admin layer, same as `steps`.
+
 <!--
 Append entries as they happen, most recent last, e.g.:
 

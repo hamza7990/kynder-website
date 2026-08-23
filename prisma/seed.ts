@@ -103,7 +103,10 @@ async function main() {
   // removed — they were invented, not real KYNDER coaches. Do not re-add coach
   // records until the client supplies real coach identities.
 
-  // 2. Seed Questions (upsert by `no` → idempotent).
+  // 2. Seed Questions (upsert by `no` → idempotent). English fields only — the
+  //    `questionAr`/`stepsAr` columns are DELIBERATELY never written here, so a
+  //    re-seed never overwrites an Arabic translation edited in the admin (they
+  //    stay NULL until A3 authors them). No Arabic values are seeded in A2.
   let qIndex = 0;
   for (const q of questions) {
     await prisma.question.upsert({
@@ -125,7 +128,9 @@ async function main() {
     qIndex++;
   }
 
-  // 3. Seed Topics (upsert by `slug` → idempotent).
+  // 3. Seed Topics (upsert by `slug` → idempotent). English fields only — the
+  //    `titleAr`/`blurbAr` columns are never written here, so a re-seed preserves
+  //    any Arabic edited in the admin (NULL until A3). No Arabic values in A2.
   let tIndex = 0;
   for (const t of topics) {
     await prisma.topic.upsert({

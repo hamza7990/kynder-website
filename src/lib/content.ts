@@ -29,6 +29,7 @@ import {
   type Cluster,
 } from '@/data/topics';
 import { questions as staticQuestions, type Question } from '@/data/questions';
+import type { Locale } from '@/i18n/config';
 
 /** Load all site settings into a plain map. Returns {} if the DB is unreachable. */
 const getSettings = cache(async (): Promise<Record<string, string>> => {
@@ -120,6 +121,17 @@ export const getAboutContent = cache(async () => {
   };
 });
 
+// ─── Bilingual fallback (A2 Slice 6) ────────────────────────────────────────
+// Under the `ar` locale, prefer the Arabic value when it is present and
+// non-blank; otherwise fall back to English. Under `en`, always English. An
+// empty/whitespace Arabic string is treated as absent so the render is never
+// blank. In A2 no Arabic is authored yet, so `ar` resolves to English here — the
+// plumbing is inert until A3 fills the `*Ar` columns.
+function preferAr(locale: Locale, ar: string | null | undefined, en: string): string {
+  if (locale === 'ar' && ar && ar.trim().length > 0) return ar;
+  return en;
+}
+
 // ─── Questions ──────────────────────────────────────────────────────────────
 function parseSteps(json: string): Question['steps'] {
   try {
@@ -133,36 +145,65 @@ function parseSteps(json: string): Question['steps'] {
   return [] as unknown as Question['steps'];
 }
 
-export const getQuestionsContent = cache(async (): Promise<Question[]> => {
+/** Arabic steps if present and non-empty after parsing, else the English steps. */
+function pickSteps(locale: Locale, stepsAr: string | null | undefined, stepsEn: string): Question['steps'] {
+  if (locale === 'ar' && stepsAr && stepsAr.trim().length > 0) {
+    const ar = parseSteps(stepsAr);
+    if (Array.isArray(ar) && ar.length > 0) return ar;
+  }
+  return parseSteps(stepsEn);
+}
+
+export const getQuestionsContent = cache(async (locale: Locale = 'en'): Promise<Question[]> => {
   try {
     const rows = await db.question.findMany({ orderBy: { order: 'asc' } });
-    if (rows.length === 0) return staticQuestions;
+    if (rows.length === 0) return staticFallbackQuestions(locale);
     return rows.map((r) => ({
       no: r.no,
-      question: r.question,
+      question: preferAr(locale, r.questionAr, r.question),
       pillar: r.pillar as Question['pillar'],
-      steps: parseSteps(r.steps),
+      steps: pickSteps(locale, r.stepsAr, r.steps),
     }));
   } catch {
-    return staticQuestions;
+    return staticFallbackQuestions(locale);
   }
 });
 
+// DB unreachable → the shipped English copy. Static data carries no Arabic in A2,
+// so the `ar` locale still lands on English here (correct: never a blank render).
+function staticFallbackQuestions(locale: Locale): Question[] {
+  return staticQuestions.map((q) => ({
+    no: q.no,
+    pillar: q.pillar,
+    question: preferAr(locale, q.questionAr, q.question),
+    steps: locale === 'ar' && q.stepsAr ? q.stepsAr : q.steps,
+  }));
+}
+
 // ─── Topics ─────────────────────────────────────────────────────────────────
-export const getTopicsContent = cache(async (): Promise<Topic[]> => {
+export const getTopicsContent = cache(async (locale: Locale = 'en'): Promise<Topic[]> => {
   try {
     const rows = await db.topic.findMany({ orderBy: { order: 'asc' } });
-    if (rows.length === 0) return staticTopics;
+    if (rows.length === 0) return staticFallbackTopics(locale);
     return rows.map((r) => ({
       slug: r.slug,
-      title: r.title,
-      blurb: r.blurb,
+      title: preferAr(locale, r.titleAr, r.title),
+      blurb: preferAr(locale, r.blurbAr, r.blurb),
       cluster: r.cluster as Cluster,
     }));
   } catch {
-    return staticTopics;
+    return staticFallbackTopics(locale);
   }
 });
+
+function staticFallbackTopics(locale: Locale): Topic[] {
+  return staticTopics.map((t) => ({
+    slug: t.slug,
+    title: preferAr(locale, t.titleAr, t.title),
+    blurb: preferAr(locale, t.blurbAr, t.blurb),
+    cluster: t.cluster,
+  }));
+}
 
 /** Clusters are presentation-only groupings; not CMS-managed, so always static. */
 export const clusters = staticClusters;
