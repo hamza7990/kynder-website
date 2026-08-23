@@ -4,6 +4,8 @@ import { buttonVariants } from '@/components/ui';
 import { Container } from '@/components/ui';
 import { Reveal } from '@/lib/motion';
 import { hero as staticHero } from '@/data/home';
+import type { Locale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { Section } from './section';
 import { Ripples } from './ripples';
 
@@ -35,7 +37,7 @@ function Headline({ headline, headlineEmphasis }: Pick<HeroContent, 'headline' |
   );
 }
 
-export function HeroSection({ hero = staticHero }: { hero?: HeroContent }) {
+export function HeroSection({ hero = staticHero, locale = 'en' }: { hero?: HeroContent; locale?: Locale }) {
   return (
     // 160 padding: a grand, unhurried opening — the tallest rhythm on the page.
     <Section space="lg" className="overflow-hidden">
@@ -55,13 +57,13 @@ export function HeroSection({ hero = staticHero }: { hero?: HeroContent }) {
           <div className="mt-2 flex w-full flex-col gap-3 xs:w-auto xs:flex-row">
             <TrackLink
               event="booking_cta_click"
-              href={hero.primaryCta.href}
+              href={localeHref(locale, hero.primaryCta.href)}
               className={buttonVariants({ variant: 'primary', size: 'md' })}
             >
               {hero.primaryCta.label}
             </TrackLink>
             <Link
-              href={hero.secondaryCta.href}
+              href={localeHref(locale, hero.secondaryCta.href)}
               className={buttonVariants({ variant: 'ghost', size: 'md' })}
             >
               {hero.secondaryCta.label}

@@ -18,6 +18,7 @@ describe('about page', () => {
 
   it('ends with a CTA to /book', async () => {
     render(await AboutPage());
-    expect(screen.getByRole('link', { name: about.ctaLabel })).toHaveAttribute('href', '/book');
+    // AboutPage() with no args defaults locale to 'en' → the CTA is prefixed.
+    expect(screen.getByRole('link', { name: about.ctaLabel })).toHaveAttribute('href', '/en/book');
   });
 });

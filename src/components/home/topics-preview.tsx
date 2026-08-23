@@ -3,6 +3,8 @@ import { buttonVariants, Card, Container, SectionHeader } from '@/components/ui'
 import { Reveal, staggerDelay } from '@/lib/motion';
 import { topicsPreview as staticTopicsPreview } from '@/data/home';
 import { topics as staticTopics, type Topic } from '@/data/topics';
+import type { Locale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { Section } from './section';
 
 // Six topic cards, each routing to /book pre-filled with that topic's slug.
@@ -11,9 +13,11 @@ import { Section } from './section';
 export function TopicsPreview({
   topics = staticTopics,
   topicsPreview = staticTopicsPreview,
+  locale = 'en',
 }: {
   topics?: Topic[];
   topicsPreview?: typeof staticTopicsPreview;
+  locale?: Locale;
 }) {
   const preview = topics.slice(0, topicsPreview.count);
   return (
@@ -30,7 +34,7 @@ export function TopicsPreview({
             <li key={t.slug}>
               <Reveal delay={staggerDelay(i)} className="h-full">
                 <Link
-                  href={`/book?topic=${t.slug}`}
+                  href={localeHref(locale, `/book?topic=${t.slug}`)}
                   className="focus-ring block h-full rounded-lg"
                 >
                   <Card
@@ -50,7 +54,7 @@ export function TopicsPreview({
 
         <Reveal className="mt-10">
           <Link
-            href={topicsPreview.href}
+            href={localeHref(locale, topicsPreview.href)}
             className={buttonVariants({ variant: 'ghost', size: 'md' })}
           >
             {topicsPreview.linkLabel}

@@ -6,13 +6,14 @@ import { clusters, topics } from '@/data/topics';
 describe('topics page', () => {
   it('renders all 15 topics, each linking to /book?topic={its own slug}', async () => {
     render(await TopicsPage());
+    // TopicsPage() with no args defaults locale to 'en' → links are prefixed.
     for (const topic of topics) {
-      const link = document.querySelector<HTMLAnchorElement>(`a[href="/book?topic=${topic.slug}"]`);
+      const link = document.querySelector<HTMLAnchorElement>(`a[href="/en/book?topic=${topic.slug}"]`);
       expect(link, topic.slug).not.toBeNull();
       expect(link).toHaveAttribute('aria-label', topic.title);
       expect(within(link!).getByText(topic.title)).toBeInTheDocument();
     }
-    expect(document.querySelectorAll('a[href^="/book?topic="]')).toHaveLength(15);
+    expect(document.querySelectorAll('a[href^="/en/book?topic="]')).toHaveLength(15);
   });
 
   it('groups by cluster, every cluster non-empty', async () => {

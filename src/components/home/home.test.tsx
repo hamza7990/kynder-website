@@ -23,14 +23,15 @@ describe('home — questions preview', () => {
   it('renders exactly 3 questions from questions.ts, each deep-linked', () => {
     render(<QuestionsPreview />);
 
+    // No locale prop → defaults to 'en' → links are locale-prefixed (/en/...).
     for (const q of questions.slice(0, 3)) {
-      const link = document.querySelector<HTMLAnchorElement>(`a[href="/questions#q-${q.no}"]`);
+      const link = document.querySelector<HTMLAnchorElement>(`a[href="/en/questions#q-${q.no}"]`);
       expect(link, `deep link for q-${q.no}`).not.toBeNull();
       expect(within(link!).getByText(q.question)).toBeInTheDocument();
     }
 
     const deepLinks = Array.from(
-      document.querySelectorAll('a[href^="/questions#q-"]'),
+      document.querySelectorAll('a[href^="/en/questions#q-"]'),
     );
     expect(deepLinks).toHaveLength(3);
     // The 4th question is not on the home page.
@@ -43,12 +44,12 @@ describe('home — topics preview', () => {
     render(<TopicsPreview />);
 
     for (const t of topics.slice(0, 6)) {
-      const link = document.querySelector<HTMLAnchorElement>(`a[href="/book?topic=${t.slug}"]`);
+      const link = document.querySelector<HTMLAnchorElement>(`a[href="/en/book?topic=${t.slug}"]`);
       expect(link, `book link for ${t.slug}`).not.toBeNull();
       expect(within(link!).getByText(t.title)).toBeInTheDocument();
     }
 
-    const bookLinks = Array.from(document.querySelectorAll('a[href^="/book?topic="]'));
+    const bookLinks = Array.from(document.querySelectorAll('a[href^="/en/book?topic="]'));
     expect(bookLinks).toHaveLength(6);
     // The 7th topic is not on the home page.
     expect(screen.queryByText(topics[6]!.title)).toBeNull();

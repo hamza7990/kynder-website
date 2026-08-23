@@ -5,6 +5,7 @@ import { Reveal } from '@/lib/motion';
 import { about as staticAbout } from '@/data/about';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
 import { isLocale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { PersonJsonLd } from '@/components/seo/person-json-ld';
 import { getAboutContent } from '@/lib/content';
 
@@ -20,7 +21,13 @@ export async function generateMetadata({
 // Rendered per request so About CMS edits appear immediately.
 export const dynamic = 'force-dynamic';
 
-export default async function AboutPage() {
+export default async function AboutPage({
+  params,
+}: {
+  params?: Promise<{ locale: string }>;
+} = {}) {
+  const resolved = params ? await params : { locale: 'en' };
+  const locale = isLocale(resolved.locale) ? resolved.locale : 'en';
   const about = await getAboutContent();
   const proofPoints = about.proofPoints;
   return (
@@ -81,7 +88,7 @@ export default async function AboutPage() {
 
               <TrackLink
                 event="booking_cta_click"
-                href="/book"
+                href={localeHref(locale, '/book')}
                 className={buttonVariants({ variant: 'primary', size: 'md' })}
               >
                 {about.ctaLabel}

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { buttonVariants, Container, SectionHeader } from '@/components/ui';
 import { Reveal, staggerDelay } from '@/lib/motion';
 import { aboutTeaser as staticAboutTeaser, proofPoints as staticProofPoints } from '@/data/home';
+import type { Locale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { Section } from './section';
 
 type AboutTeaserContent = {
@@ -17,9 +19,11 @@ type ProofPoints = readonly { value: string; label: string }[];
 export function AboutTeaser({
   aboutTeaser = staticAboutTeaser,
   proofPoints = staticProofPoints,
+  locale = 'en',
 }: {
   aboutTeaser?: AboutTeaserContent;
   proofPoints?: ProofPoints;
+  locale?: Locale;
 }) {
   return (
     // 160 padding; cream — the spacious, personal centrepiece of the page.
@@ -62,7 +66,7 @@ export function AboutTeaser({
               </dl>
 
               <Link
-                href={aboutTeaser.href}
+                href={localeHref(locale, aboutTeaser.href)}
                 className={buttonVariants({ variant: 'ghost', size: 'md' })}
               >
                 {aboutTeaser.linkLabel}

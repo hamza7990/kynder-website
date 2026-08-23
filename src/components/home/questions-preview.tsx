@@ -3,6 +3,8 @@ import { Badge, buttonVariants, Card, Container, SectionHeader } from '@/compone
 import { Reveal, staggerDelay } from '@/lib/motion';
 import { questionsPreview as staticQuestionsPreview } from '@/data/home';
 import { questions as staticQuestions, type Question } from '@/data/questions';
+import type { Locale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { Section } from './section';
 
 // Closed-state previews only — the first `count` questions, each deep-linking to
@@ -11,9 +13,11 @@ import { Section } from './section';
 export function QuestionsPreview({
   questions = staticQuestions,
   questionsPreview = staticQuestionsPreview,
+  locale = 'en',
 }: {
   questions?: Question[];
   questionsPreview?: typeof staticQuestionsPreview;
+  locale?: Locale;
 }) {
   const preview = questions.slice(0, questionsPreview.count);
   return (
@@ -29,7 +33,7 @@ export function QuestionsPreview({
             <li key={q.no}>
               <Reveal delay={staggerDelay(i)} className="h-full">
                 <Link
-                  href={`/questions#q-${q.no}`}
+                  href={localeHref(locale, `/questions#q-${q.no}`)}
                   className="focus-ring block h-full rounded-lg"
                   aria-label={`${q.no}. ${q.question}`}
                 >
@@ -53,7 +57,7 @@ export function QuestionsPreview({
 
         <Reveal className="mt-10">
           <Link
-            href={questionsPreview.href}
+            href={localeHref(locale, questionsPreview.href)}
             className={buttonVariants({ variant: 'ghost', size: 'md' })}
           >
             {questionsPreview.linkLabel}

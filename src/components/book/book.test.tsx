@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 let mockSearch = '';
 vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(mockSearch),
+  usePathname: () => '/en/book',
   useRouter: () => ({ push: () => {}, replace: () => {}, prefetch: () => {} }),
 }));
 
@@ -38,7 +39,7 @@ describe('book page', () => {
     mockSearch = 'topic=not-a-real-topic';
     render(<BookPage />);
     expect(screen.getByText(book.noTopic.title)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: book.noTopic.cta })).toHaveAttribute('href', '/topics');
+    expect(screen.getByRole('link', { name: book.noTopic.cta })).toHaveAttribute('href', '/en/topics');
   });
 
   it('shows a clear choose-a-topic state when ?topic= is missing', () => {
@@ -49,9 +50,10 @@ describe('book page', () => {
 });
 
 describe('booking confirmed page', () => {
-  it('links back to /questions and has no href="#"', () => {
-    const { container } = render(<BookingConfirmedPage />);
-    expect(screen.getByRole('link', { name: book.confirmed.cta })).toHaveAttribute('href', '/questions');
+  it('links back to /questions and has no href="#"', async () => {
+    // BookingConfirmedPage is now an async server component; await its tree.
+    const { container } = render(await BookingConfirmedPage());
+    expect(screen.getByRole('link', { name: book.confirmed.cta })).toHaveAttribute('href', '/en/questions');
     expect(container.querySelector('a[href="#"]')).toBeNull();
   });
 });

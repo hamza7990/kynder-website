@@ -1,23 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { buttonVariants } from '@/components/ui';
 import { book } from '@/data/book';
 import { site } from '@/data/site';
 import { topics } from '@/data/topics';
+import type { Locale } from '@/i18n/config';
+import { localeFromPathname, localeHref } from '@/lib/i18n/locale-path';
 import { usePublicT } from '@/i18n/public/client';
 import { SchedulerEmbed } from './scheduler-embed';
 import { DirectBookingForm } from './direct-booking-form';
 
 const isPending = (value: string) => value.startsWith('[PENDING');
 
-function NoTopic() {
+function NoTopic({ locale }: { locale: Locale }) {
   return (
     <div className="mx-auto flex max-w-[46rem] flex-col items-center gap-6 rounded-lg border border-ink-10 bg-cream-card p-10 text-center">
       <h2 className="font-display text-h3 text-navy-deep">{book.noTopic.title}</h2>
       <p className="max-w-[46ch] text-body text-ink-70">{book.noTopic.body}</p>
-      <Link href="/topics" className={buttonVariants({ variant: 'primary', size: 'md' })}>
+      <Link href={localeHref(locale, '/topics')} className={buttonVariants({ variant: 'primary', size: 'md' })}>
         {book.noTopic.cta}
       </Link>
     </div>
@@ -27,12 +29,14 @@ function NoTopic() {
 export function BookContent() {
   const t = usePublicT();
   const params = useSearchParams();
+  // Client-side: the URL's own first segment is the source of truth for locale.
+  const locale = localeFromPathname(usePathname());
   const slug = params.get('topic') ?? undefined;
   const topic = slug ? topics.find((t) => t.slug === slug) : undefined;
 
   // Missing or invalid ?topic= → a clear prompt, never a crash or blank panel.
   if (!topic) {
-    return <NoTopic />;
+    return <NoTopic locale={locale} />;
   }
 
   return (
@@ -45,7 +49,7 @@ export function BookContent() {
           <h2 className="font-display text-h3 text-navy-deep">{topic.title}</h2>
           <p className="text-body text-ink-70">{topic.blurb}</p>
           <Link
-            href="/topics"
+            href={localeHref(locale, '/topics')}
             className="focus-ring rounded-sm text-small font-semibold text-navy-deep underline transition-colors duration-fast ease-out hover:text-terracotta"
           >
             {t('booking.changeTopicLabel')}

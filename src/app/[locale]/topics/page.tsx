@@ -21,7 +21,13 @@ export async function generateMetadata({
 // Rendered per request so admin edits to topics appear immediately.
 export const dynamic = 'force-dynamic';
 
-export default async function TopicsPage() {
+export default async function TopicsPage({
+  params,
+}: {
+  params?: Promise<{ locale: string }>;
+} = {}) {
+  const resolved = params ? await params : { locale: 'en' };
+  const locale = isLocale(resolved.locale) ? resolved.locale : 'en';
   const topics = await getTopicsContent();
   return (
     <section className="py-section-lg">
@@ -50,7 +56,7 @@ export default async function TopicsPage() {
                   {items.map((topic, i) => (
                     <li key={topic.slug}>
                       <Reveal delay={staggerDelay(i)} className="h-full">
-                        <TopicCard topic={topic} />
+                        <TopicCard topic={topic} locale={locale} />
                       </Reveal>
                     </li>
                   ))}

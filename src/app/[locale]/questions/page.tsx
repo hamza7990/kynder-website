@@ -5,6 +5,7 @@ import { closingCta, closingLine, heading } from '@/data/questions';
 import { QuestionsExperience } from '@/components/questions/questions-experience';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
 import { isLocale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { FaqJsonLd } from '@/components/seo/faq-json-ld';
 import { getQuestionsContent } from '@/lib/content';
 
@@ -20,7 +21,13 @@ export async function generateMetadata({
 // Rendered per request so admin edits to questions appear immediately.
 export const dynamic = 'force-dynamic';
 
-export default async function QuestionsPage() {
+export default async function QuestionsPage({
+  params,
+}: {
+  params?: Promise<{ locale: string }>;
+} = {}) {
+  const resolved = params ? await params : { locale: 'en' };
+  const locale = isLocale(resolved.locale) ? resolved.locale : 'en';
   const questions = await getQuestionsContent();
   return (
     <section className="py-section-lg">
@@ -38,7 +45,7 @@ export default async function QuestionsPage() {
           <p className="max-w-[54ch] text-lead text-ink-80">{closingLine}</p>
           <TrackLink
             event="booking_cta_click"
-            href="/book"
+            href={localeHref(locale, '/book')}
             className={buttonVariants({ variant: 'primary', size: 'md' })}
           >
             {closingCta}

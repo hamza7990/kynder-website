@@ -26,7 +26,13 @@ export const dynamic = 'force-dynamic';
 
 // Home is a narrative page of previews, not a catalogue. Copy is resolved from
 // the DB with a static fallback — no copy lives in this file.
-export default async function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params?: Promise<{ locale: string }>;
+} = {}) {
+  const resolved = params ? await params : { locale: 'en' };
+  const locale = isLocale(resolved.locale) ? resolved.locale : 'en';
   const [home, questions, topics] = await Promise.all([
     getHomeContent(),
     getQuestionsContent(),
@@ -36,12 +42,12 @@ export default async function HomePage() {
   return (
     <>
       <OrganizationJsonLd />
-      <HeroSection hero={home.hero} />
+      <HeroSection hero={home.hero} locale={locale} />
       <PositioningSection positioning={home.positioning} />
-      <QuestionsPreview questions={questions} questionsPreview={home.questionsPreview} />
-      <TopicsPreview topics={topics} topicsPreview={home.topicsPreview} />
-      <AboutTeaser aboutTeaser={home.aboutTeaser} proofPoints={home.proofPoints} />
-      <CtaBand />
+      <QuestionsPreview questions={questions} questionsPreview={home.questionsPreview} locale={locale} />
+      <TopicsPreview topics={topics} topicsPreview={home.topicsPreview} locale={locale} />
+      <AboutTeaser aboutTeaser={home.aboutTeaser} proofPoints={home.proofPoints} locale={locale} />
+      <CtaBand locale={locale} />
     </>
   );
 }
