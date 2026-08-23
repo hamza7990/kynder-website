@@ -6,9 +6,17 @@ import { CoachPool } from '@/components/topics/coach-pool';
 import { TopicCard } from '@/components/topics/topic-card';
 import { ServiceJsonLd } from '@/components/seo/service-json-ld';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { isLocale } from '@/i18n/config';
 import { getTopicsContent } from '@/lib/content';
 
-export const metadata: Metadata = buildPageMetadata(pageSeo.topics, heading);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata(pageSeo.topics, heading, isLocale(locale) ? locale : 'en');
+}
 
 // Rendered per request so admin edits to topics appear immediately.
 export const dynamic = 'force-dynamic';

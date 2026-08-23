@@ -4,8 +4,16 @@ import { Container } from '@/components/ui';
 import { book } from '@/data/book';
 import { BookContent } from '@/components/book/book-content';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { isLocale } from '@/i18n/config';
 
-export const metadata: Metadata = buildPageMetadata(pageSeo.book, book.heading);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata(pageSeo.book, book.heading, isLocale(locale) ? locale : 'en');
+}
 
 export default function BookPage() {
   return (

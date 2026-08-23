@@ -12,7 +12,13 @@
  */
 
 import type { Metadata } from 'next';
+import type { Locale } from '@/i18n/config';
 import { site } from './site';
+
+/** Prefix a canonical page path with a locale: '/' → '/en', '/about/' → '/en/about/'. */
+function localizePath(locale: Locale, path: string): string {
+  return path === '/' ? `/${locale}` : `/${locale}${path}`;
+}
 
 export interface PageSeo {
   /** Absolute path, used for the canonical URL and Open Graph URL. */
@@ -67,20 +73,31 @@ export const ogImageAlt = 'KYNDER — kind leadership is strong leadership';
 export const ogImage = { url: '/opengraph-image', width: 1200, height: 630, alt: ogImageAlt };
 
 /**
- * Build a page's Metadata: unique title + description, a canonical URL, and
+ * Build a page's Metadata for a given locale: unique title + description, a
+ * locale-correct canonical URL, hreflang alternates (en/ar + x-default), and
  * matching Open Graph / Twitter fields. The OG/Twitter image is injected for
  * every route by the opengraph-image file convention, so it is not set here.
+ *
+ * NB (A2): descriptions stay English on /ar until A3 translates client copy — the
+ * hreflang wiring is what matters here, not the (still-English) description text.
  */
-export function buildPageMetadata(seo: PageSeo, title: string): Metadata {
+export function buildPageMetadata(seo: PageSeo, title: string, locale: Locale = 'en'): Metadata {
   const fullTitle = seo.absoluteTitle ?? `${title} | ${site.name}`;
+  const canonical = localizePath(locale, seo.path);
+  const languages = {
+    en: localizePath('en', seo.path),
+    ar: localizePath('ar', seo.path),
+    'x-default': localizePath('en', seo.path),
+  };
   return {
     title: seo.absoluteTitle ? { absolute: seo.absoluteTitle } : title,
     description: seo.description,
-    alternates: { canonical: seo.path },
+    alternates: { canonical, languages },
     openGraph: {
       title: fullTitle,
       description: seo.description,
-      url: seo.path,
+      url: canonical,
+      locale: locale === 'ar' ? 'ar_AR' : 'en_GB',
       images: [ogImage],
     },
     // card + image must be repeated here: a page-level `twitter` object replaces

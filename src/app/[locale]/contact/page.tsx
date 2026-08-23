@@ -4,8 +4,16 @@ import { contact } from '@/data/contact';
 import { site } from '@/data/site';
 import { ContactForm } from '@/components/contact/contact-form';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { isLocale } from '@/i18n/config';
 
-export const metadata: Metadata = buildPageMetadata(pageSeo.contact, contact.heading);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata(pageSeo.contact, contact.heading, isLocale(locale) ? locale : 'en');
+}
 
 const isPending = (value: string) => value.startsWith('[PENDING');
 

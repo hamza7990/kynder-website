@@ -4,10 +4,18 @@ import { buttonVariants, Container } from '@/components/ui';
 import { closingCta, closingLine, heading } from '@/data/questions';
 import { QuestionsExperience } from '@/components/questions/questions-experience';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { isLocale } from '@/i18n/config';
 import { FaqJsonLd } from '@/components/seo/faq-json-ld';
 import { getQuestionsContent } from '@/lib/content';
 
-export const metadata: Metadata = buildPageMetadata(pageSeo.questions, heading);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata(pageSeo.questions, heading, isLocale(locale) ? locale : 'en');
+}
 
 // Rendered per request so admin edits to questions appear immediately.
 export const dynamic = 'force-dynamic';

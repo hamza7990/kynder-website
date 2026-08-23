@@ -4,10 +4,18 @@ import { buttonVariants, Container } from '@/components/ui';
 import { Reveal } from '@/lib/motion';
 import { about as staticAbout } from '@/data/about';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { isLocale } from '@/i18n/config';
 import { PersonJsonLd } from '@/components/seo/person-json-ld';
 import { getAboutContent } from '@/lib/content';
 
-export const metadata: Metadata = buildPageMetadata(pageSeo.about, staticAbout.heading);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata(pageSeo.about, staticAbout.heading, isLocale(locale) ? locale : 'en');
+}
 
 // Rendered per request so About CMS edits appear immediately.
 export const dynamic = 'force-dynamic';

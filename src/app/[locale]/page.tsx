@@ -7,10 +7,18 @@ import { AboutTeaser } from '@/components/home/about-teaser';
 import { CtaBand } from '@/components/home/cta-band';
 import { OrganizationJsonLd } from '@/components/seo/organization-json-ld';
 import { buildPageMetadata, pageSeo } from '@/data/seo';
+import { isLocale } from '@/i18n/config';
 import { site } from '@/data/site';
 import { getHomeContent, getQuestionsContent, getTopicsContent } from '@/lib/content';
 
-export const metadata: Metadata = buildPageMetadata(pageSeo.home, site.name);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return buildPageMetadata(pageSeo.home, site.name, isLocale(locale) ? locale : 'en');
+}
 
 // Rendered per request so CMS edits appear immediately; content is read from the
 // database (falling back to src/data) via the resolvers in lib/content.
