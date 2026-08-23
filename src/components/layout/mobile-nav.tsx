@@ -129,9 +129,11 @@ export function MobileNav({ className, locale = 'en' }: { className?: string; lo
           aria-label={t('menu.label')}
           inert={!open}
           className={cn(
-            'absolute right-0 top-0 flex h-full w-[min(320px,85vw)] flex-col gap-2 bg-cream p-6',
+            // Anchored to the inline-end edge (right in LTR, left in RTL) and it
+            // slides off toward that same edge when closed, so the drawer mirrors.
+            'absolute end-0 top-0 flex h-full w-[min(320px,85vw)] flex-col gap-2 bg-cream p-6',
             'transition-transform duration-base ease-out motion-reduce:transition-none',
-            open ? 'translate-x-0' : 'translate-x-full',
+            open ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full',
           )}
         >
           <div className="flex items-center justify-between">

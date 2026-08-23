@@ -154,7 +154,7 @@ export function AccordionTrigger({ className, children, ...props }: AccordionTri
       onClick={() => toggle(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        'focus-ring flex w-full items-center justify-between gap-4 py-4 text-left',
+        'focus-ring flex w-full items-center justify-between gap-4 py-4 text-start',
         'font-display text-h4 text-navy-deep',
         'transition-colors duration-fast ease-out hover:text-terracotta',
         className,

@@ -35,7 +35,7 @@ export function QuestionItem({ question, open, onToggle, onTriggerKeyDown }: Que
           aria-controls={panelId}
           onClick={() => onToggle(no)}
           onKeyDown={onTriggerKeyDown}
-          className="focus-ring flex w-full items-start gap-4 py-6 text-left sm:gap-6"
+          className="focus-ring flex w-full items-start gap-4 py-6 text-start sm:gap-6"
         >
           <span className="font-display text-h3 leading-none text-terracotta-text">{no}</span>
           <span className="flex flex-1 flex-col items-start gap-3">
@@ -67,11 +67,11 @@ export function QuestionItem({ question, open, onToggle, onTriggerKeyDown }: Que
         )}
       >
         <div className="overflow-hidden">
-          <div className="pb-8 pl-11 sm:pl-14">
+          <div className="pb-8 ps-11 sm:ps-14">
             <p className="mb-4 font-sans text-small font-semibold uppercase tracking-eyebrow text-navy">
               {stepsLabel}
             </p>
-            <ol className="flex flex-col gap-4 border-l-2 border-terracotta-soft pl-6">
+            <ol className="flex flex-col gap-4 border-s-2 border-terracotta-soft ps-6">
               {steps.map((step, i) => (
                 <li
                   key={i}

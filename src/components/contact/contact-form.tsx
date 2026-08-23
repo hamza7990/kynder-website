@@ -110,7 +110,7 @@ export function ContactForm() {
       </Field>
 
       {/* Honeypot: off-screen + aria-hidden so only bots fill it. */}
-      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+      <div aria-hidden="true" className="absolute -start-[9999px] h-0 w-0 overflow-hidden">
         <label>
           Company
           <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" />
