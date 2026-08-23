@@ -8,6 +8,7 @@ import { site } from '@/data/site';
 import { pageSeo, ogImage } from '@/data/seo';
 import { getSiteContent } from '@/lib/content';
 import { dirFor, isLocale } from '@/i18n/config';
+import { getPublicDictionary } from '@/i18n/public/config';
 
 const lora = Lora({
   subsets: ['latin'],
@@ -100,6 +101,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   // Header/Footer copy is read from the DB (falling back to static site data).
   const siteContent = await getSiteContent();
+  // Public interface dictionary for the active locale (chrome only; A2).
+  const publicDict = getPublicDictionary(locale);
   return (
     <html
       lang={locale}
@@ -108,7 +111,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     >
       <body>
         <Analytics />
-        <AppShell site={siteContent}>{children}</AppShell>
+        <AppShell site={siteContent} dict={publicDict}>
+          {children}
+        </AppShell>
       </body>
     </html>
   );

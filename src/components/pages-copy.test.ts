@@ -25,10 +25,11 @@ const DIRS = [
   'src/components/topics',
   'src/components/book',
   'src/components/contact',
-  'src/app/topics',
-  'src/app/book',
-  'src/app/about',
-  'src/app/contact',
+  // Public route pages moved under [locale]/ in A2 Slice 2.
+  'src/app/[locale]/topics',
+  'src/app/[locale]/book',
+  'src/app/[locale]/about',
+  'src/app/[locale]/contact',
 ];
 
 function readComponents(dir: string): string {

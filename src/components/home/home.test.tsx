@@ -82,7 +82,7 @@ describe('home — no copy string literals in components', () => {
       .filter((f) => f.endsWith('.tsx') && !f.endsWith('.test.tsx'))
       .map((f) => readFileSync(join(dir, f), 'utf8'))
       .join('\n');
-    const pageSrc = readFileSync(join(process.cwd(), 'src/app/page.tsx'), 'utf8');
+    const pageSrc = readFileSync(join(process.cwd(), 'src/app/[locale]/page.tsx'), 'utf8');
     const allSrc = componentSrc + '\n' + pageSrc;
 
     const copy = [

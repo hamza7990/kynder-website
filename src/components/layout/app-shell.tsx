@@ -6,14 +6,19 @@ import { Footer } from './footer';
 import { SkipLink } from './skip-link';
 import { ToastProvider } from '@/components/ui/toast';
 import { localeFromPathname } from '@/lib/i18n/locale-path';
+import { PublicI18nProvider } from '@/i18n/public/client';
+import { getPublicDictionary, type PublicDictionary } from '@/i18n/public/config';
 import type { SiteContent } from '@/lib/content';
 
 export function AppShell({
   children,
   site,
+  dict,
 }: {
   children: React.ReactNode;
   site?: SiteContent;
+  /** Public interface dictionary for the active locale (defaults to English). */
+  dict?: PublicDictionary;
 }) {
   const pathname = usePathname() ?? '';
   const isDashboardOrAuth =
@@ -31,15 +36,18 @@ export function AppShell({
 
   // Public locale drives header/footer link prefixes and the switcher's active state.
   const locale = localeFromPathname(pathname);
+  const publicDict = dict ?? getPublicDictionary('en');
 
   return (
-    <ToastProvider>
-      <SkipLink />
-      <Header siteName={site?.name} locale={locale} />
-      <main id="main" tabIndex={-1} className="focus:outline-none">
-        {children}
-      </main>
-      <Footer site={site} locale={locale} />
-    </ToastProvider>
+    <PublicI18nProvider dict={publicDict}>
+      <ToastProvider>
+        <SkipLink />
+        <Header siteName={site?.name} locale={locale} />
+        <main id="main" tabIndex={-1} className="focus:outline-none">
+          {children}
+        </main>
+        <Footer site={site} locale={locale} />
+      </ToastProvider>
+    </PublicI18nProvider>
   );
 }

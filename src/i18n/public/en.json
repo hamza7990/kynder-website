@@ -1,0 +1,19 @@
+{
+  "skip": {
+    "toContent": "Skip to content"
+  },
+  "nav": {
+    "cta": "Book a 1-on-1 Session"
+  },
+  "footer": {
+    "explore": "Explore",
+    "connect": "Connect",
+    "stayInTouch": "Stay in touch",
+    "portal": "Coach & Admin Portal →"
+  },
+  "menu": {
+    "open": "Open menu",
+    "close": "Close menu",
+    "label": "Menu"
+  }
+}

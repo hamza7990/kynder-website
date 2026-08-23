@@ -8,6 +8,7 @@ import { useScrolled } from '@/lib/motion';
 import { bookingCta } from '@/data/nav';
 import type { Locale } from '@/i18n/config';
 import { localeHref } from '@/lib/i18n/locale-path';
+import { usePublicT } from '@/i18n/public/client';
 import { MobileNav } from './mobile-nav';
 import { Nav } from './nav';
 import { LocaleSwitcher } from './locale-switcher';
@@ -19,6 +20,7 @@ export function Header({
   siteName?: string;
   locale?: Locale;
 }) {
+  const t = usePublicT();
   const scrolled = useScrolled(40);
 
   return (
@@ -53,7 +55,7 @@ export function Header({
               href={localeHref(locale, bookingCta.href)}
               className={cn(buttonVariants({ variant: 'primary', size: 'sm' }), 'min-h-11')}
             >
-              {bookingCta.label}
+              {t('nav.cta')}
             </TrackLink>
             <LocaleSwitcher />
           </div>

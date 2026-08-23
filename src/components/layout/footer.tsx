@@ -1,8 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import { site as staticSite } from '@/data/site';
 import type { SiteContent } from '@/lib/content';
 import type { Locale } from '@/i18n/config';
 import { localeHref } from '@/lib/i18n/locale-path';
+import { usePublicT } from '@/i18n/public/client';
 import { NewsletterForm } from './newsletter-form';
 
 const isPending = (value: string) => value.startsWith('[PENDING');
@@ -48,6 +51,7 @@ function SocialLink({ label, href }: { label: string; href: string }) {
 }
 
 export function Footer({ site, locale = 'en' }: { site?: SiteContent; locale?: Locale }) {
+  const t = usePublicT();
   // DB-backed site content with a fall back to the static (env-based) defaults.
   const name = site?.name ?? staticSite.name;
   const tagline = site?.tagline ?? staticSite.tagline;
@@ -67,7 +71,7 @@ export function Footer({ site, locale = 'en' }: { site?: SiteContent; locale?: L
 
           {/* Explore */}
           <nav aria-label="Explore" className="flex flex-col gap-3">
-            <ColumnHeading>Explore</ColumnHeading>
+            <ColumnHeading>{t('footer.explore')}</ColumnHeading>
             <FooterLink href={localeHref(locale, '/questions')}>Leadership Questions</FooterLink>
             <FooterLink href={localeHref(locale, '/topics')}>Coaching Topics</FooterLink>
             <FooterLink href={localeHref(locale, '/book')}>Book a Session</FooterLink>
@@ -75,7 +79,7 @@ export function Footer({ site, locale = 'en' }: { site?: SiteContent; locale?: L
 
           {/* Connect */}
           <nav aria-label="Connect" className="flex flex-col gap-3">
-            <ColumnHeading>Connect</ColumnHeading>
+            <ColumnHeading>{t('footer.connect')}</ColumnHeading>
             <FooterLink href={localeHref(locale, '/about')}>About</FooterLink>
             <FooterLink href={localeHref(locale, '/contact')}>Contact</FooterLink>
             <SocialLink label="LinkedIn" href={social.linkedin} />
@@ -95,7 +99,7 @@ export function Footer({ site, locale = 'en' }: { site?: SiteContent; locale?: L
 
           {/* Newsletter */}
           <div className="flex flex-col gap-4">
-            <ColumnHeading>Stay in touch</ColumnHeading>
+            <ColumnHeading>{t('footer.stayInTouch')}</ColumnHeading>
             <NewsletterForm />
           </div>
         </div>
@@ -106,7 +110,7 @@ export function Footer({ site, locale = 'en' }: { site?: SiteContent; locale?: L
             href="/login"
             className="text-xs text-cream/70 hover:text-terracotta transition-colors"
           >
-            Coach & Admin Portal →
+            {t('footer.portal')}
           </Link>
         </div>
       </div>

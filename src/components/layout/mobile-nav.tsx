@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn';
 import { bookingCta, nav } from '@/data/nav';
 import type { Locale } from '@/i18n/config';
 import { localeHref } from '@/lib/i18n/locale-path';
+import { usePublicT } from '@/i18n/public/client';
 import { LocaleSwitcher } from './locale-switcher';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -18,6 +19,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1
  * returns focus to the trigger on close. Full parity with the desktop nav.
  */
 export function MobileNav({ className, locale = 'en' }: { className?: string; locale?: Locale }) {
+  const t = usePublicT();
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -93,7 +95,7 @@ export function MobileNav({ className, locale = 'en' }: { className?: string; lo
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
-        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-label={open ? t('menu.close') : t('menu.open')}
         onClick={() => setOpen((value) => !value)}
         className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md text-navy-deep"
       >
@@ -124,7 +126,7 @@ export function MobileNav({ className, locale = 'en' }: { className?: string; lo
           id={panelId}
           role="dialog"
           aria-modal="true"
-          aria-label="Menu"
+          aria-label={t('menu.label')}
           inert={!open}
           className={cn(
             'absolute right-0 top-0 flex h-full w-[min(320px,85vw)] flex-col gap-2 bg-cream p-6',
@@ -136,7 +138,7 @@ export function MobileNav({ className, locale = 'en' }: { className?: string; lo
             <span className="font-display text-h4 tracking-[0.04em] text-navy-deep">KYNDER</span>
             <button
               type="button"
-              aria-label="Close menu"
+              aria-label={t('menu.close')}
               onClick={() => setOpen(false)}
               className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md text-navy-deep"
             >
@@ -166,7 +168,7 @@ export function MobileNav({ className, locale = 'en' }: { className?: string; lo
               onClick={() => setOpen(false)}
               className={cn(buttonVariants({ variant: 'primary', size: 'md' }), 'w-full')}
             >
-              {bookingCta.label}
+              {t('nav.cta')}
             </TrackLink>
           </div>
         </div>

@@ -38,10 +38,15 @@ describe('interface-language isolation', () => {
     const RootLayout = (await import('./layout')).default;
     const markup = renderToStaticMarkup(await RootLayout({ children: <p>public content</p> }));
 
-    expect(markup).toContain('lang="en"');
-    expect(markup).toContain('dir="ltr"');
-    expect(markup).not.toContain('dir="rtl"');
-    expect(markup).not.toContain('lang="ar"');
+    // Assert on the <html> ELEMENT specifically — not the whole document. The
+    // language switcher legitimately renders an <a lang="ar"> for the Arabic
+    // option, which is correct a11y and must not fail this guard. What matters is
+    // that the document root stays English/LTR regardless of the admin session.
+    const htmlTag = markup.match(/<html[^>]*>/)?.[0] ?? '';
+    expect(htmlTag).toContain('lang="en"');
+    expect(htmlTag).toContain('dir="ltr"');
+    expect(htmlTag).not.toContain('lang="ar"');
+    expect(htmlTag).not.toContain('dir="rtl"');
   });
 
   it('admin layout mirrors to dir="rtl" lang="ar" for an Arabic admin — on its own subtree, not <html>', async () => {
