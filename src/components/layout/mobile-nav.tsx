@@ -6,6 +6,9 @@ import { TrackLink } from '@/components/analytics/track-link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { bookingCta, nav } from '@/data/nav';
+import type { Locale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
+import { LocaleSwitcher } from './locale-switcher';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -14,7 +17,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1
  * focus while open, closes on Escape or overlay click, locks body scroll, and
  * returns focus to the trigger on close. Full parity with the desktop nav.
  */
-export function MobileNav({ className }: { className?: string }) {
+export function MobileNav({ className, locale = 'en' }: { className?: string; locale?: Locale }) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -145,7 +148,7 @@ export function MobileNav({ className }: { className?: string }) {
             {nav.map((item) => (
               <Link
                 key={item.href}
-                href={item.href}
+                href={localeHref(locale, item.href)}
                 onClick={() => setOpen(false)}
                 className="focus-ring rounded-sm border-b border-ink-10 py-4 font-display text-h4 text-navy-deep transition-colors duration-fast ease-out hover:text-terracotta"
               >
@@ -154,15 +157,18 @@ export function MobileNav({ className }: { className?: string }) {
             ))}
           </nav>
 
-          {/* Booking CTA — last and most prominent. */}
-          <TrackLink
-            event="booking_cta_click"
-            href={bookingCta.href}
-            onClick={() => setOpen(false)}
-            className={cn(buttonVariants({ variant: 'primary', size: 'md' }), 'mt-auto w-full')}
-          >
-            {bookingCta.label}
-          </TrackLink>
+          {/* Language switcher + booking CTA — last and most prominent. */}
+          <div className="mt-auto flex flex-col gap-4">
+            <LocaleSwitcher />
+            <TrackLink
+              event="booking_cta_click"
+              href={localeHref(locale, bookingCta.href)}
+              onClick={() => setOpen(false)}
+              className={cn(buttonVariants({ variant: 'primary', size: 'md' }), 'w-full')}
+            >
+              {bookingCta.label}
+            </TrackLink>
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { site as staticSite } from '@/data/site';
 import type { SiteContent } from '@/lib/content';
+import type { Locale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { NewsletterForm } from './newsletter-form';
 
 const isPending = (value: string) => value.startsWith('[PENDING');
@@ -45,7 +47,7 @@ function SocialLink({ label, href }: { label: string; href: string }) {
   );
 }
 
-export function Footer({ site }: { site?: SiteContent }) {
+export function Footer({ site, locale = 'en' }: { site?: SiteContent; locale?: Locale }) {
   // DB-backed site content with a fall back to the static (env-based) defaults.
   const name = site?.name ?? staticSite.name;
   const tagline = site?.tagline ?? staticSite.tagline;
@@ -66,16 +68,16 @@ export function Footer({ site }: { site?: SiteContent }) {
           {/* Explore */}
           <nav aria-label="Explore" className="flex flex-col gap-3">
             <ColumnHeading>Explore</ColumnHeading>
-            <FooterLink href="/questions">Leadership Questions</FooterLink>
-            <FooterLink href="/topics">Coaching Topics</FooterLink>
-            <FooterLink href="/book">Book a Session</FooterLink>
+            <FooterLink href={localeHref(locale, '/questions')}>Leadership Questions</FooterLink>
+            <FooterLink href={localeHref(locale, '/topics')}>Coaching Topics</FooterLink>
+            <FooterLink href={localeHref(locale, '/book')}>Book a Session</FooterLink>
           </nav>
 
           {/* Connect */}
           <nav aria-label="Connect" className="flex flex-col gap-3">
             <ColumnHeading>Connect</ColumnHeading>
-            <FooterLink href="/about">About</FooterLink>
-            <FooterLink href="/contact">Contact</FooterLink>
+            <FooterLink href={localeHref(locale, '/about')}>About</FooterLink>
+            <FooterLink href={localeHref(locale, '/contact')}>Contact</FooterLink>
             <SocialLink label="LinkedIn" href={social.linkedin} />
             <SocialLink label="Instagram" href={social.instagram} />
             <SocialLink label="YouTube" href={social.youtube} />

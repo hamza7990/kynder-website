@@ -5,6 +5,7 @@ import { Header } from './header';
 import { Footer } from './footer';
 import { SkipLink } from './skip-link';
 import { ToastProvider } from '@/components/ui/toast';
+import { localeFromPathname } from '@/lib/i18n/locale-path';
 import type { SiteContent } from '@/lib/content';
 
 export function AppShell({
@@ -28,14 +29,17 @@ export function AppShell({
     );
   }
 
+  // Public locale drives header/footer link prefixes and the switcher's active state.
+  const locale = localeFromPathname(pathname);
+
   return (
     <ToastProvider>
       <SkipLink />
-      <Header siteName={site?.name} />
+      <Header siteName={site?.name} locale={locale} />
       <main id="main" tabIndex={-1} className="focus:outline-none">
         {children}
       </main>
-      <Footer site={site} />
+      <Footer site={site} locale={locale} />
     </ToastProvider>
   );
 }

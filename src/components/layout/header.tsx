@@ -6,10 +6,19 @@ import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { useScrolled } from '@/lib/motion';
 import { bookingCta } from '@/data/nav';
+import type { Locale } from '@/i18n/config';
+import { localeHref } from '@/lib/i18n/locale-path';
 import { MobileNav } from './mobile-nav';
 import { Nav } from './nav';
+import { LocaleSwitcher } from './locale-switcher';
 
-export function Header({ siteName = 'KYNDER' }: { siteName?: string }) {
+export function Header({
+  siteName = 'KYNDER',
+  locale = 'en',
+}: {
+  siteName?: string;
+  locale?: Locale;
+}) {
   const scrolled = useScrolled(40);
 
   return (
@@ -31,24 +40,25 @@ export function Header({ siteName = 'KYNDER' }: { siteName?: string }) {
           )}
         >
           <Link
-            href="/"
+            href={localeHref(locale, '/')}
             className="focus-ring rounded-sm font-display text-h4 font-semibold tracking-[0.04em] text-navy-deep"
           >
             {siteName}
           </Link>
 
           <div className="hidden items-center gap-8 md:flex">
-            <Nav />
+            <Nav locale={locale} />
             <TrackLink
               event="booking_cta_click"
-              href={bookingCta.href}
+              href={localeHref(locale, bookingCta.href)}
               className={cn(buttonVariants({ variant: 'primary', size: 'sm' }), 'min-h-11')}
             >
               {bookingCta.label}
             </TrackLink>
+            <LocaleSwitcher />
           </div>
 
-          <MobileNav className="md:hidden" />
+          <MobileNav className="md:hidden" locale={locale} />
         </div>
       </header>
 
