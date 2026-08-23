@@ -60,9 +60,32 @@ authored here; we build the plumbing + English/Arabic interface labels + fallbac
     emits unprefixed URLs (Slice 3). Playwright e2e specs hit `/about` etc. and will
     need `/en` paths — update at the A2 gate.
 
-- [ ] **Slice 3 — Header language switcher + SEO**: switcher on every page (prefix
-  swap, preserves path + hash); `hreflang` alternates; both locales in
-  `sitemap.ts`; locale-correct metadata + JSON-LD.
+- [x] **Slice 3 — Language switcher + SEO** (commits `8d01a3b` SEO, `c10d2a4` switcher)
+  - **SEO:** `buildPageMetadata(seo, title, locale)` → localized canonical +
+    `alternates.languages` (en/ar/x-default) + OG locale; the 6 public pages use
+    `generateMetadata({params})`. `sitemap.ts` emits `/en` + `/ar` for every route
+    with hreflang alternates.
+  - **Switcher:** `src/components/layout/locale-switcher.tsx` — links to the SAME
+    page in the other locale (segment swap), active locale marked, autonyms +
+    sr-only names. Placed in the header (desktop) and the mobile drawer.
+  - **Locale-aware global nav:** `src/lib/i18n/locale-path.ts`
+    (`localeFromPathname`/`localeHref`/`switchLocalePath`); `AppShell` threads the URL
+    locale to `Header` + `Footer`; wordmark, primary nav, booking CTA, footer links
+    are locale-prefixed (no redirect hop). Optional `locale` prop defaults to `en`
+    so isolated component renders/tests are unaffected.
+  - Verified: typecheck ✓, 13 layout tests ✓, production build ✓ (36 pages), runtime
+    probe ✓ — `/en/questions` switcher → `/ar/questions`; hreflang en/ar/x-default in
+    `<head>`; header nav prefixed; localized canonical; bilingual sitemap.
+  - **Deferred (small, intentional):** (1) **Structured-data `inLanguage`** not yet
+    localized — Organization/Person JSON-LD is currently locale-neutral; threading
+    locale into `OrganizationJsonLd`/`PersonJsonLd` touches home/about pages + their
+    tests, so folded into the A2 gate. (2) **In-page CTA links** (topic→book,
+    home preview→questions, book→topics) still unprefixed — middleware preserves
+    locale via cookie (query + hash carry through); explicit prefixing + test updates
+    happen in the **Slice 5** RTL sweep, which edits those same components.
+  - **Switcher hash note:** `usePathname()` excludes the hash, so switching language
+    on `/en/questions#q-03` lands on `/ar/questions` (page-level, not anchor-level).
+    Acceptable; enhance with a client hash-carry in Slice 5 if wanted.
 
 - [ ] **Slice 4 — Public interface-label dictionary**: extract public UI strings
   (~80–120: nav/header/footer/buttons/form labels/validation/empty/error) into a
