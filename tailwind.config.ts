@@ -66,6 +66,9 @@ const config: Config = {
         display: 'var(--font-display)',
         sans: 'var(--font-sans)',
         arabic: 'var(--font-arabic)',
+        // Public-brand Arabic pairing (A2): headings vs body, loaded only on /ar.
+        'arabic-display': 'var(--font-arabic-display)',
+        'arabic-body': 'var(--font-arabic-body)',
       },
       fontSize: {
         'display-1': ['var(--fs-display-1)', { lineHeight: 'var(--lh-tight)', letterSpacing: 'var(--tracking-display)' }],
@@ -93,6 +96,9 @@ const config: Config = {
         snug: 'var(--lh-snug)',
         heading: 'var(--lh-heading)',
         body: 'var(--lh-body)',
+        // Arabic-tuned leading (looser than Latin) — applied on /ar.
+        'body-ar': 'var(--lh-body-ar)',
+        'heading-ar': 'var(--lh-heading-ar)',
       },
       spacing: {
         1: 'var(--space-1)',

@@ -94,6 +94,20 @@
   /* Arabic UI face (injected by next/font); used only by the dashboard in RTL. */
   --font-arabic: var(--font-arabic-plex, 'IBM Plex Sans Arabic'), 'Segoe UI', Tahoma, sans-serif;
 
+  /* PUBLIC BRAND Arabic faces (A2) — loaded only on /ar. Editorial Naskh display
+     (Markazi Text) for headings, clean sans (Noto Sans Arabic) for body: the
+     Arabic mirror of Lora + Inter. Kept separate from the admin --font-arabic. */
+  --font-arabic-display: var(--font-markazi, 'Markazi Text'), 'Noto Naskh Arabic', 'Amiri',
+    Georgia, serif;
+  --font-arabic-body: var(--font-noto-arabic, 'Noto Sans Arabic'), 'Segoe UI', Tahoma, sans-serif;
+
+  /* Arabic tuning — NOT a family swap. Arabic has tall ascenders / deep descenders
+     and no capitals, so it needs looser leading than Latin; and it is cursive, so
+     it must NEVER be letter-spaced (tracking breaks the joins). Applied under
+     [lang='ar'] in globals.css. Western digits are enforced in src/lib/format.ts. */
+  --lh-body-ar: 1.8;
+  --lh-heading-ar: 1.4;
+
   /* Modular scale ~1.25 — 64 / 48 / 36 / 28 / 22 / 18 / 16 / 14 (px → rem). */
   --fs-display-1: 4rem; /* 64 */
   --fs-display-2: 3rem; /* 48 */

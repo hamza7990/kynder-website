@@ -18,7 +18,13 @@ vi.mock('next/font/google', () => {
     variable: '--font-mock',
     style: { fontFamily: 'mock' },
   });
-  return { Lora: loader, Inter: loader, IBM_Plex_Sans_Arabic: loader };
+  return {
+    Lora: loader,
+    Inter: loader,
+    IBM_Plex_Sans_Arabic: loader,
+    Markazi_Text: loader,
+    Noto_Sans_Arabic: loader,
+  };
 });
 
 // Ensure the DOM is reset between tests.
