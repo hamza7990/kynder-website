@@ -182,12 +182,40 @@ authored here; we build the plumbing + English/Arabic interface labels + fallbac
     translator, those tests need the provider or a default-English fallback so
     isolated renders still show English. Keep them green.
 
-- [ ] **Slice 5 — RTL logical-CSS sweep + guard test**: convert public components to
-  logical properties (`ms/me`, `ps/pe`, `text-start/end`, `inset-inline`); add a
-  guard test that fails on new physical `ml-/mr-/pl-/pr-/left-/right-` in public
-  components. Mirror: nav order, chevrons/arrows, accordion rail, card alignment,
-  mobile drawer slide direction, footer columns. Do NOT mirror: KYNDER wordmark,
-  decorative ripples, phone numbers. (Admin already did this pattern — reuse it.)
+- [x] **Slice 5 — RTL logical-CSS sweep + guard test** (commits `8dd2151` sweep+guard,
+  `fffd197` CTA prefixing)
+  - **Sweep (`8dd2151`):** converted the physical L/R utilities in public
+    components to logical equivalents — `text-left→text-start` (accordion,
+    section-header, question-item trigger), `pl-11/14→ps-11/14` + `border-l-2 pl-6
+    →border-s-2 ps-6` (question-item step rail), `right-0→end-0` + direction-aware
+    closed slide `ltr:translate-x-full / rtl:-translate-x-full` (mobile drawer),
+    `right-6→end-6` (toast), `left-4→start-4` (skip link), `-left-[9999px]→
+    -start-[9999px]` (contact honeypot). **Not mirrored (by design):** KYNDER
+    wordmark, decorative ripples (centring idiom, allow-listed), phone numbers.
+  - **Guard:** `src/components/rtl-logical-css.guard.test.ts` scans public
+    components + the `[locale]` route tree and FAILS on any physical
+    `ml/mr, pl/pr, left/right, text-left/right, border-l/r, rounded-l/r, space-x`
+    utility. One reviewed exception (ripples). Regex verified against false
+    positives (`rounded-lg`, `border-ink-10`, `text-lead`, `px/mx`, `translate-x`).
+  - **NOTE re plan's "admin already did this pattern":** not accurate — admin
+    (`dashboard/`, `auth/`) still uses physical properties. There was no existing
+    logical-CSS pattern to reuse; this slice established it for the PUBLIC tree
+    only (admin is session-locale, out of A2 scope).
+  - **CTA prefixing (`fffd197`) — closes the Slice 3 deferral:** in-page CTA links
+    (hero, questions/topics previews, about teaser, cta band, topic cards,
+    book-content, about/questions/confirmed page CTAs) are now `localeHref`-prefixed
+    instead of relying on the middleware cookie-redirect hop. Server components take
+    an optional `locale` prop (default `en`); `BookContent` derives it from
+    `usePathname`; pages read `params.locale` (params optional so arg-less test
+    calls resolve to `en`). Confirmed page is now async.
+  - Verified: typecheck ✓, full suite **289** ✓ (guard adds 2; href assertions
+    updated to `/en/…`), prod build ✓ (36 pages), runtime probe on `/en` + `/ar` —
+    `dir=rtl` + compiled `text-align:start` / `padding-inline-start` /
+    `border-inline-start` / `inset-inline-end` / `rtl:-translate-x` drawer; and
+    every in-page CTA on `/ar` carries `/ar/…` with no redirect hop.
+  - **Still deferred (optional, small):** switcher hash-carry — switching locale on
+    `/en/questions#q-03` still lands on `/ar/questions` (page-level). Enhance with a
+    client hash-carry if wanted; not required for A2.
 
 - [ ] **Slice 6 — Content model migration**: additive nullable `*Ar` columns
   (`questionAr`, `stepsAr`, `titleAr`, `blurbAr`, coach `bioAr`/`titleAr`) +
