@@ -87,7 +87,25 @@ authored here; we build the plumbing + English/Arabic interface labels + fallbac
     on `/en/questions#q-03` lands on `/ar/questions` (page-level, not anchor-level).
     Acceptable; enhance with a client hash-carry in Slice 5 if wanted.
 
-- [~] **Slice 4 — Public interface-label dictionary** (IN PROGRESS — commit 1/2 done: `74280f4`)
+- [x] **Slice 4 — Public interface-label dictionary** (DONE — `74280f4`, `ea6c896`, `87f5201`, `b84b70d`)
+  - **commit 2b-i (`87f5201`):** booking form + scheduler chrome → `bookForm.*` /
+    `booking.*`; `direct-booking-form`/`book-content`/`scheduler-embed` use
+    `usePublicT`. `book.ts` keeps client copy (heading, details, noTopic, confirmed)
+    for A3. book.test unchanged (references deferred copy + regex on English).
+  - **commit 2b-ii (`b84b70d`):** locale-aware **404**. New
+    `src/app/[locale]/not-found.tsx` (server component reads locale from the
+    `x-locale` header via `getPublicT` — not-found gets no params); global
+    `not-found.tsx` fallback uses the same dict source (en); `src/data/not-found.ts`
+    deleted. **This is the functional A2 404 — Workstream C2 makes it the illustrated
+    arrival moment; build on top, don't rebuild.**
+  - Verified end-to-end (runtime probe): `/ar/book` form Arabic, `/en/book` English,
+    `/ar/<unknown>` Arabic 404, `/en/<unknown>` English 404. typecheck + full suite
+    (287) + build (36 pages) all green.
+  - **Still English (deferred to A3, by owner decision):** nav labels; page headings
+    & marketing intros; session details; the confirmation page (`book.confirmed.*`);
+    contact/book page intros. All `/ar` *content* is English until A3 — expected.
+
+- [x] ~~**Slice 4 (original detail below)**~~ (superseded by the status above)
   - **DONE (commit 1):** built the separate public i18n — `src/i18n/public/`
     (`en.json`/`ar.json` + `config.ts` translator + `client.tsx` English-defaulting
     provider + `server.ts`). URL-locale, not session. Root layout resolves the dict
