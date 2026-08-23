@@ -38,6 +38,17 @@ is the owner's to manage. **Not a blocker for build work.**
 Two-founder confirmation and Hisham's real content are still with the client. They
 block **B**, not **A**. A1/A2/A3 proceed without them.
 
+### 2026-08-23 — GATE A1: sample APPROVED → proceed to A2
+Owner reviewed the A1 spike and said "proceed". Treated as go-ahead to begin **A2
+(infrastructure)**. Note: A2 contains **no client-facing translation** (interface
+labels only; questions/topics/page copy stay English until A3), so starting A2 does
+**not** finalise the sample voice. Two decisions remain OPEN and block **A3**, not A2:
+- **Gender of address** (masculine-generic placeholder used in the sample; owner to
+  choose before A3). See [[GLOSSARY-AR]] gender note.
+- **Register calls:** «التدريب» vs «الكوتشينغ» (coaching/coach); «الملاحظة» vs
+  «التغذية الراجعة» (feedback). Owner yes/no before A3.
+These will be surfaced again for explicit sign-off at the A2→A3 boundary.
+
 ### 2026-08-23 — Standing guidance from owner (recorded so it isn't lost)
 - **Reuse the admin i18n plumbing, but do not let the dashboard set the public
   site's shape.** The dashboard is a tool; the public site is the brand. Different
