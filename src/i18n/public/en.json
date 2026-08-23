@@ -72,5 +72,12 @@
       "fallbackTitle": "The booking calendar could not load",
       "fallbackContactPrefix": "Please email us to book:"
     }
+  },
+  "notFound": {
+    "code": "404",
+    "heading": "We can’t find that page",
+    "body": "The page you’re looking for has moved or never existed. Here are two good places to pick things back up:",
+    "questionsLabel": "Explore the 10 Questions",
+    "bookLabel": "Book a 1-on-1 Session"
   }
 }
