@@ -106,6 +106,14 @@ export default async function AdminQuestionsPage() {
             } catch {
               stepsArr = [];
             }
+            let stepsArArr: string[] = [];
+            try {
+              stepsArArr = q.stepsAr ? JSON.parse(q.stepsAr) : [];
+            } catch {
+              stepsArArr = [];
+            }
+            // "Untranslated" = no Arabic authored yet for either field.
+            const untranslated = !q.questionAr && stepsArArr.length === 0;
 
             return (
               <div
@@ -120,6 +128,11 @@ export default async function AdminQuestionsPage() {
                     <span className="rounded-full bg-terracotta-soft px-3 py-0.5 text-small font-semibold uppercase tracking-wider text-terracotta-text">
                       {q.pillar}
                     </span>
+                    {untranslated ? (
+                      <span className="rounded-full border border-ink-20 bg-cream px-3 py-0.5 text-small font-semibold text-ink-70">
+                        {t('common.untranslated')}
+                      </span>
+                    ) : null}
                   </div>
 
                   <form
@@ -186,6 +199,37 @@ export default async function AdminQuestionsPage() {
                         defaultValue={stepsArr[idx] || ''}
                         placeholder={t('questions.stepShortPlaceholder', { n: idx + 1 })}
                         className="bg-cream text-small"
+                      />
+                    ))}
+                  </div>
+
+                  {/* Arabic (A3) — optional. Blank stays NULL and the public site
+                      falls back to English; the badge above flags it untranslated. */}
+                  <div dir="rtl" className="space-y-2 rounded-lg border border-dashed border-ink-20 bg-cream/50 p-3">
+                    <label className="block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
+                      {t('common.arabic')}
+                    </label>
+                    <Field label={t('questions.questionArField')} htmlFor={`qar_${q.id}`}>
+                      <Input
+                        id={`qar_${q.id}`}
+                        name="questionAr"
+                        lang="ar"
+                        defaultValue={q.questionAr ?? ''}
+                        placeholder={t('questions.questionArPlaceholder')}
+                        className="bg-cream font-arabic-body text-small"
+                      />
+                    </Field>
+                    <label className="block pt-1 text-small font-semibold uppercase tracking-eyebrow text-ink-70">
+                      {t('questions.stepsArShort')}
+                    </label>
+                    {[0, 1, 2, 3, 4].map((idx) => (
+                      <Input
+                        key={idx}
+                        name={`stepAr${idx + 1}`}
+                        lang="ar"
+                        defaultValue={stepsArArr[idx] || ''}
+                        placeholder={t('questions.stepArPlaceholder', { n: idx + 1 })}
+                        className="bg-cream font-arabic-body text-small"
                       />
                     ))}
                   </div>

@@ -11,7 +11,9 @@
     "clear": "مسح",
     "sessions": "جلسة",
     "topics": "موضوع",
-    "questions": "سؤال"
+    "questions": "سؤال",
+    "arabic": "العربية",
+    "untranslated": "غير مُترجَم"
   },
   "roles": {
     "ADMIN": "مشرف",
@@ -231,7 +233,11 @@
     "pillarShort": "الركيزة",
     "stepsShort": "5 خطوات عملية",
     "stepShortPlaceholder": "الخطوة {n}…",
-    "saveTo": "حفظ التغييرات على السؤال {no}"
+    "saveTo": "حفظ التغييرات على السؤال {no}",
+    "questionArField": "السؤال — بالعربية",
+    "questionArPlaceholder": "الترجمة العربية (اتركها فارغة حتى المرحلة A3)",
+    "stepsArShort": "5 خطوات عملية — بالعربية",
+    "stepArPlaceholder": "الخطوة {n} — بالعربية…"
   },
   "topics": {
     "title": "لوحة مواضيع التدريب الـ15",
@@ -248,7 +254,9 @@
     "create": "إنشاء الموضوع",
     "clusterCount": "{count} موضوع",
     "titleField": "العنوان",
-    "blurbField": "الوصف المختصر"
+    "blurbField": "الوصف المختصر",
+    "titleArField": "العنوان — بالعربية",
+    "blurbArField": "الوصف المختصر — بالعربية"
   },
   "content": {
     "title": "المحتوى المباشر والإعدادات",

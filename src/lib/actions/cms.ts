@@ -17,6 +17,16 @@ export async function getDbQuestions() {
   }
 }
 
+// Collect the five Arabic step inputs into a JSON string, or null when the admin
+// left them blank. NULL (not "[]") keeps the read-time fallback on English and
+// lets the UI flag the field as untranslated.
+function collectArabicSteps(formData: FormData): string | null {
+  const arSteps = [1, 2, 3, 4, 5]
+    .map((n) => formData.get(`stepAr${n}`)?.toString().trim())
+    .filter((s): s is string => Boolean(s));
+  return arSteps.length > 0 ? JSON.stringify(arSteps) : null;
+}
+
 export async function updateQuestionAction(id: string, formData: FormData) {
   await requireAuth('ADMIN');
 
@@ -27,6 +37,10 @@ export async function updateQuestionAction(id: string, formData: FormData) {
   const step3 = formData.get('step3')?.toString().trim();
   const step4 = formData.get('step4')?.toString().trim();
   const step5 = formData.get('step5')?.toString().trim();
+  // Arabic is optional (A3). Empty → NULL, so it falls back to English on the
+  // public site and shows as "untranslated" in the admin.
+  const questionAr = formData.get('questionAr')?.toString().trim() || null;
+  const stepsAr = collectArabicSteps(formData);
 
   if (!question || !pillar) {
     return { error: 'Question text and pillar are required.' };
@@ -37,7 +51,7 @@ export async function updateQuestionAction(id: string, formData: FormData) {
   try {
     await db.question.update({
       where: { id },
-      data: { question, pillar, steps: JSON.stringify(steps) },
+      data: { question, pillar, steps: JSON.stringify(steps), questionAr, stepsAr },
     });
   } catch {
     return { error: GENERIC_ERROR };
@@ -61,6 +75,9 @@ export async function createQuestionAction(formData: FormData) {
   const step4 = formData.get('step4')?.toString().trim();
   const step5 = formData.get('step5')?.toString().trim();
 
+  const questionAr = formData.get('questionAr')?.toString().trim() || null;
+  const stepsAr = collectArabicSteps(formData);
+
   if (!no || !question || !pillar) {
     return { error: 'Number (e.g. 11), question text, and pillar are required.' };
   }
@@ -73,8 +90,10 @@ export async function createQuestionAction(formData: FormData) {
       data: {
         no: no.padStart(2, '0'),
         question,
+        questionAr,
         pillar,
         steps: JSON.stringify(steps),
+        stepsAr,
         order: count,
       },
     });
@@ -118,13 +137,15 @@ export async function updateTopicAction(id: string, formData: FormData) {
   const title = formData.get('title')?.toString().trim();
   const blurb = formData.get('blurb')?.toString().trim();
   const cluster = formData.get('cluster')?.toString().trim();
+  const titleAr = formData.get('titleAr')?.toString().trim() || null;
+  const blurbAr = formData.get('blurbAr')?.toString().trim() || null;
 
   if (!title || !blurb || !cluster) {
     return { error: 'Title, blurb, and cluster category are required.' };
   }
 
   try {
-    await db.topic.update({ where: { id }, data: { title, blurb, cluster } });
+    await db.topic.update({ where: { id }, data: { title, blurb, cluster, titleAr, blurbAr } });
   } catch {
     return { error: GENERIC_ERROR };
   }
@@ -142,6 +163,8 @@ export async function createTopicAction(formData: FormData) {
   const slug = formData.get('slug')?.toString().trim();
   const blurb = formData.get('blurb')?.toString().trim();
   const cluster = formData.get('cluster')?.toString().trim();
+  const titleAr = formData.get('titleAr')?.toString().trim() || null;
+  const blurbAr = formData.get('blurbAr')?.toString().trim() || null;
 
   if (!title || !slug || !blurb || !cluster) {
     return { error: 'Title, slug, blurb, and cluster are required.' };
@@ -152,8 +175,10 @@ export async function createTopicAction(formData: FormData) {
     await db.topic.create({
       data: {
         title,
+        titleAr,
         slug: slug.toLowerCase().replace(/[^a-z0-9-]/g, '-'),
         blurb,
+        blurbAr,
         cluster,
         order: count,
       },

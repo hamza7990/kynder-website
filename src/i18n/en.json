@@ -11,7 +11,9 @@
     "clear": "Clear",
     "sessions": "sessions",
     "topics": "topics",
-    "questions": "questions"
+    "questions": "questions",
+    "arabic": "Arabic (العربية)",
+    "untranslated": "Untranslated"
   },
   "roles": {
     "ADMIN": "Admin",
@@ -231,7 +233,11 @@
     "pillarShort": "Pillar",
     "stepsShort": "5 Action Steps",
     "stepShortPlaceholder": "Step {n}…",
-    "saveTo": "Save Changes to Q{no}"
+    "saveTo": "Save Changes to Q{no}",
+    "questionArField": "Question — Arabic",
+    "questionArPlaceholder": "Arabic translation (leave blank until A3)",
+    "stepsArShort": "5 Action Steps — Arabic",
+    "stepArPlaceholder": "Step {n} — Arabic…"
   },
   "topics": {
     "title": "15 Coaching Topics CMS",
@@ -248,7 +254,9 @@
     "create": "Create Topic",
     "clusterCount": "{count} topics",
     "titleField": "Title",
-    "blurbField": "Blurb"
+    "blurbField": "Blurb",
+    "titleArField": "Title — Arabic",
+    "blurbArField": "Blurb — Arabic"
   },
   "content": {
     "title": "Live Content & Settings",

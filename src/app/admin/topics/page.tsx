@@ -105,7 +105,9 @@ export default async function AdminTopicsPage() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                {clusterTopics.map((topic) => (
+                {clusterTopics.map((topic) => {
+                  const untranslated = !topic.titleAr && !topic.blurbAr;
+                  return (
                   <div
                     key={topic.id}
                     className="rounded-xl border border-ink-10 bg-cream-card p-6 shadow-1 transition-colors hover:border-ink-20"
@@ -118,6 +120,11 @@ export default async function AdminTopicsPage() {
                         <h4 className="font-display text-h4 font-bold text-navy-deep">
                           {topic.title}
                         </h4>
+                        {untranslated ? (
+                          <span className="mt-1 inline-block rounded-full border border-ink-20 bg-cream px-2.5 py-0.5 text-small font-semibold text-ink-70">
+                            {t('common.untranslated')}
+                          </span>
+                        ) : null}
                       </div>
 
                       <form
@@ -177,6 +184,32 @@ export default async function AdminTopicsPage() {
                         </select>
                       </Field>
 
+                      {/* Arabic (A3) — optional. Blank stays NULL; the public site
+                          falls back to English and the badge flags it untranslated. */}
+                      <div dir="rtl" className="space-y-3 rounded-lg border border-dashed border-ink-20 bg-cream/50 p-3">
+                        <label className="block text-small font-semibold uppercase tracking-eyebrow text-ink-70">
+                          {t('common.arabic')}
+                        </label>
+                        <Field label={t('topics.titleArField')} htmlFor={`t_titleAr_${topic.id}`}>
+                          <Input
+                            id={`t_titleAr_${topic.id}`}
+                            name="titleAr"
+                            lang="ar"
+                            defaultValue={topic.titleAr ?? ''}
+                            className="bg-cream font-arabic-body"
+                          />
+                        </Field>
+                        <Field label={t('topics.blurbArField')} htmlFor={`t_blurbAr_${topic.id}`}>
+                          <Input
+                            id={`t_blurbAr_${topic.id}`}
+                            name="blurbAr"
+                            lang="ar"
+                            defaultValue={topic.blurbAr ?? ''}
+                            className="bg-cream font-arabic-body"
+                          />
+                        </Field>
+                      </div>
+
                       <div className="flex justify-end pt-2">
                         <Button type="submit" variant="ghost" size="sm">
                           💾 {t('common.save')}
@@ -184,7 +217,8 @@ export default async function AdminTopicsPage() {
                       </div>
                     </form>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           );
